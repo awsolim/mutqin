@@ -1,0 +1,43 @@
+{
+  "kind": "tafsir",
+  "source": "Quran-Database - Tafsir Al-Muyassar",
+  "sourceId": "quran-database-muyassar",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 103,
+  "entries": [
+    {
+      "verseKey": "103:1",
+      "surahNumber": 103,
+      "ayahNumber": 1,
+      "text": "أقسم الله بالدهر على أن بني آدم لفي هلكة ونقصان. ولا يجوز للعبد أن يقسم إلا بالله، فإن القسم بغير الله شرك.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "103:2",
+      "surahNumber": 103,
+      "ayahNumber": 2,
+      "text": "أقسم الله بالدهر على أن بني آدم لفي هلكة ونقصان. ولا يجوز للعبد أن يقسم إلا بالله، فإن القسم بغير الله شرك.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "103:3",
+      "surahNumber": 103,
+      "ayahNumber": 3,
+      "text": "إلا الذين آمنوا بالله وعملوا عملا صالحًا، وأوصى بعضهم بعضًا بالاستمساك بالحق، والعمل بطاعة الله، والصبر على ذلك.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

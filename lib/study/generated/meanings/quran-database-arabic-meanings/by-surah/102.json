@@ -1,0 +1,76 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 102,
+  "entries": [
+    {
+      "verseKey": "102:1",
+      "surahNumber": 102,
+      "ayahNumber": 1,
+      "text": "ألهاكم : شَغَلَكم عنْ طاعَة ربّكم\\nالـتـّـكاثر : التـّـباهي بكثرة متاع الدنيا",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "102:2",
+      "surahNumber": 102,
+      "ayahNumber": 2,
+      "text": "زُرْتم المقابر : متـّـمْ و دُفِنـنـْـتم في القبور",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "102:5",
+      "surahNumber": 102,
+      "ayahNumber": 5,
+      "text": "لو تعلمون عِلم اليقين : لوْ تعلمون مآلكم عِلما يَقـينا لـَـمَـا ألهاكم التـّـكاثر",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "102:6",
+      "surahNumber": 102,
+      "ayahNumber": 6,
+      "text": "لترونّ الجحيم : و الله لترَوُنّ الجحيم",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "102:7",
+      "surahNumber": 102,
+      "ayahNumber": 7,
+      "text": "عيْن اليقين : نـَـفـْـسَ اليَقين و هو المشاهدة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "102:8",
+      "surahNumber": 102,
+      "ayahNumber": 8,
+      "text": "النّعيم : الذي ألهاكمْ عنْ طاعة رَبّكمْ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

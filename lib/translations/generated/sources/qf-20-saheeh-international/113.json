@@ -1,0 +1,49 @@
+{
+  "sourceId": "qf-20-saheeh-international",
+  "sourceName": "Saheeh International",
+  "language": "en",
+  "direction": "ltr",
+  "surahNumber": 113,
+  "entries": [
+    {
+      "verseKey": "113:1",
+      "surahNumber": 113,
+      "ayahNumber": 1,
+      "text": "Say, \"I seek refuge in the Lord of daybreak",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "113:2",
+      "surahNumber": 113,
+      "ayahNumber": 2,
+      "text": "From the evil of that which He created",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "113:3",
+      "surahNumber": 113,
+      "ayahNumber": 3,
+      "text": "And from the evil of darkness when it settles",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "113:4",
+      "surahNumber": 113,
+      "ayahNumber": 4,
+      "text": "And from the evil of the blowers in knots",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "113:5",
+      "surahNumber": 113,
+      "ayahNumber": 5,
+      "text": "And from the evil of an envier when he envies.\"",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    }
+  ]
+}

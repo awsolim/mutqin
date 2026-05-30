@@ -1,0 +1,76 @@
+{
+  "kind": "tafsir",
+  "source": "Quran-Database - Tafsir As-Saadi",
+  "sourceId": "quran-database-saadi",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 109,
+  "entries": [
+    {
+      "verseKey": "109:1",
+      "surahNumber": 109,
+      "ayahNumber": 1,
+      "text": "أي: قل للكافرين معلنا ومصرحًا",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir As-Saadi",
+      "sourceId": "quran-database-saadi",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:2",
+      "surahNumber": 109,
+      "ayahNumber": 2,
+      "text": "{ لَا أَعْبُدُ مَا تَعْبُدُونَ } أي: تبرأ مما كانوا يعبدون من دون الله، ظاهرًا وباطنًا.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir As-Saadi",
+      "sourceId": "quran-database-saadi",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:3",
+      "surahNumber": 109,
+      "ayahNumber": 3,
+      "text": "{ وَلَا أَنْتُمْ عَابِدُونَ مَا أَعْبُدُ } لعدم إخلاصكم في عبادته ، فعبادتكم له المقترنة بالشرك لا تسمى عبادة، ثم كرر ذلك ليدل الأول على عدم وجود الفعل، والثاني على أن ذلك قد صار وصفًا لازمًا.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir As-Saadi",
+      "sourceId": "quran-database-saadi",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:4",
+      "surahNumber": 109,
+      "ayahNumber": 4,
+      "text": "وَلَا أَنَا عَابِدٌ مَّا عَبَدتُّمْ",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir As-Saadi",
+      "sourceId": "quran-database-saadi",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:5",
+      "surahNumber": 109,
+      "ayahNumber": 5,
+      "text": "{ وَلَا أَنْتُمْ عَابِدُونَ مَا أَعْبُدُ } لعدم إخلاصكم في عبادته ، فعبادتكم له المقترنة بالشرك لا تسمى عبادة، ثم كرر ذلك ليدل الأول على عدم وجود الفعل، والثاني على أن ذلك قد صار وصفًا لازمًا.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir As-Saadi",
+      "sourceId": "quran-database-saadi",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:6",
+      "surahNumber": 109,
+      "ayahNumber": 6,
+      "text": "ولهذا ميز بين الفريقين، وفصل بين الطائفتين، فقال: { لَكُمْ دِينُكُمْ وَلِيَ دِينِ } كما قال تعالى: { قُلْ كُلٌّ يَعْمَلُ عَلَى شَاكِلَتِهِ } { أَنْتُمْ بَرِيئُونَ مِمَّا أَعْمَلُ وَأَنَا بَرِيءٌ مِمَّا تَعْمَلُونَ } .",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir As-Saadi",
+      "sourceId": "quran-database-saadi",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

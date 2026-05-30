@@ -1,0 +1,87 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 107,
+  "entries": [
+    {
+      "verseKey": "107:1",
+      "surahNumber": 107,
+      "ayahNumber": 1,
+      "text": "أرأيتَ الذي : أخْبرني الذي يكذب مَنْ هو ؟\\nيُـكَذبُ بالدّين : يَجْحَدُ الجَزَاء لإنكار البَعْث",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "107:2",
+      "surahNumber": 107,
+      "ayahNumber": 2,
+      "text": "يَدُعُ اليَتيم َ : يَدْفَـعُـه دَفـْعًـاعَـنيفا عنْ حَقّه",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "107:3",
+      "surahNumber": 107,
+      "ayahNumber": 3,
+      "text": "لا يَحضّ : لا يَحُثّ و لا يَبْـعَثُ أحَدًا",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "107:4",
+      "surahNumber": 107,
+      "ayahNumber": 4,
+      "text": "فَوَيْـلٌ : عذابٌ أو هَلاكٌ ، أوْ وَادٍ في جَهـنّـم\\nللمصلـّينَ : نِفاقـًـا أو رياءً",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "107:5",
+      "surahNumber": 107,
+      "ayahNumber": 5,
+      "text": "سَاهون : غـَـافـِلون غَيْرُ مُبالين بها",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "107:6",
+      "surahNumber": 107,
+      "ayahNumber": 6,
+      "text": "يُرَاءُون : يَقـْـصِـدون الرّياءَ بأعمالِهمْ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "107:7",
+      "surahNumber": 107,
+      "ayahNumber": 7,
+      "text": "يَمْنـَعون الماعـون : ما يَتعاوَرُه النّاس بينهم بُخْلاً",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "qf-20-saheeh-international",
+    "name": "Saheeh International",
+    "author": "Saheeh International",
+    "language": "en",
+    "direction": "ltr",
+    "resourceId": 20,
+    "source": "Quran Foundation",
+    "importedAt": "2026-05-29T08:14:41.455Z",
+    "notes": [
+      "Imported with Quran Foundation Content API using server-side app credentials.",
+      "Do not expose Quran Foundation credentials to client code."
+    ]
+  }
+]

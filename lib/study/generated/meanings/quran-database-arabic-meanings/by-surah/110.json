@@ -1,0 +1,43 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 110,
+  "entries": [
+    {
+      "verseKey": "110:1",
+      "surahNumber": 110,
+      "ayahNumber": 1,
+      "text": "جاء نصر الله : عَوْنـُهُ لك على الأعداء\\nالفتح : فتح مكة في السنة الثامنة الهجرية",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "110:2",
+      "surahNumber": 110,
+      "ayahNumber": 2,
+      "text": "أفواجا : جَماعاتٍ جماعات كثيرة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "110:3",
+      "surahNumber": 110,
+      "ayahNumber": 3,
+      "text": "فسبّح بحمد ربّك : فـنـَـزّهْهُ تعالى ، حامِدًا له\\nكان توّابا : كثير القبول لتوبة عباده",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

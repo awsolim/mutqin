@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { type MushafLine, type MushafPage, type MushafWord } from "@/lib/quran/types";
+import { type SimilarVersePageLink } from "@/lib/similar-verses/types";
 import { getQcfV2FontName } from "@/lib/quran/font";
 import { getWordSelection } from "@/lib/quran/page-utils";
 import { cn } from "@/lib/utils";
@@ -13,21 +14,28 @@ type MushafPageReaderProps = {
   rangeVerseKeys: string[];
   isRangeMode: boolean;
   onSelectAyah: (selection: ReturnType<typeof getWordSelection>) => void;
+  onOpenSimilarLinks?: (verseKey: string, links: SimilarVersePageLink[]) => void;
   onToggleChrome: () => void;
+  bookmarkedVerseKeys?: string[];
+  similarVerseLinksByVerseKey?: Record<string, SimilarVersePageLink[]>;
 };
 
 export function MushafPageReader({
   activeVerseKey,
   isRangeMode,
   onSelectAyah,
+  onOpenSimilarLinks,
   onToggleChrome,
+  bookmarkedVerseKeys = [],
   page,
   rangeVerseKeys,
   selectedVerseKey,
+  similarVerseLinksByVerseKey = {},
 }: MushafPageReaderProps) {
   const ayahLineCount = page.lines.filter((line) => line.lineType === "ayah").length;
   const isSparsePage = ayahLineCount <= 8;
   const rangeVerseKeySet = new Set(rangeVerseKeys);
+  const bookmarkedVerseKeySet = new Set(bookmarkedVerseKeys);
 
   return (
     <article
@@ -78,10 +86,13 @@ export function MushafPageReader({
               key={`${line.lineType}-${line.lineNumber}`}
               line={line}
               onSelectAyah={onSelectAyah}
+              onOpenSimilarLinks={onOpenSimilarLinks}
               onToggleChrome={onToggleChrome}
               page={page}
               rangeVerseKeySet={rangeVerseKeySet}
               selectedVerseKey={selectedVerseKey}
+              bookmarkedVerseKeySet={bookmarkedVerseKeySet}
+              similarVerseLinksByVerseKey={similarVerseLinksByVerseKey}
             />
           );
         })}
@@ -97,10 +108,13 @@ type MushafAyahLineProps = {
   isSparsePage: boolean;
   line: MushafLine;
   onSelectAyah: (selection: ReturnType<typeof getWordSelection>) => void;
+  onOpenSimilarLinks?: (verseKey: string, links: SimilarVersePageLink[]) => void;
   onToggleChrome: () => void;
   page: MushafPage;
   rangeVerseKeySet: Set<string>;
   selectedVerseKey: string | null;
+  bookmarkedVerseKeySet: Set<string>;
+  similarVerseLinksByVerseKey: Record<string, SimilarVersePageLink[]>;
 };
 
 function MushafAyahLine({
@@ -109,10 +123,13 @@ function MushafAyahLine({
   isSparsePage,
   line,
   onSelectAyah,
+  onOpenSimilarLinks,
   onToggleChrome,
   page,
   rangeVerseKeySet,
   selectedVerseKey,
+  bookmarkedVerseKeySet,
+  similarVerseLinksByVerseKey,
 }: MushafAyahLineProps) {
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const didLongPress = useRef(false);
@@ -175,6 +192,7 @@ function MushafAyahLine({
           isActive={activeVerseKey === word.verseKey}
           key={word.id}
           onSelect={() => onSelectAyah(getWordSelection(word, page))}
+          onOpenSimilarLinks={onOpenSimilarLinks}
           onTap={() => {
             if (isRangeMode) {
               onSelectAyah(getWordSelection(word, page));
@@ -185,6 +203,8 @@ function MushafAyahLine({
           }}
           pageNumber={page.pageNumber}
           isInRange={rangeVerseKeySet.has(word.verseKey)}
+          isBookmarked={bookmarkedVerseKeySet.has(word.verseKey)}
+          similarLinks={similarVerseLinksByVerseKey[word.verseKey] ?? []}
           word={word}
         />
       ))}
@@ -235,26 +255,34 @@ function MushafDisplayLine({ isSparsePage, label, type }: MushafDisplayLineProps
 type MushafWordSpanProps = {
   isActive: boolean;
   isInRange: boolean;
+  isBookmarked: boolean;
   isSelected: boolean;
   onSelect: () => void;
+  onOpenSimilarLinks?: (verseKey: string, links: SimilarVersePageLink[]) => void;
   onTap: () => void;
   pageNumber: number;
+  similarLinks: SimilarVersePageLink[];
   word: MushafWord;
 };
 
 function MushafWordSpan({
   isActive,
   isInRange,
+  isBookmarked,
   isSelected,
   onSelect,
+  onOpenSimilarLinks,
   onTap,
   pageNumber,
+  similarLinks,
   word,
 }: MushafWordSpanProps) {
   const useGlyph = Boolean(word.codeV2);
   const text = word.codeV2 ?? word.textQpcHafs ?? word.text;
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const didLongPress = useRef(false);
+  const hasSimilarLinks = word.charTypeName === "end" && similarLinks.length > 0;
+  const hasBookmarkMarker = word.charTypeName === "end" && isBookmarked;
 
   function clearLongPress() {
     if (longPressTimer.current) {
@@ -268,6 +296,11 @@ function MushafWordSpan({
       className={cn(
         "relative z-10 cursor-pointer select-none rounded px-[0.03em] transition",
         useGlyph ? "mx-0" : "mx-[0.08em]",
+        hasSimilarLinks &&
+          "text-[#9d4fb0] drop-shadow-[0_0_0.35rem_rgba(160,74,166,0.45)]",
+        !hasSimilarLinks &&
+          hasBookmarkMarker &&
+          "text-[#a06c1e] drop-shadow-[0_0_0.28rem_rgba(160,108,30,0.32)]",
         isInRange && "bg-sage/10 text-palm",
         isActive && "bg-[#f3e7bd]/45 text-[#8a6514]",
         isSelected && "bg-[#dbeadf]/50 text-palm",
@@ -289,6 +322,10 @@ function MushafWordSpan({
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
+          if (hasSimilarLinks) {
+            onOpenSimilarLinks?.(word.verseKey, similarLinks);
+            return;
+          }
           onSelect();
         }
       }}
@@ -307,6 +344,14 @@ function MushafWordSpan({
         clearLongPress();
 
         if (!didLongPress.current) {
+          if (hasSimilarLinks) {
+            onOpenSimilarLinks?.(word.verseKey, similarLinks);
+            window.setTimeout(() => {
+              didLongPress.current = false;
+            }, 0);
+            return;
+          }
+
           onTap();
         }
 
@@ -324,6 +369,7 @@ function MushafWordSpan({
       tabIndex={0}
     >
       {text}
+      {hasSimilarLinks ? <span className="sr-only">Open similar verses records</span> : null}
     </span>
   );
 }

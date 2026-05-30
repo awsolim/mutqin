@@ -1,0 +1,57 @@
+{
+  "sourceId": "qf-20-saheeh-international",
+  "sourceName": "Saheeh International",
+  "language": "en",
+  "direction": "ltr",
+  "surahNumber": 109,
+  "entries": [
+    {
+      "verseKey": "109:1",
+      "surahNumber": 109,
+      "ayahNumber": 1,
+      "text": "Say, \"O disbelievers,",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "109:2",
+      "surahNumber": 109,
+      "ayahNumber": 2,
+      "text": "I do not worship what you worship.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "109:3",
+      "surahNumber": 109,
+      "ayahNumber": 3,
+      "text": "Nor are you worshippers of what I worship.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "109:4",
+      "surahNumber": 109,
+      "ayahNumber": 4,
+      "text": "Nor will I be a worshipper of what you worship.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "109:5",
+      "surahNumber": 109,
+      "ayahNumber": 5,
+      "text": "Nor will you be worshippers of what I worship.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "109:6",
+      "surahNumber": 109,
+      "ayahNumber": 6,
+      "text": "For you is your religion, and for me is my religion.\"",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "kind": "tafsir",
+  "source": "Quran-Database - Tafsir Al-Muyassar",
+  "sourceId": "quran-database-muyassar",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 105,
+  "entries": [
+    {
+      "verseKey": "105:1",
+      "surahNumber": 105,
+      "ayahNumber": 1,
+      "text": "ألم تعلم -أيها الرسول- كيف فعل ربك بأصحاب الفيل: أبرهة الحبشي وجيشه الذين أرادوا تدمير الكعبة المباركة؟",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "105:2",
+      "surahNumber": 105,
+      "ayahNumber": 2,
+      "text": "ألم يجعل ما دبَّروه من شر في إبطال وتضييع؟",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "105:3",
+      "surahNumber": 105,
+      "ayahNumber": 3,
+      "text": "وبعث عليهم طيرًا في جماعات متتابعة، تقذفهم بحجارة من طين متحجِّر.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "105:4",
+      "surahNumber": 105,
+      "ayahNumber": 4,
+      "text": "وبعث عليهم طيرًا في جماعات متتابعة، تقذفهم بحجارة من طين متحجِّر.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "105:5",
+      "surahNumber": 105,
+      "ayahNumber": 5,
+      "text": "فجعلهم به محطمين كأوراق الزرع اليابسة التي أكلتها البهائم ثم رمت بها.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

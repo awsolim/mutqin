@@ -1,0 +1,54 @@
+{
+  "kind": "tafsir",
+  "source": "Quran-Database - Tafsir Al-Muyassar",
+  "sourceId": "quran-database-muyassar",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 112,
+  "entries": [
+    {
+      "verseKey": "112:1",
+      "surahNumber": 112,
+      "ayahNumber": 1,
+      "text": "قل -أيها الرسول-: هو الله المتفرد بالألوهية والربوبية والأسماء والصفات، لا يشاركه أحد فيها.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "112:2",
+      "surahNumber": 112,
+      "ayahNumber": 2,
+      "text": "الله وحده المقصود في قضاء الحوائج والرغائب.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "112:3",
+      "surahNumber": 112,
+      "ayahNumber": 3,
+      "text": "ليس له ولد ولا والد ولا صاحبة.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "112:4",
+      "surahNumber": 112,
+      "ayahNumber": 4,
+      "text": "ولم يكن له مماثلا ولا مشابهًا أحد من خلقه، لا في أسمائه ولا في صفاته، ولا في أفعاله، تبارك وتعالى وتقدَّس.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

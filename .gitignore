@@ -29,3 +29,14 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local source databases
+data-sources/quran-database/*.db
+data-sources/quran-database/*.sqlite
+data-sources/quran-database/*.sqlite3
+data-sources/furqan/**
+!data-sources/furqan/
+!data-sources/furqan/README.md
+
+# local script build output
+.tmp

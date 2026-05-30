@@ -1,0 +1,43 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 108,
+  "entries": [
+    {
+      "verseKey": "108:1",
+      "surahNumber": 108,
+      "ayahNumber": 1,
+      "text": "أعطيناك الكوثر : نهرًا في الجَنّة أو الخيْر الكَثير",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "108:2",
+      "surahNumber": 108,
+      "ayahNumber": 2,
+      "text": "انـْـحَرْ : الأضاحي نـُـسُـكًـا شُـكْرًا لله تعالى",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "108:3",
+      "surahNumber": 108,
+      "ayahNumber": 3,
+      "text": "شـَأنِـئـَـكَ : مُـبْغِـضك (أحد مُشركي قريش)\\nهو الأبْـتـر : المقطوع الأثر. أو الخير",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

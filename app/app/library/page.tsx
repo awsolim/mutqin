@@ -1,6 +1,4 @@
-import { BookOpenText } from "lucide-react";
-import Link from "next/link";
-import { FeaturePlaceholder } from "@/components/feature-placeholder";
+import { LibraryHome } from "@/components/library/library-home";
 import { PageHeader } from "@/components/page-header";
 
 export default function LibraryPage() {
@@ -9,24 +7,9 @@ export default function LibraryPage() {
       <PageHeader
         eyebrow="Personal archive"
         title="Library"
-        description="A future home for Qur'an notes, duas, hadith, companions, khutbahs, seerah, and other saved knowledge."
+        description="A refined home for ayah insights, bookmarks, collections, and Islamic study notes."
       />
-      <FeaturePlaceholder
-        description="Library folders and storage will come in a later phase."
-        icon={BookOpenText}
-        items={[
-          "Qur'an notes",
-          "Duas and hadith",
-          "Companions, seerah, and khutbah drafts",
-        ]}
-        title="Library placeholder"
-      />
-      <Link
-        className="block rounded-2xl border border-line bg-paper p-4 text-sm font-bold text-palm shadow-soft transition hover:border-palm/30 hover:bg-white"
-        href="/app/notes"
-      >
-        Open Qur&apos;an notes
-      </Link>
+      <LibraryHome />
     </div>
   );
 }

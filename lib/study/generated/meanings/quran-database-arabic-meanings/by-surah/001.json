@@ -1,0 +1,54 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 1,
+  "entries": [
+    {
+      "verseKey": "1:2",
+      "surahNumber": 1,
+      "ayahNumber": 2,
+      "text": "ربّ العالمين : مربّيهم ومالكهم ومدبر أمورهم",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "1:4",
+      "surahNumber": 1,
+      "ayahNumber": 4,
+      "text": "يوم الدّين : يوم الجزاء",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "1:6",
+      "surahNumber": 1,
+      "ayahNumber": 6,
+      "text": "اهدنا الصّراط المستقيم : وفّقنا للثّبات على الطريق الواضح الذي لا اعوجاج فيه وهو الإسلام",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "1:7",
+      "surahNumber": 1,
+      "ayahNumber": 7,
+      "text": "المغضوب عليهم : اليهود\\nالضّالين : النصارى وكذا أشباههم في الضلال",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

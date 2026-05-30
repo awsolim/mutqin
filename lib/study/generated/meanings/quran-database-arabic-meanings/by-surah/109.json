@@ -1,0 +1,21 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 109,
+  "entries": [
+    {
+      "verseKey": "109:6",
+      "surahNumber": 109,
+      "ayahNumber": 6,
+      "text": "لَكُمْ دينكمْ : شِرْككم و كفركم أو جَزاؤهُ\\nلِيَ دين : إخلاصي و توحيدي أو جَـزَاؤُهُ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

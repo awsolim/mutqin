@@ -1,0 +1,21 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 106,
+  "entries": [
+    {
+      "verseKey": "106:1",
+      "surahNumber": 106,
+      "ayahNumber": 1,
+      "text": "لإيلاف قريش . . : اعْـجَـبُـوا لإيلافهم الرّحلتين و تـَـرْكِهِمْ عِبادة ربّ البَيْت",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

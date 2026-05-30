@@ -1,0 +1,76 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 61,
+  "entries": [
+    {
+      "verseKey": "61:1",
+      "surahNumber": 61,
+      "ayahNumber": 1,
+      "text": "سَبّح لله . . : نـَـزّهَه و مَجّده تعالى و دلّ عليه",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "61:3",
+      "surahNumber": 61,
+      "ayahNumber": 3,
+      "text": "كَبُرَ مَقـتا : عَظم بغضا بالغ الغاية",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "61:4",
+      "surahNumber": 61,
+      "ayahNumber": 4,
+      "text": "صَفّا : صافّين أنفسهم أو مصفوفين\\nبُنيانٌ مَرْصوص : متلاصق مُحكم لا فرجة فيه",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "61:5",
+      "surahNumber": 61,
+      "ayahNumber": 5,
+      "text": "زَاغوا : مالوا باختيارهم عن الحقّ\\nأزاغ الله قلوبهم : حَرَمَهم التوفيق لاتـّباع الحقّ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "61:8",
+      "surahNumber": 61,
+      "ayahNumber": 8,
+      "text": "نور الله : الحقّ الذي جاء به الرسول صلى الله عليه و سلم\\nو أخرى : و لكم من النّعم نعمة أخرى",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "61:14",
+      "surahNumber": 61,
+      "ayahNumber": 14,
+      "text": "للحواريين : أصْـفِـياء عيسى و خواصّه\\nفأيّدنا : قوّينا المحقّين بالإيمان\\nظاهرين : غالبين بالحجج و البيانات",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

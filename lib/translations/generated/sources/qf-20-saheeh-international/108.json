@@ -1,0 +1,33 @@
+{
+  "sourceId": "qf-20-saheeh-international",
+  "sourceName": "Saheeh International",
+  "language": "en",
+  "direction": "ltr",
+  "surahNumber": 108,
+  "entries": [
+    {
+      "verseKey": "108:1",
+      "surahNumber": 108,
+      "ayahNumber": 1,
+      "text": "Indeed, We have granted you, [O Muḥammad], al-Kawthar.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "108:2",
+      "surahNumber": 108,
+      "ayahNumber": 2,
+      "text": "So pray to your Lord and offer sacrifice [to Him alone].",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "108:3",
+      "surahNumber": 108,
+      "ayahNumber": 3,
+      "text": "Indeed, your enemy is the one cut off.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    }
+  ]
+}

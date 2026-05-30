@@ -1,0 +1,65 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 105,
+  "entries": [
+    {
+      "verseKey": "105:1",
+      "surahNumber": 105,
+      "ayahNumber": 1,
+      "text": "بأصحاب الفـيل : وَقـَـعَت القصّة أوّل عام مولده صلى الله عليه و سلم",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "105:2",
+      "surahNumber": 105,
+      "ayahNumber": 2,
+      "text": "يَجْعَلْ كَيْدَهمْ : سَعْـيَهمْ لتخْريب الكَعْـبَة\\nتـَـضْـليل : تـَـضييع و إبْطال و خَسار",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "105:3",
+      "surahNumber": 105,
+      "ayahNumber": 3,
+      "text": "طَيْرًا أبابيل : جماعاتٍ مُتفرّقة مُتتابعة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "105:4",
+      "surahNumber": 105,
+      "ayahNumber": 4,
+      "text": "سِجّـيـل : طين مُـتحجّر مُحْرَق (آجُرٍّ )",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "105:5",
+      "surahNumber": 105,
+      "ayahNumber": 5,
+      "text": "كَعَصْفٍ مأكول : كَـتِـبْـنِ أكَلـتـْه الدّوابّ فراثـَتـْـه",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

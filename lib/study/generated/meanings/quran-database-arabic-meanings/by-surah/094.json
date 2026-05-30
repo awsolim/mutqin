@@ -1,0 +1,65 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 94,
+  "entries": [
+    {
+      "verseKey": "94:1",
+      "surahNumber": 94,
+      "ayahNumber": 1,
+      "text": "ألم نشرحْ : ألم نـُـفـسِـحْ بالحكمة و النبوّة – قد أفـْـسَحْـنا",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "94:2",
+      "surahNumber": 94,
+      "ayahNumber": 2,
+      "text": "وَضَعْنا : خَـفـّـفـنا عنك و سَـهّـلنا عـليك\\nِوزرك : \\\"حِمْـلك \\\"\\\"أعباءَ النبوّة و الرّسالة\\\"\\\"\\\"",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "94:3",
+      "surahNumber": 94,
+      "ayahNumber": 3,
+      "text": "الذي أنقض ظهرك : \\\"أثقـله حتـّـى سُـمِعَ له نقـيض \\\"\\\"صَوْتٌ\\\"\\\"\\\"",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "94:7",
+      "surahNumber": 94,
+      "ayahNumber": 7,
+      "text": "فإذا فرغت : مِـنْ عِـبَـادة أدّيتها\\nفانصبْ : فاجْتهِدْ و أتـْـبعْها بعِبادة أخرى",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "94:8",
+      "surahNumber": 94,
+      "ayahNumber": 8,
+      "text": "فارْغَبْ : فاجْعَـلْ رَغْـبَـتـَك في جَميع شؤونك",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

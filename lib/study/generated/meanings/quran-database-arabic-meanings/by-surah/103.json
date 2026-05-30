@@ -1,0 +1,43 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 103,
+  "entries": [
+    {
+      "verseKey": "103:1",
+      "surahNumber": 103,
+      "ayahNumber": 1,
+      "text": "و العَصْر : (قسمٌ) بالدّهر أو عصر النّبوّة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "103:2",
+      "surahNumber": 103,
+      "ayahNumber": 2,
+      "text": "إنّ الإنسان : جنـْـس الإنسان (جَوَاب القسم)\\nلـَـفِي خُسْر : خُسْران و نُـقصان و هَلـَـكة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "103:3",
+      "surahNumber": 103,
+      "ayahNumber": 3,
+      "text": "تـَـوَاصَوْا بالحَقّ : بالخَـيْر كلـّه اعتِقادًا و عَمَلاً\\nتـَـواصَوْا بالصّبر : عَن المَعاصي و على الطّـاعات و البلاء",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

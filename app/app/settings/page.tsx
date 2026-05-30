@@ -1,6 +1,7 @@
 import { LogOut, Settings } from "lucide-react";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/page-header";
+import { HighlightLayerSettings } from "@/components/settings/highlight-layer-settings";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth";
@@ -43,6 +44,7 @@ export default async function SettingsPage() {
           </Button>
         </form>
       </Card>
+      <HighlightLayerSettings />
     </div>
   );
 }

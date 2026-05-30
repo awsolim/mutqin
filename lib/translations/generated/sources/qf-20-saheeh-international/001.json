@@ -1,0 +1,65 @@
+{
+  "sourceId": "qf-20-saheeh-international",
+  "sourceName": "Saheeh International",
+  "language": "en",
+  "direction": "ltr",
+  "surahNumber": 1,
+  "entries": [
+    {
+      "verseKey": "1:1",
+      "surahNumber": 1,
+      "ayahNumber": 1,
+      "text": "In the name of Allāh, the Entirely Merciful, the Especially Merciful.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "1:2",
+      "surahNumber": 1,
+      "ayahNumber": 2,
+      "text": "[All] praise is [due] to Allāh, Lord of the worlds -",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "1:3",
+      "surahNumber": 1,
+      "ayahNumber": 3,
+      "text": "The Entirely Merciful, the Especially Merciful,",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "1:4",
+      "surahNumber": 1,
+      "ayahNumber": 4,
+      "text": "Sovereign of the Day of Recompense.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "1:5",
+      "surahNumber": 1,
+      "ayahNumber": 5,
+      "text": "It is You we worship and You we ask for help.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "1:6",
+      "surahNumber": 1,
+      "ayahNumber": 6,
+      "text": "Guide us to the straight path -",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "1:7",
+      "surahNumber": 1,
+      "ayahNumber": 7,
+      "text": "The path of those upon whom You have bestowed favor, not of those who have earned [Your] anger or of those who are astray.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 104,
+  "entries": [
+    {
+      "verseKey": "104:1",
+      "surahNumber": 104,
+      "ayahNumber": 1,
+      "text": "وَيْل : عذاب أو هَلاك أوْ وَادٍ في جَهنّم\\nهُمَزةٍ لُـمَزةٍ : طَعّـان غَـيّـاب عَـيّـاب للناس",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "104:2",
+      "surahNumber": 104,
+      "ayahNumber": 2,
+      "text": "عَدّده : أحصاه . أو أعدّه للنّوائب",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "104:3",
+      "surahNumber": 104,
+      "ayahNumber": 3,
+      "text": "أخلده : يُخـلـّـدُهُ في الدنيا",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "104:4",
+      "surahNumber": 104,
+      "ayahNumber": 4,
+      "text": "لـَـيُنـْـبَذنّ : لـَـيُطرَحَنّ\\nالحُطمة : جَهنّم . لِحَطْمِها كلّ ما يُـلْـقى فيها",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "104:7",
+      "surahNumber": 104,
+      "ayahNumber": 7,
+      "text": "تطّـلع على الأفـئدة : تـَـغْشـَى حَرَارتها أوْساط القلوب",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "104:8",
+      "surahNumber": 104,
+      "ayahNumber": 8,
+      "text": "مؤْصَدَة : مُـطبَـقـَـة مُـغْـلـقـَة ٌ أبْوابها",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "104:9",
+      "surahNumber": 104,
+      "ayahNumber": 9,
+      "text": "في عَمَدٍ مُمَدّدة : بأعمِدةٍ ممدودةٍ على أبْوابها",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

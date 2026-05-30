@@ -1,0 +1,98 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 62,
+  "entries": [
+    {
+      "verseKey": "62:1",
+      "surahNumber": 62,
+      "ayahNumber": 1,
+      "text": "يسبّح لله : يُنـزّهه و يُمَجّده تعالى و يدلّ عليه\\nالملك : مالك الأشياء كلّها\\nالقدوس : البليغ في النّـزاهة عن النّـقائص\\nالعزيز : القادر الغالب القاهر",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "62:2",
+      "surahNumber": 62,
+      "ayahNumber": 2,
+      "text": "الأميين : العرب المعاصرين له صلى الله عليه و سلم\\nيزكّيهم : يُطهّرُهم من أدناس الجاهليّة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "62:3",
+      "surahNumber": 62,
+      "ayahNumber": 3,
+      "text": "أخرين منهم : من العَرَب\\nلمّـا يَلحقوا بهم : لمْ يلحقوا بهمْ بَعد و سيلحقون",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "62:5",
+      "surahNumber": 62,
+      "ayahNumber": 5,
+      "text": "حُـمّـلوا التوراة : كُـلّـفوا العمل بما فيها (اليهود)\\nيَحْمِل أسفارًا : كُتـبا عظاما و لا ينتفع بها",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "62:6",
+      "surahNumber": 62,
+      "ayahNumber": 6,
+      "text": "هَادوا : تديّـنوا باليهودية",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "62:9",
+      "surahNumber": 62,
+      "ayahNumber": 9,
+      "text": "ذروا البيْع : اتركوه و تفرّغوا لذكر الله",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "62:10",
+      "surahNumber": 62,
+      "ayahNumber": 10,
+      "text": "فانتشروا : تفـرّ قوا للتـّـصرف في حَوَائجكم",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "62:11",
+      "surahNumber": 62,
+      "ayahNumber": 11,
+      "text": "انفضّوا إليها : تفرقوا عنك قاصدين إليها",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

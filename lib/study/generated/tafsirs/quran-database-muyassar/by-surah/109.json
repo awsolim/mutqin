@@ -1,0 +1,76 @@
+{
+  "kind": "tafsir",
+  "source": "Quran-Database - Tafsir Al-Muyassar",
+  "sourceId": "quran-database-muyassar",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 109,
+  "entries": [
+    {
+      "verseKey": "109:1",
+      "surahNumber": 109,
+      "ayahNumber": 1,
+      "text": "قل -أيها الرسول- للذين كفروا بالله ورسوله: يا أيها الكافرون بالله.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:2",
+      "surahNumber": 109,
+      "ayahNumber": 2,
+      "text": "لا أعبد ما تعبدون من الأصنام والآلهة الزائفة.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:3",
+      "surahNumber": 109,
+      "ayahNumber": 3,
+      "text": "ولا أنتم عابدون ما أعبد من إله واحد، هو الله رب العالمين المستحق وحده للعبادة.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:4",
+      "surahNumber": 109,
+      "ayahNumber": 4,
+      "text": "ولا أنا عابد ما عبدتم من الأصنام والآلهة الباطلة.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:5",
+      "surahNumber": 109,
+      "ayahNumber": 5,
+      "text": "ولا أنتم عابدون مستقبلا ما أعبد. وهذه الآية نزلت في أشخاص بأعيانهم من المشركين، قد علم الله أنهم لا يؤمنون أبدًا.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "109:6",
+      "surahNumber": 109,
+      "ayahNumber": 6,
+      "text": "لكم دينكم الذي أصررتم على اتباعه، ولي ديني الذي لا أبغي غيره.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

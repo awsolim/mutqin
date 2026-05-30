@@ -1,0 +1,76 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 99,
+  "entries": [
+    {
+      "verseKey": "99:1",
+      "surahNumber": 99,
+      "ayahNumber": 1,
+      "text": "زلزلت الأرض : حـُرّكت تحْريكا عَـنيفا مُتكرّرا عند النفخة الأولى",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "99:2",
+      "surahNumber": 99,
+      "ayahNumber": 2,
+      "text": "أثقالها : كُنـوزها و مَوْتاها في النّـفخة الثانية",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "99:4",
+      "surahNumber": 99,
+      "ayahNumber": 4,
+      "text": "تـُحَـدّث أخبارها : تدُلّ بحالِها على ما عُملَ عليها",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "99:5",
+      "surahNumber": 99,
+      "ayahNumber": 5,
+      "text": "أوْحى لها : جَعَل في حالِها دِلالة على ذلك",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "99:6",
+      "surahNumber": 99,
+      "ayahNumber": 6,
+      "text": "يصدر الناس : يَخْـرجونَ منْ قُـبُورهمْ إلى المَحْـشَر\\nأشتاتا : مُـتـفرّقين على حَسَب أحْـوالِهمْ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "99:7",
+      "surahNumber": 99,
+      "ayahNumber": 7,
+      "text": "مِثقال ذرّة : وَزْنَ أصْـغر نملةٍ أو هَـباءَةٍ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

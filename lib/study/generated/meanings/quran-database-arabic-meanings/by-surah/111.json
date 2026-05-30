@@ -1,0 +1,54 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 111,
+  "entries": [
+    {
+      "verseKey": "111:1",
+      "surahNumber": 111,
+      "ayahNumber": 1,
+      "text": "تـَـبّتْ : هَلكَتْ أو خَسِرَتْ أو خابَتْ\\nو تبَّ : و قَدْ هَـلـَكَ أو خَسِرَ أوْخـَابَ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "111:2",
+      "surahNumber": 111,
+      "ayahNumber": 2,
+      "text": "ما أغنى عنه : ما دَفَـعَ التـّـبَابَ عنه\\nما كَسَب : الذي كَسَبَـهُ بـِـنـَـفـْسِهِ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "111:3",
+      "surahNumber": 111,
+      "ayahNumber": 3,
+      "text": "سَيَصلى نارًا : سَـيَـدْخلـها أوْ يُقاسي حَرّها",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "111:5",
+      "surahNumber": 111,
+      "ayahNumber": 5,
+      "text": "في جيدها : في عُـنـُـقِـها\\nمِنْ مَسَدٍ : مـمّـا يُـفـْـتـَـلُ قـَويّـا مِنَ الحِبَال",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

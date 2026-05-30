@@ -1,0 +1,76 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 98,
+  "entries": [
+    {
+      "verseKey": "98:1",
+      "surahNumber": 98,
+      "ayahNumber": 1,
+      "text": "مـنفكّين : مُـزايلين ما همْ عليه من الدّين\\nتأتيَهُم البيّـنة : الحُجّة الواضحة و هي الرّسول",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "98:2",
+      "surahNumber": 98,
+      "ayahNumber": 2,
+      "text": "صُحُـفـًـا : مكتوبا فيها القرآن العظيم\\nمطهّرة : مُنزّهة عن الباطل و الشّبهات",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "98:3",
+      "surahNumber": 98,
+      "ayahNumber": 3,
+      "text": "فيها كتب : آيات و أحكام مكتوبة\\nقيّمة : مُسْـتقـيمة حَقة عادلة مُحْكَمَة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "98:4",
+      "surahNumber": 98,
+      "ayahNumber": 4,
+      "text": "ما تفرّق : في الرّسول بين مُؤْمِن و جَاحد\\nجاءتهم البينة : بالهُدى و كان الحقّ أو لا يتفـرقـوا",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "98:5",
+      "surahNumber": 98,
+      "ayahNumber": 5,
+      "text": "الدين : العِبادة\\nحُنفاء : مائلين عن الباطل إلى الإسلام\\nدين القيمة : المِلـّـة المستقيمة أو الكتب القيّمة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "98:6",
+      "surahNumber": 98,
+      "ayahNumber": 6,
+      "text": "البَريّة : الخلائق أو البَشَر",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

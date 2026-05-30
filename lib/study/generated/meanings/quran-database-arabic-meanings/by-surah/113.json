@@ -1,0 +1,43 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 113,
+  "entries": [
+    {
+      "verseKey": "113:1",
+      "surahNumber": 113,
+      "ayahNumber": 1,
+      "text": "أعوذ : أعْتـَصِمُ و أسْتجير\\nبربّ الفلق : بربّ الصّـبْح . أو الخَـلـْـق كلـّهمْ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "113:3",
+      "surahNumber": 113,
+      "ayahNumber": 3,
+      "text": "شرّ غاسق : شرّ الليل\\nوَقب : دَخَل ظلامه في كلّ شيء",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "113:4",
+      "surahNumber": 113,
+      "ayahNumber": 4,
+      "text": "النفاثات في العقد : النـِّساء السَّـواحِر يَـنـْـفُـثـْنَ في عُـقـَـد الخيْط حين يَسْحَرْنَ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

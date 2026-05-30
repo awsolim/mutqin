@@ -1,0 +1,41 @@
+{
+  "sourceId": "qf-20-saheeh-international",
+  "sourceName": "Saheeh International",
+  "language": "en",
+  "direction": "ltr",
+  "surahNumber": 112,
+  "entries": [
+    {
+      "verseKey": "112:1",
+      "surahNumber": 112,
+      "ayahNumber": 1,
+      "text": "Say, \"He is Allāh, [who is] One,",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "112:2",
+      "surahNumber": 112,
+      "ayahNumber": 2,
+      "text": "Allāh, the Eternal Refuge.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "112:3",
+      "surahNumber": 112,
+      "ayahNumber": 3,
+      "text": "He neither begets nor is born,",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "112:4",
+      "surahNumber": 112,
+      "ayahNumber": 4,
+      "text": "Nor is there to Him any equivalent.\"",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    }
+  ]
+}

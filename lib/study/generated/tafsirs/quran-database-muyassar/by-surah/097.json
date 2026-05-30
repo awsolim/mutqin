@@ -1,0 +1,65 @@
+{
+  "kind": "tafsir",
+  "source": "Quran-Database - Tafsir Al-Muyassar",
+  "sourceId": "quran-database-muyassar",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 97,
+  "entries": [
+    {
+      "verseKey": "97:1",
+      "surahNumber": 97,
+      "ayahNumber": 1,
+      "text": "إنا أنزلنا القرآن في ليلة الشرف والفضل، وهي إحدى ليالي شهر رمضان.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "97:2",
+      "surahNumber": 97,
+      "ayahNumber": 2,
+      "text": "وما أدراك -أيها النبي- ما ليلة القدر والشرف؟",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "97:3",
+      "surahNumber": 97,
+      "ayahNumber": 3,
+      "text": "ليلة القدر ليلة مباركة، فَضْلُها خير من فضل ألف شهر ليس فيها ليلة قدر.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "97:4",
+      "surahNumber": 97,
+      "ayahNumber": 4,
+      "text": "يكثر نزول الملائكة وجبريل عليه السلام فيها، بإذن ربهم من كل أمر قضاه في تلك السنة.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "97:5",
+      "surahNumber": 97,
+      "ayahNumber": 5,
+      "text": "هي أمن كلها، لا شرَّ فيها إلى مطلع الفجر.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

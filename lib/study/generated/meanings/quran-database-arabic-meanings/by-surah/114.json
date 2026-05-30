@@ -1,0 +1,65 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 114,
+  "entries": [
+    {
+      "verseKey": "114:1",
+      "surahNumber": 114,
+      "ayahNumber": 1,
+      "text": "أعوذ : أعْـتصِـمُ و أستجير\\nبربّ النـّـاس : مُرَبِّـيهِمْ ومُدبّر أحوالهم",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "114:2",
+      "surahNumber": 114,
+      "ayahNumber": 2,
+      "text": "مَـلِـكِ النّـاس : مالِكِهِمْ مِلـْـكًـا تـامّـا",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "114:3",
+      "surahNumber": 114,
+      "ayahNumber": 3,
+      "text": "إله النّاس : مَعْبُودِهِم الحقّ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "114:4",
+      "surahNumber": 114,
+      "ayahNumber": 4,
+      "text": "الوَسواس : المُوَسْوس جـِنـِّـيّـا أو إنـْـسِـيّـا\\nالخنّاس : المُـتـَوَاري المُـخْـتـَفي",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "114:6",
+      "surahNumber": 114,
+      "ayahNumber": 6,
+      "text": "الجـِنّة : الجـِـنّ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

@@ -12,6 +12,15 @@ import {
 const generatedDir = path.join(process.cwd(), "lib", "quran", "generated");
 const ayahCache = new Map<number, Ayah[]>();
 const mushafPageCache = new Map<number, MushafPage | null>();
+const verseSummariesCache = new Map<number, VerseSummary[]>();
+
+export type VerseSummary = {
+  verseKey: string;
+  surahNumber: number;
+  ayahNumber: number;
+  pageNumber: number;
+  text: string;
+};
 
 function readJsonFile<T>(filePath: string, fallback: T): T {
   if (!fs.existsSync(filePath)) {
@@ -46,6 +55,8 @@ export function getAyahsBySurah(surahNumber: number) {
   return ayahs;
 }
 
+export const getAyahsForSurah = getAyahsBySurah;
+
 export function formatAyahRef(surahNumber: number, ayahNumber: number) {
   const surah = getSurahByNumber(surahNumber);
   const name = surah?.transliteratedName ?? `Surah ${surahNumber}`;
@@ -74,6 +85,21 @@ export function getPageIndex() {
     path.join(generatedDir, "page-index.json"),
     [],
   );
+}
+
+function pageCanContainSurah(page: PageIndexEntry, surahNumber: number) {
+  if (page.surahNumbers.includes(surahNumber)) {
+    return true;
+  }
+
+  if (!page.firstVerseKey || !page.lastVerseKey) {
+    return false;
+  }
+
+  const firstVerse = parseVerseKey(page.firstVerseKey);
+  const lastVerse = parseVerseKey(page.lastVerseKey);
+
+  return surahNumber >= firstVerse.surahNumber && surahNumber <= lastVerse.surahNumber;
 }
 
 function parseVerseKey(verseKey: string) {
@@ -105,6 +131,124 @@ export function getPageForVerseKey(verseKey: string) {
         compareVerseKeys(verseKey, page.lastVerseKey) <= 0,
     )?.pageNumber ?? null
   );
+}
+
+export function getVerseTextByKey(verseKey: string) {
+  const pageNumber = getPageForVerseKey(verseKey);
+
+  if (!pageNumber) {
+    return null;
+  }
+
+  const page = getMushafPage(pageNumber);
+
+  if (!page) {
+    return null;
+  }
+
+  return page.lines
+    .flatMap((line) => line.words)
+    .filter((word) => word.verseKey === verseKey && word.charTypeName !== "end")
+    .map((word) => word.textQpcHafs ?? word.text)
+    .join(" ");
+}
+
+export function getWordsForVerseKey(verseKey: string) {
+  const pageNumber = getPageForVerseKey(verseKey);
+
+  if (!pageNumber) {
+    return [];
+  }
+
+  const page = getMushafPage(pageNumber);
+
+  if (!page) {
+    return [];
+  }
+
+  return page.lines
+    .flatMap((line) => line.words)
+    .filter((word) => word.verseKey === verseKey && word.charTypeName !== "end")
+    .map((word) => ({
+      text: word.textQpcHafs ?? word.text,
+      wordPosition: word.wordPosition,
+    }));
+}
+
+export function getVerseSummariesForSurah(surahNumber: number) {
+  if (verseSummariesCache.has(surahNumber)) {
+    return verseSummariesCache.get(surahNumber) ?? [];
+  }
+
+  const versesByKey = new Map<string, VerseSummary>();
+  const relevantPages = getPageIndex()
+    .filter((page) => pageCanContainSurah(page, surahNumber))
+    .map((page) => page.pageNumber);
+
+  for (const pageNumber of relevantPages) {
+    const page = getMushafPage(pageNumber);
+
+    if (!page?.surahNumbers.includes(surahNumber)) {
+      continue;
+    }
+
+    for (const line of page.lines) {
+      for (const word of line.words) {
+        if (word.surahNumber !== surahNumber || word.charTypeName === "end") {
+          continue;
+        }
+
+        const current = versesByKey.get(word.verseKey) ?? {
+          verseKey: word.verseKey,
+          surahNumber: word.surahNumber,
+          ayahNumber: word.ayahNumber,
+          pageNumber: word.pageNumber,
+          text: "",
+        };
+
+        current.text = `${current.text}${current.text ? " " : ""}${word.text}`.trim();
+        current.pageNumber = Math.min(current.pageNumber, word.pageNumber);
+        versesByKey.set(word.verseKey, current);
+      }
+    }
+  }
+
+  const summaries = Array.from(versesByKey.values()).sort(
+    (a, b) => a.ayahNumber - b.ayahNumber,
+  );
+  verseSummariesCache.set(surahNumber, summaries);
+
+  return summaries;
+}
+
+export function getAyahByVerseKey(verseKey: string) {
+  const parsed = parseVerseKey(verseKey);
+
+  if (
+    !Number.isInteger(parsed.surahNumber) ||
+    !Number.isInteger(parsed.ayahNumber) ||
+    parsed.surahNumber < 1 ||
+    parsed.surahNumber > 114 ||
+    parsed.ayahNumber < 1
+  ) {
+    return null;
+  }
+
+  const pageNumber = getPageForVerseKey(verseKey);
+  const text = getVerseTextByKey(verseKey);
+
+  if (!pageNumber || !text) {
+    return null;
+  }
+
+  return {
+    ayahNumber: parsed.ayahNumber,
+    pageNumber,
+    surahNumber: parsed.surahNumber,
+    text,
+    verseKey,
+    words: getWordsForVerseKey(verseKey),
+  };
 }
 
 export function getSurahFirstPages() {

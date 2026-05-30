@@ -1,0 +1,33 @@
+{
+  "sourceId": "qf-20-saheeh-international",
+  "sourceName": "Saheeh International",
+  "language": "en",
+  "direction": "ltr",
+  "surahNumber": 103,
+  "entries": [
+    {
+      "verseKey": "103:1",
+      "surahNumber": 103,
+      "ayahNumber": 1,
+      "text": "By time,",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "103:2",
+      "surahNumber": 103,
+      "ayahNumber": 2,
+      "text": "Indeed, mankind is in loss,",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "103:3",
+      "surahNumber": 103,
+      "ayahNumber": 3,
+      "text": "Except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    }
+  ]
+}

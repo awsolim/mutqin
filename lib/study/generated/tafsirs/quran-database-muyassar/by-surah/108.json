@@ -1,0 +1,43 @@
+{
+  "kind": "tafsir",
+  "source": "Quran-Database - Tafsir Al-Muyassar",
+  "sourceId": "quran-database-muyassar",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 108,
+  "entries": [
+    {
+      "verseKey": "108:1",
+      "surahNumber": 108,
+      "ayahNumber": 1,
+      "text": "إنا أعطيناك -أيها النبي- الخير الكثير في الدنيا والآخرة، ومن ذلك نهر الكوثر في الجنة الذي حافتاه خيام اللؤلؤ المجوَّف، وطينه المسك.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "108:2",
+      "surahNumber": 108,
+      "ayahNumber": 2,
+      "text": "فأخلص لربك صلاتك كلها، واذبح ذبيحتك له وعلى اسمه وحده.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "108:3",
+      "surahNumber": 108,
+      "ayahNumber": 3,
+      "text": "إن مبغضك ومبغض ما جئت به من الهدى والنور، هو المنقطع أثره، المقطوع من كل خير.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 95,
+  "entries": [
+    {
+      "verseKey": "95:1",
+      "surahNumber": 95,
+      "ayahNumber": 1,
+      "text": "و التين و الزيتون : (قسمٌ) بِمنْـبـَتـَيـْهما من الأرض المباركة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "95:2",
+      "surahNumber": 95,
+      "ayahNumber": 2,
+      "text": "و طور سِنين : جَبَلِ المُناجاة ِللكَلِيم عليه السلام",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "95:3",
+      "surahNumber": 95,
+      "ayahNumber": 3,
+      "text": "البلد الأمين : مكة المكرّمة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "95:4",
+      "surahNumber": 95,
+      "ayahNumber": 4,
+      "text": "لقـَـدْ خَلـقـْـنا : (جوابُ القسم) بالأربعةِ قَبلَه\\nأحْسَنِ تقويم : أكْمَلِ تَعدِيلٍ وأحسنِ صُورَةٍ",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "95:5",
+      "surahNumber": 95,
+      "ayahNumber": 5,
+      "text": "ردَدْناه : ردَدْنا الكافرَ أو جـِنسَ الإنسان\\nأسفل سافلين : إلى النار أو الهَرمِ وأرذَلِ العُمُر",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "95:6",
+      "surahNumber": 95,
+      "ayahNumber": 6,
+      "text": "غير ممنون : غيرُ مَقطُوعٍ عنهم",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "95:7",
+      "surahNumber": 95,
+      "ayahNumber": 7,
+      "text": "بالدّين : بالجزاءِ بعد البعث والحساب",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

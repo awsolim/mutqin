@@ -1,0 +1,33 @@
+{
+  "sourceId": "qf-20-saheeh-international",
+  "sourceName": "Saheeh International",
+  "language": "en",
+  "direction": "ltr",
+  "surahNumber": 110,
+  "entries": [
+    {
+      "verseKey": "110:1",
+      "surahNumber": 110,
+      "ayahNumber": 1,
+      "text": "When the victory of Allāh has come and the conquest,",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "110:2",
+      "surahNumber": 110,
+      "ayahNumber": 2,
+      "text": "And you see the people entering into the religion of Allāh in multitudes,",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    },
+    {
+      "verseKey": "110:3",
+      "surahNumber": 110,
+      "ayahNumber": 3,
+      "text": "Then exalt [Him] with praise of your Lord and ask forgiveness of Him. Indeed, He is ever Accepting of Repentance.",
+      "sourceId": "qf-20-saheeh-international",
+      "sourceName": "Saheeh International"
+    }
+  ]
+}

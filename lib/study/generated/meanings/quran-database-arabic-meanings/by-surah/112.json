@@ -1,0 +1,32 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 112,
+  "entries": [
+    {
+      "verseKey": "112:2",
+      "surahNumber": 112,
+      "ayahNumber": 2,
+      "text": "الله الصّمد : هو وَحْدَه المقصود في الحَوائج",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "112:4",
+      "surahNumber": 112,
+      "ayahNumber": 4,
+      "text": "كُـفُوًا : مُـكافِـئـًـا و مُـمَـاثِلاً",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

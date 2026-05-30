@@ -1,0 +1,65 @@
+{
+  "kind": "tafsir",
+  "source": "Quran-Database - Tafsir Al-Muyassar",
+  "sourceId": "quran-database-muyassar",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 113,
+  "entries": [
+    {
+      "verseKey": "113:1",
+      "surahNumber": 113,
+      "ayahNumber": 1,
+      "text": "قل -أيها الرسول-: أعوذ وأعتصم برب الفلق، وهو الصبح.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "113:2",
+      "surahNumber": 113,
+      "ayahNumber": 2,
+      "text": "من شر جميع المخلوقات وأذاها.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "113:3",
+      "surahNumber": 113,
+      "ayahNumber": 3,
+      "text": "ومن شر ليل شديد الظلمة إذا دخل وتغلغل، وما فيه من الشرور والمؤذيات.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "113:4",
+      "surahNumber": 113,
+      "ayahNumber": 4,
+      "text": "ومن شر الساحرات اللاتي ينفخن فيما يعقدن من عُقَد بقصد السحر.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "113:5",
+      "surahNumber": 113,
+      "ayahNumber": 5,
+      "text": "ومن شر حاسد مبغض للناس إذا حسدهم على ما وهبهم الله من نعم، وأراد زوالها عنهم، وإيقاع الأذى بهم.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

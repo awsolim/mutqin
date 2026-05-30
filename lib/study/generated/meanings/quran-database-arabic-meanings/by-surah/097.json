@@ -1,0 +1,43 @@
+{
+  "kind": "meaning",
+  "source": "Quran-Database - Arabic Meanings",
+  "sourceId": "quran-database-arabic-meanings",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 97,
+  "entries": [
+    {
+      "verseKey": "97:1",
+      "surahNumber": 97,
+      "ayahNumber": 1,
+      "text": "أنزلناه : ابْـتـَـدَأنا إنـْـزَالَ القرآنِ العظيم\\nليلة القدْر : لَيلَةِ الشَّرفِ والعَظَمَة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "97:4",
+      "surahNumber": 97,
+      "ayahNumber": 4,
+      "text": "الرّوح : جبريل عليه السلام\\nمنْ كل أمر : بكلّ أمر من الخير و البركة",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "97:5",
+      "surahNumber": 97,
+      "ayahNumber": 5,
+      "text": "سلام هيَ : على أولياء الله و أهل طاعته",
+      "kind": "meaning",
+      "source": "Quran-Database - Arabic Meanings",
+      "sourceId": "quran-database-arabic-meanings",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

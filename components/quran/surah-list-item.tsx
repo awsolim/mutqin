@@ -5,14 +5,16 @@ import { type Surah } from "@/lib/quran/types";
 type SurahListItemProps = {
   surah: Surah;
   firstPage?: number;
+  onOpen?: (surah: Surah, pageNumber?: number) => void;
 };
 
-export function SurahListItem({ firstPage, surah }: SurahListItemProps) {
+export function SurahListItem({ firstPage, onOpen, surah }: SurahListItemProps) {
   return (
     <div className="grid grid-cols-[1fr_auto] items-stretch gap-2 rounded-xl border border-line bg-paper px-3 py-2.5 shadow-soft transition hover:border-palm/30 hover:bg-white">
       <Link
         className="grid min-w-0 grid-cols-[2.25rem_1fr] items-center gap-3 focus:outline-none focus:ring-2 focus:ring-palm/25"
         href={firstPage ? `/app/mushaf/${firstPage}` : `/app/quran/${surah.number}`}
+        onClick={() => onOpen?.(surah, firstPage)}
       >
         <span className="flex size-9 items-center justify-center rounded-lg bg-palm/10 text-sm font-bold text-palm">
           {surah.number}
@@ -43,7 +45,7 @@ export function SurahListItem({ firstPage, surah }: SurahListItemProps) {
       <Link
         aria-label={`Add note for ${surah.transliteratedName}`}
         className="flex w-10 items-center justify-center rounded-xl text-ink/45 transition hover:bg-mist hover:text-palm focus:outline-none focus:ring-2 focus:ring-palm/25"
-        href={`/app/notes?surah=${surah.number}`}
+        href="/app/library/surah-notes"
       >
         <NotebookPen aria-hidden className="size-5" />
       </Link>

@@ -1,0 +1,65 @@
+{
+  "kind": "tafsir",
+  "source": "Quran-Database - Tafsir Al-Muyassar",
+  "sourceId": "quran-database-muyassar",
+  "language": "ar",
+  "direction": "rtl",
+  "surahNumber": 111,
+  "entries": [
+    {
+      "verseKey": "111:1",
+      "surahNumber": 111,
+      "ayahNumber": 1,
+      "text": "خسرت يدا أبي لهب وشقي بإيذائه رسول الله محمدا صلى الله عليه وسلم، وقد تحقق خسران أبي لهب.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "111:2",
+      "surahNumber": 111,
+      "ayahNumber": 2,
+      "text": "ما أغنى عنه ماله وولده، فلن يَرُدَّا عنه شيئًا من عذاب الله إذا نزل به.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "111:3",
+      "surahNumber": 111,
+      "ayahNumber": 3,
+      "text": "سيدخل نارًا متأججة، هو وامرأته التي كانت تحمل الشوك، فتطرحه في طريق النبي صلى الله عليه وسلم؛ لأذيَّته.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "111:4",
+      "surahNumber": 111,
+      "ayahNumber": 4,
+      "text": "سيدخل نارًا متأججة، هو وامرأته التي كانت تحمل الشوك، فتطرحه في طريق النبي صلى الله عليه وسلم؛ لأذيَّته.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    },
+    {
+      "verseKey": "111:5",
+      "surahNumber": 111,
+      "ayahNumber": 5,
+      "text": "في عنقها حبل محكم الفَتْلِ مِن ليف شديد خشن، تُرْفَع به في نار جهنم، ثم تُرْمى إلى أسفلها.",
+      "kind": "tafsir",
+      "source": "Quran-Database - Tafsir Al-Muyassar",
+      "sourceId": "quran-database-muyassar",
+      "language": "ar",
+      "direction": "rtl"
+    }
+  ]
+}

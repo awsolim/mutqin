@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { ArrowLeft, NotebookPen } from "lucide-react";
 import { type MushafPage, type Surah } from "@/lib/quran/types";
 
 type MushafTopBarProps = {
@@ -40,8 +42,18 @@ function getPageSurahName(page: MushafPage | undefined, surahs: Surah[]) {
   );
 }
 
+function getPageSurahNumber(page: MushafPage | undefined) {
+  return page?.surahNumbers[0] ?? 1;
+}
+
 export function MushafTopBar({ isVisible, page, surahs }: MushafTopBarProps) {
+  const router = useRouter();
   const pageNumber = page?.pageNumber ?? 1;
+  const surahNumber = getPageSurahNumber(page);
+
+  useEffect(() => {
+    router.prefetch("/app/quran");
+  }, [router]);
 
   return (
     <header
@@ -54,6 +66,9 @@ export function MushafTopBar({ isVisible, page, surahs }: MushafTopBarProps) {
           aria-label="Back to surah selector"
           className="flex size-10 items-center justify-center rounded-xl border border-line bg-paper text-ink transition hover:bg-mist focus:outline-none focus:ring-2 focus:ring-palm/25"
           href="/app/quran"
+          onFocus={() => router.prefetch("/app/quran")}
+          onPointerEnter={() => router.prefetch("/app/quran")}
+          onTouchStart={() => router.prefetch("/app/quran")}
         >
           <ArrowLeft aria-hidden className="size-5" />
         </Link>
@@ -65,7 +80,14 @@ export function MushafTopBar({ isVisible, page, surahs }: MushafTopBarProps) {
             Juz {getJuzNumber(pageNumber)}
           </p>
         </div>
-        <div className="size-10" aria-hidden />
+        <Link
+          aria-label="Surah Notes"
+          className="flex size-10 items-center justify-center rounded-xl border border-line bg-paper text-ink transition hover:bg-mist focus:outline-none focus:ring-2 focus:ring-palm/25"
+          href={`/app/library/surah-notes?surah=${surahNumber}`}
+          title="Surah Notes"
+        >
+          <NotebookPen aria-hidden className="size-5" />
+        </Link>
       </div>
     </header>
   );

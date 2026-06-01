@@ -7,7 +7,6 @@ export default function LibraryPage() {
       <PageHeader
         eyebrow="Personal archive"
         title="Library"
-        description="A refined home for ayah insights, bookmarks, collections, and Islamic study notes."
       />
       <LibraryHome />
     </div>

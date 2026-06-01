@@ -31,6 +31,7 @@ type AyahActionBarProps = {
   isVisible: boolean;
   canPlayRange: boolean;
   onClose: () => void;
+  onBookmarkOptimistic?: (isBookmarked: boolean) => void;
   onPlayRange: () => void;
   onRestoreViewport: () => void;
   onSetRangeEnd: (verseKey: string) => void;
@@ -66,6 +67,7 @@ export function AyahActionBar({
   canPlayRange,
   isVisible,
   onClose,
+  onBookmarkOptimistic,
   onPlayRange,
   onRestoreViewport,
   onSetRangeEnd,
@@ -98,7 +100,7 @@ export function AyahActionBar({
   const [noteBody, setNoteBody] = useState("");
   const [noteMode, setNoteMode] = useState<"ayah-insight" | "chooser" | "similar">("chooser");
   const [isSavingNote, setIsSavingNote] = useState(false);
-  const [isBookmarkLoading, setIsBookmarkLoading] = useState(false);
+  const [, setIsBookmarkLoading] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [studyEntries, setStudyEntries] = useState<StudyContentEntry[]>([]);
   const [studyEntry, setStudyEntry] = useState<StudyContentEntry | null>(null);
@@ -269,6 +271,7 @@ export function AyahActionBar({
     const nextBookmarkState = !previousBookmarkState;
 
     setIsBookmarked(nextBookmarkState);
+    onBookmarkOptimistic?.(nextBookmarkState);
     setIsBookmarkLoading(true);
     const result = await toggleBookmark({
       surahNumber: ayah.surahNumber,
@@ -285,6 +288,7 @@ export function AyahActionBar({
     }
 
     setIsBookmarked(previousBookmarkState);
+    onBookmarkOptimistic?.(previousBookmarkState);
     setMessage(result.message);
   }
 
@@ -1067,11 +1071,9 @@ export function AyahActionBar({
                 <ActionIcon
                   icon={isBookmarked ? BookMarked : Bookmark}
                   isActive={isBookmarked}
-                  label={isBookmarked ? "Saved" : "Bookmark"}
+                  label={isBookmarked ? "Bookmarked" : "Bookmark"}
                   onClick={() => {
-                    if (!isBookmarkLoading) {
-                      void toggleCurrentBookmark();
-                    }
+                    void toggleCurrentBookmark();
                   }}
                 />
               </div>

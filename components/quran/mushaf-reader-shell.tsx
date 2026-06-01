@@ -611,7 +611,7 @@ export function MushafReaderShell({
         surahs={surahs}
       />
       <section
-        className="mx-auto h-[var(--mutqin-viewport-height,100svh)] min-h-[430px] max-h-[900px] w-full max-w-3xl overflow-hidden overscroll-none bg-paper pb-[5.25rem] pt-[5rem] touch-none"
+        className="mx-auto h-[var(--mutqin-viewport-height,100svh)] min-h-[430px] max-h-[1000px] w-full max-w-none overflow-hidden overscroll-none bg-paper pb-[1.6rem] pt-[3.55rem] touch-none"
         onTouchEnd={(event) => {
           if (touchStartX.current === null) {
             return;
@@ -738,6 +738,26 @@ export function MushafReaderShell({
           setIsRangeMode(false);
           setIsChromeVisible(false);
           restoreViewportPosition();
+        }}
+        onBookmarkOptimistic={(isBookmarked) => {
+          if (!selectedAyah) {
+            return;
+          }
+
+          setBookmarksByPage((currentMarkers) => {
+            const pageMarkers = new Set(currentMarkers[selectedAyah.pageNumber] ?? []);
+
+            if (isBookmarked) {
+              pageMarkers.add(selectedAyah.verseKey);
+            } else {
+              pageMarkers.delete(selectedAyah.verseKey);
+            }
+
+            return {
+              ...currentMarkers,
+              [selectedAyah.pageNumber]: Array.from(pageMarkers),
+            };
+          });
         }}
         onPlayRange={playRange}
         onSetRangeEnd={setRangeEnd}

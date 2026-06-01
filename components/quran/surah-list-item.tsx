@@ -45,7 +45,7 @@ export function SurahListItem({ firstPage, onOpen, surah }: SurahListItemProps) 
       <Link
         aria-label={`Add note for ${surah.transliteratedName}`}
         className="flex w-10 items-center justify-center rounded-xl text-ink/45 transition hover:bg-mist hover:text-palm focus:outline-none focus:ring-2 focus:ring-palm/25"
-        href="/app/library/surah-notes"
+        href={`/app/library/surah-notes/new?surah=${surah.number}`}
       >
         <NotebookPen aria-hidden className="size-5" />
       </Link>

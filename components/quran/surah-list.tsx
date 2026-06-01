@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Clock3, FileText, Search } from "lucide-react";
+import { ArrowDown, ArrowDownUp, ArrowUp, Clock3, FileText, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { compareVerseKeys } from "@/lib/audio/audio-utils";
 import { type PageIndexEntry, type Surah } from "@/lib/quran/types";
@@ -52,6 +52,8 @@ function findVersePage(pageIndex: PageIndexEntry[], verseKey: string) {
 export function SurahList({ firstPages = {}, pageIndex, surahs }: SurahListProps) {
   const [query, setQuery] = useState("");
   const [recentSurahs, setRecentSurahs] = useState<RecentSurah[]>([]);
+  const [isReversed, setIsReversed] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
   function readRecentSurahs() {
     try {
@@ -104,9 +106,18 @@ export function SurahList({ firstPages = {}, pageIndex, surahs }: SurahListProps
       readRecentSurahs();
     }
 
-    window.addEventListener("focus", handleFocus);
+    function handleScroll() {
+      setHasScrolled(window.scrollY > 180);
+    }
 
-    return () => window.removeEventListener("focus", handleFocus);
+    window.addEventListener("focus", handleFocus);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
   const jumpTarget = useMemo<JumpTarget | null>(() => {
     const normalizedQuery = query.trim();
@@ -173,26 +184,42 @@ export function SurahList({ firstPages = {}, pageIndex, surahs }: SurahListProps
       );
     });
   }, [query, surahs]);
+  const displayedSurahs = useMemo(
+    () => (isReversed ? [...filteredSurahs].reverse() : filteredSurahs),
+    [filteredSurahs, isReversed],
+  );
 
   return (
     <section className="space-y-4">
-      <div className="relative">
-        <label className="sr-only" htmlFor="surah-search">
-          Search surahs
-        </label>
-        <Search
-          aria-hidden
-          className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-sage"
-        />
-        <input
-          aria-label="Search surahs"
-          className="min-h-12 w-full rounded-2xl border border-line bg-paper py-3 pl-11 pr-4 text-base text-ink shadow-soft outline-none transition placeholder:text-ink/40 focus:border-palm/40 focus:ring-2 focus:ring-palm/20"
-          id="surah-search"
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search surah, 2:255, or p20"
-          type="search"
-          value={query}
-        />
+      <div className="grid grid-cols-[1fr_auto] gap-2">
+        <div className="relative min-w-0">
+          <label className="sr-only" htmlFor="surah-search">
+            Search surahs
+          </label>
+          <Search
+            aria-hidden
+            className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-sage"
+          />
+          <input
+            aria-label="Search surahs"
+            className="min-h-12 w-full rounded-2xl border border-line bg-paper py-3 pl-11 pr-4 text-base text-ink shadow-soft outline-none transition placeholder:text-ink/40 focus:border-palm/40 focus:ring-2 focus:ring-palm/20"
+            id="surah-search"
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search surah, 2:255, or p20"
+            type="search"
+            value={query}
+          />
+        </div>
+        <button
+          aria-label={isReversed ? "Show from Al-Fatihah" : "Show from An-Nas"}
+          aria-pressed={isReversed}
+          className="flex size-12 items-center justify-center rounded-2xl border border-line bg-paper text-ink shadow-soft transition hover:bg-mist focus:outline-none focus:ring-2 focus:ring-palm/25"
+          onClick={() => setIsReversed((current) => !current)}
+          type="button"
+          title={isReversed ? "Show from Al-Fatihah" : "Show from An-Nas"}
+        >
+          <ArrowDownUp aria-hidden className="size-5" />
+        </button>
       </div>
 
       {jumpTarget ? (
@@ -250,9 +277,9 @@ export function SurahList({ firstPages = {}, pageIndex, surahs }: SurahListProps
         </section>
       ) : null}
 
-      {filteredSurahs.length > 0 ? (
+      {displayedSurahs.length > 0 ? (
         <div className="grid gap-3">
-          {filteredSurahs.map((surah) => (
+          {displayedSurahs.map((surah) => (
             <SurahListItem
               firstPage={firstPages[String(surah.number)]}
               key={surah.number}
@@ -269,6 +296,32 @@ export function SurahList({ firstPages = {}, pageIndex, surahs }: SurahListProps
           </p>
         </div>
       )}
+      {hasScrolled ? (
+        <div className="pointer-events-none fixed inset-x-0 top-[max(env(safe-area-inset-top),0.75rem)] z-30 mx-auto flex max-w-3xl justify-end px-4">
+          <button
+            aria-label="Scroll to top"
+            className="pointer-events-auto flex size-10 items-center justify-center rounded-full border border-line bg-paper/95 text-palm shadow-soft backdrop-blur transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-palm/25"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            type="button"
+          >
+            <ArrowUp aria-hidden className="size-4" />
+          </button>
+        </div>
+      ) : null}
+      {hasScrolled && displayedSurahs.length > 12 ? (
+        <div className="pointer-events-none fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+5.5rem)] z-30 mx-auto flex max-w-3xl justify-end px-4">
+          <button
+            aria-label="Scroll to bottom"
+            className="pointer-events-auto flex size-10 items-center justify-center rounded-full border border-line bg-paper/95 text-palm shadow-soft backdrop-blur transition hover:bg-white focus:outline-none focus:ring-2 focus:ring-palm/25"
+            onClick={() =>
+              window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" })
+            }
+            type="button"
+          >
+            <ArrowDown aria-hidden className="size-4" />
+          </button>
+        </div>
+      ) : null}
     </section>
   );
 }

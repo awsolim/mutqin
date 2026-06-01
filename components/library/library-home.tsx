@@ -1,28 +1,36 @@
 "use client";
 
 import {
+  BookHeart,
   BookMarked,
   BookOpenText,
   ChevronDown,
   Feather,
+  GraduationCap,
+  HandHeart,
+  Landmark,
   Library,
+  Link2,
+  Mic2,
+  NotebookTabs,
   ScrollText,
+  Scroll,
+  Sigma,
   UserRound,
+  UsersRound,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 type LibrarySubsection = {
-  countLabel?: string;
-  description: string;
   href: string;
+  icon: typeof Library;
   title: string;
 };
 
 type LibrarySectionConfig = {
   accent: string;
-  description: string;
   icon: typeof Library;
   items: LibrarySubsection[];
   title: string;
@@ -31,72 +39,89 @@ type LibrarySectionConfig = {
 const sections: LibrarySectionConfig[] = [
   {
     accent: "from-palm/12 to-palm/4",
-    description: "Verse reflections, surah notes, bookmarks, and memorization links.",
     icon: BookOpenText,
     title: "Qur'an Notes",
     items: [
       {
-        countLabel: "Live",
-        description: "Personal reflections and hifz cues saved from selected ayat.",
         href: "/app/library/ayah-insights",
+        icon: BookHeart,
         title: "Ayah Insights",
       },
       {
-        description: "Surah-level themes, reminders, and review anchors.",
         href: "/app/library/surah-notes",
+        icon: Scroll,
         title: "Surah Notes",
       },
       {
-        countLabel: "Live",
-        description: "Saved ayat you want to revisit quickly.",
         href: "/app/library/bookmarks",
+        icon: BookMarked,
         title: "Bookmarks",
       },
       {
-        description: "A future notebook for mutashabihat and related ayat.",
         href: "/app/library/similar-verses",
+        icon: Link2,
         title: "Similar Verses",
       },
     ],
   },
   {
     accent: "from-gold/20 to-gold/5",
-    description: "Collected texts, drafts, and references for study and teaching.",
     icon: ScrollText,
     title: "Collections",
     items: [
       {
-        description: "Duas you discover, memorize, and return to.",
         href: "/app/library/duas",
+        icon: HandHeart,
         title: "Duas",
       },
       {
-        description: "Hadith references and personal benefit notes.",
         href: "/app/library/hadiths",
+        icon: Feather,
         title: "Hadiths",
       },
       {
-        description: "Khutbah drafts, outlines, and source notes.",
         href: "/app/library/khutbahs",
+        icon: Mic2,
         title: "Khutbahs",
       },
     ],
   },
   {
     accent: "from-ink/10 to-ink/3",
-    description: "Lives, lessons, and timelines from the earliest generations.",
     icon: UserRound,
     title: "Biographies",
     items: [
       {
-        description: "Seerah notes arranged for reflection and teaching.",
         href: "/app/library/seerah",
+        icon: Landmark,
         title: "Prophetic Seerah",
       },
       {
-        description: "Companion biographies, virtues, and key narrations.",
         href: "/app/library/companions",
+        icon: UsersRound,
         title: "Companions Biographies",
+      },
+    ],
+  },
+  {
+    accent: "from-sage/15 to-sage/4",
+    icon: GraduationCap,
+    title: "Durus",
+    items: [
+      {
+        href: "/app/library/khutabaa-halaqah",
+        icon: Mic2,
+        title: "Khutabaa Halaqah",
+      },
+      {
+        href: "/app/library/fiqh-halaqah",
+        icon: NotebookTabs,
+        title: "Fiqh Halaqah",
+      },
+      {
+        href: "/app/library/nahw-halaqah",
+        icon: Sigma,
+        title: "Nahw Halaqah",
       },
     ],
   },
@@ -144,9 +169,6 @@ export function LibraryHome() {
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-lg font-extrabold text-ink">{section.title}</span>
-                <span className="mt-1 block text-sm leading-5 text-ink/60">
-                  {section.description}
-                </span>
               </span>
               <ChevronDown
                 aria-hidden
@@ -164,38 +186,24 @@ export function LibraryHome() {
             >
               <div className="overflow-hidden">
                 <div className="grid gap-2 p-3">
-                  {section.items.map((item) => (
-                    <Link
-                      className="group flex items-center gap-3 rounded-2xl border border-line/80 bg-mist/55 px-3 py-3 transition hover:border-palm/25 hover:bg-palm/5"
-                      href={item.href}
-                      key={item.href}
-                    >
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-paper text-palm ring-1 ring-line/80">
-                        {item.title === "Bookmarks" ? (
-                          <BookMarked aria-hidden className="size-5" />
-                        ) : item.title.includes("Dua") ? (
-                          <Feather aria-hidden className="size-5" />
-                        ) : (
-                          <Library aria-hidden className="size-5" />
-                        )}
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="flex items-center gap-2">
-                          <span className="truncate text-sm font-extrabold text-ink">
-                            {item.title}
-                          </span>
-                          {item.countLabel ? (
-                            <span className="rounded-full bg-palm/10 px-2 py-0.5 text-[0.65rem] font-bold uppercase text-palm">
-                              {item.countLabel}
-                            </span>
-                          ) : null}
+                  {section.items.map((item) => {
+                    const ItemIcon = item.icon;
+
+                    return (
+                      <Link
+                        className="group flex min-h-14 items-center gap-3 rounded-2xl border border-line/80 bg-mist/55 px-3 py-2.5 transition hover:border-palm/25 hover:bg-palm/5"
+                        href={item.href}
+                        key={item.href}
+                      >
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-paper text-palm ring-1 ring-line/80">
+                          <ItemIcon aria-hidden className="size-5" />
                         </span>
-                        <span className="mt-0.5 line-clamp-2 text-xs leading-5 text-ink/55">
-                          {item.description}
+                        <span className="min-w-0 flex-1 truncate text-sm font-extrabold text-ink">
+                          {item.title}
                         </span>
-                      </span>
-                    </Link>
-                  ))}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </div>

@@ -61,6 +61,12 @@ export type CreateAyahInsightInput = {
   body: string;
 };
 
+export type CreateSurahNoteInput = {
+  surahNumber: number;
+  title?: string | null;
+  bullets: string[];
+};
+
 export type ToggleBookmarkInput = {
   surahNumber: number;
   ayahNumber: number;

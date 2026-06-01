@@ -50,7 +50,7 @@ export function MushafPageReader({
     >
       <div
         className={cn(
-          "mx-[-0.45rem] grid h-full max-w-[calc(100%+0.9rem)] overflow-hidden bg-paper px-0 py-0",
+          "mx-[-0.9rem] grid h-full max-w-[calc(100%+1.8rem)] overflow-hidden bg-paper px-0 py-0",
           isSparsePage
             ? "grid-rows-[1fr_repeat(15,minmax(0,1fr))_1fr]"
             : "grid-rows-[repeat(15,minmax(0,1fr))]",
@@ -155,8 +155,8 @@ function MushafAyahLine({
         cn(
           "relative flex min-w-0 items-center justify-center overflow-visible whitespace-nowrap text-center leading-none text-ink",
           isSparsePage
-            ? "text-[clamp(1.22rem,5.65vw,1.92rem)]"
-            : "text-[clamp(1rem,4.75vw,1.56rem)]",
+            ? "text-[clamp(1.35rem,6.25vw,2.12rem)]"
+            : "text-[clamp(1.08rem,5.2vw,1.78rem)]",
         ),
         line.isCentered && "text-center",
       )}
@@ -228,8 +228,8 @@ function MushafDisplayLine({ isSparsePage, label, type }: MushafDisplayLineProps
             "before:absolute before:right-full before:top-1/2 before:h-px before:w-10 before:bg-palm/25",
             "after:absolute after:left-full after:top-1/2 after:h-px after:w-10 after:bg-palm/25",
             isSparsePage
-              ? "text-[clamp(1.18rem,5.2vw,1.68rem)]"
-              : "text-[clamp(1rem,4.45vw,1.38rem)]",
+              ? "text-[clamp(1.28rem,5.8vw,1.82rem)]"
+              : "text-[clamp(1.08rem,4.9vw,1.52rem)]",
           )}
         >
           <span className="font-bold">{label}</span>
@@ -243,8 +243,8 @@ function MushafDisplayLine({ isSparsePage, label, type }: MushafDisplayLineProps
       className={cn(
         "flex items-center justify-center text-center font-semibold text-ink",
         isSparsePage
-          ? "text-[clamp(1.1rem,4.75vw,1.52rem)]"
-          : "text-[clamp(0.94rem,4.05vw,1.26rem)]",
+          ? "text-[clamp(1.18rem,5.3vw,1.68rem)]"
+          : "text-[clamp(1rem,4.5vw,1.38rem)]",
       )}
     >
       {label}
@@ -281,6 +281,7 @@ function MushafWordSpan({
   const text = word.codeV2 ?? word.textQpcHafs ?? word.text;
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const didLongPress = useRef(false);
+  const isEndMarker = word.charTypeName === "end";
   const hasSimilarLinks = word.charTypeName === "end" && similarLinks.length > 0;
   const hasBookmarkMarker = word.charTypeName === "end" && isBookmarked;
 
@@ -296,14 +297,15 @@ function MushafWordSpan({
       className={cn(
         "relative z-10 cursor-pointer select-none rounded px-[0.03em] transition",
         useGlyph ? "mx-0" : "mx-[0.08em]",
-        hasSimilarLinks &&
-          "text-[#9d4fb0] drop-shadow-[0_0_0.35rem_rgba(160,74,166,0.45)]",
-        !hasSimilarLinks &&
-          hasBookmarkMarker &&
-          "text-[#a06c1e] drop-shadow-[0_0_0.28rem_rgba(160,108,30,0.32)]",
         isInRange && "bg-sage/10 text-palm",
         isActive && "bg-[#f3e7bd]/45 text-[#8a6514]",
         isSelected && "bg-[#dbeadf]/50 text-palm",
+        isEndMarker &&
+          "text-[#8b6228] drop-shadow-[0_0_0.16rem_rgba(139,98,40,0.22)]",
+        hasBookmarkMarker &&
+          "text-[#1d69a8] drop-shadow-[0_0_0.18rem_rgba(29,105,168,0.28)]",
+        hasSimilarLinks &&
+          "text-[#8c3494] drop-shadow-[0_0_0.2rem_rgba(140,52,148,0.3)]",
       )}
       data-ayah-number={word.ayahNumber}
       data-mushaf-word="true"

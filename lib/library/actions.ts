@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import {
   type CreateAyahInsightInput,
+  type CreateSurahNoteInput,
   type BookmarkPageMarker,
   type LibraryActionResult,
   type LibraryItem,
@@ -41,6 +42,7 @@ function revalidateLibrary() {
   revalidatePath("/app/library");
   revalidatePath("/app/library/ayah-insights");
   revalidatePath("/app/library/bookmarks");
+  revalidatePath("/app/library/surah-notes");
 }
 
 function validateVerseLocation(input: {
@@ -104,6 +106,43 @@ export async function createAyahInsight(
   revalidateLibrary();
 
   return { ok: true, message: "Ayah insight saved." };
+}
+
+export async function createSurahNote(
+  input: CreateSurahNoteInput,
+): Promise<LibraryActionResult> {
+  if (!Number.isInteger(input.surahNumber) || input.surahNumber < 1 || input.surahNumber > 114) {
+    return { ok: false, message: "Invalid surah number." };
+  }
+
+  const bullets = input.bullets.map((bullet) => bullet.trim()).filter(Boolean);
+
+  if (!bullets.length) {
+    return { ok: false, message: "Add at least one note." };
+  }
+
+  const user = await requireUser();
+  const supabase = await createClient();
+  const { error } = await supabase.from("library_items").insert({
+    user_id: user.id,
+    type: "surah_note",
+    title: cleanText(input.title),
+    body: bullets.map((bullet) => `- ${bullet}`).join("\n"),
+    surah_number: input.surahNumber,
+    ayah_start: null,
+    ayah_end: null,
+    verse_key: null,
+    page_number: null,
+    metadata: { bullets },
+  });
+
+  if (error) {
+    return { ok: false, message: error.message };
+  }
+
+  revalidateLibrary();
+
+  return { ok: true, message: "Surah notes saved." };
 }
 
 export async function toggleBookmark(

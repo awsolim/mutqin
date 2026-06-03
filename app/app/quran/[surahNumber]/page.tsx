@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageBackButton } from "@/components/page-back-button";
 import { getFirstPageForSurah, getSurahByNumber } from "@/lib/quran/utils";
 
 type QuranSurahPageProps = {
@@ -23,6 +24,7 @@ export default async function QuranSurahPage({ params }: QuranSurahPageProps) {
 
   return (
     <div className="space-y-5">
+      <PageBackButton href="/app/quran" label="Surah list" />
       <Card className="space-y-3 text-center">
         <h1 className="text-xl font-bold text-ink">Surah page unavailable</h1>
         <p className="text-sm leading-6 text-ink/70">
@@ -30,7 +32,7 @@ export default async function QuranSurahPage({ params }: QuranSurahPageProps) {
           return to the surah list.
         </p>
         <ButtonLink href="/app/quran" variant="secondary">
-          Back to surah list
+          Surah list
         </ButtonLink>
       </Card>
     </div>

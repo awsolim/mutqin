@@ -27,6 +27,7 @@ Library foundation:
 - Bookmark save/remove from selected ayat
 - Library home with Qur'an Notes, Collections, and Biographies shelves
 - Ayah Insights and Bookmarks Library pages
+- Manual Dua and Hadith collections, with import-only hadith reference lookup
 - Polished placeholder shelves for Surah Notes, Duas, Hadiths, Khutbahs, Seerah, and Companions
 - Similar Verses / Mutashabihat Step 1 with manual ayah linking, word-range highlights, memory notes, and mushaf indicators
 - Similar Verses Catalog seeded demo flows for `كَدَأْبِ آلِ فِرْعَوْنَ` and `يسير / يسيرا`
@@ -62,6 +63,7 @@ Mutqin separates immutable Islamic source content from user-owned data:
 - Static iʿrāb data lives under `lib/irab/generated`.
 - Supabase stores only user-specific data: auth, bookmarks, ayah insights, notes, Library items, and Similar Verses records/highlights.
 - Audio URLs are generated locally from `lib/audio/reciters.ts`; Supabase is not used for audio URL lookup.
+- External hadith APIs are used only for explicit lookup/import; saved hadith detail pages read from Supabase Library records.
 
 Normal reading never calls Quran Foundation live and never stores Qur'an text, translations, tafsir, or iʿrāb in Supabase.
 
@@ -125,11 +127,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 QF_ENV=production
 QF_CLIENT_ID=your-quran-foundation-client-id
 QF_CLIENT_SECRET=your-quran-foundation-client-secret
+HADITH_PROVIDER=hadithapi
+HADITH_API_KEY=your-hadithapi-key
 ```
 
 Authentication pages show a configuration notice if Supabase values are missing.
 
 `QF_CLIENT_ID` and `QF_CLIENT_SECRET` are server-only. Never prefix them with `NEXT_PUBLIC_`.
+
+`HADITH_API_KEY` is server-only and is used only by `/api/hadith/lookup` when you explicitly import a hadith reference into your personal Library. Do not prefix it with `NEXT_PUBLIC_`.
 
 For Vercel, configure:
 
@@ -138,6 +144,8 @@ For Vercel, configure:
 - `QF_ENV`
 - `QF_CLIENT_ID`
 - `QF_CLIENT_SECRET`
+- `HADITH_PROVIDER` (optional, currently `hadithapi`)
+- `HADITH_API_KEY` (optional unless using hadith lookup)
 
 `QF_*` values are only used by import/server tooling and must not be exposed to client code.
 
@@ -171,13 +179,13 @@ Current implemented Library types:
 
 - `ayah_insight`: created from the selected ayah Note action
 - `bookmark`: created or removed from the selected ayah Bookmark action
+- `surah_note`: bullet notes attached to a surah
+- `dua`: manually saved duas and personal notes
+- `hadith`: manually saved or imported hadith records and personal reflections
 
 Planned Library types are already represented in the data model for future shelves:
 
-- `surah_note`
 - `similar_verses`
-- `dua`
-- `hadith`
 - `khutbah`
 - `seerah`
 - `companion`
@@ -189,6 +197,14 @@ The Library home at `/app/library` is organized into:
 - Qur'an Notes: Ayah Insights, Surah Notes, Bookmarks, Similar Verses
 - Collections: Duas, Hadiths, Khutbahs
 - Biographies: Prophetic Seerah, Companions Biographies
+
+### Hadith Lookup
+
+`/app/library/hadiths/new` can import a hadith by reference, such as `Bukhari 1`, `Sahih Muslim 1907`, `Tirmidhi 2516`, `Abu Dawud`, `Nasai`, or `Ibn Majah` references. The lookup parser lives in `lib/hadith/parse-reference.ts`, provider contracts live under `lib/hadith/providers`, and the server-only lookup route is `app/api/hadith/lookup/route.ts`.
+
+Current provider support is `HADITH_PROVIDER=hadithapi` with `HADITH_API_KEY`. The browser never receives the provider key. Lookup is import-only: after the user previews and saves a hadith, Mutqin stores the Arabic text, English translation, collection, reference, narrator, grade, chapter/book metadata, tags, and personal note in the user-owned `library_items` row. Opening saved hadiths later does not call the provider API.
+
+If a lookup fails or no provider key is configured, the Hadith form still supports manual entry.
 
 ## Similar Verses Database
 

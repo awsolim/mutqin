@@ -16,7 +16,7 @@ export function SurahListItem({ firstPage, onOpen, surah }: SurahListItemProps) 
         href={firstPage ? `/app/mushaf/${firstPage}` : `/app/quran/${surah.number}`}
         onClick={() => onOpen?.(surah, firstPage)}
       >
-        <span className="flex size-9 items-center justify-center rounded-lg bg-palm/10 text-sm font-bold text-palm">
+        <span className="flex size-9 items-center justify-center rounded-lg bg-palm text-sm font-bold text-paper shadow-[inset_0_0_0_1px_rgba(255,255,255,0.24)]">
           {surah.number}
         </span>
         <span className="min-w-0">

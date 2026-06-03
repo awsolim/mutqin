@@ -6,7 +6,9 @@ import { createClient } from "@/lib/supabase/server";
 import {
   type CreateAyahInsightInput,
   type CreateSurahNoteInput,
+  type CollectionItemInput,
   type BookmarkPageMarker,
+  type BookmarkMarkersByPage,
   type LibraryActionResult,
   type LibraryItem,
   type LibraryItemRow,
@@ -43,6 +45,19 @@ function revalidateLibrary() {
   revalidatePath("/app/library/ayah-insights");
   revalidatePath("/app/library/bookmarks");
   revalidatePath("/app/library/surah-notes");
+  revalidatePath("/app/library/duas");
+  revalidatePath("/app/library/hadiths");
+}
+
+function cleanTags(tags?: string[]) {
+  return Array.from(
+    new Set(
+      (tags ?? [])
+        .flatMap((tag) => tag.split(","))
+        .map((tag) => tag.trim())
+        .filter(Boolean),
+    ),
+  );
 }
 
 function validateVerseLocation(input: {
@@ -219,6 +234,123 @@ export async function toggleBookmark(
   };
 }
 
+export async function createCollectionItem(
+  input: CollectionItemInput,
+): Promise<LibraryActionResult> {
+  // Future verified-source imports should normalize into this metadata shape, not bypass user-owned Library storage.
+  const title = cleanText(input.title);
+
+  if (input.type !== "dua" && input.type !== "hadith") {
+    return { ok: false, message: "Invalid collection type." };
+  }
+
+  if (!title) {
+    return { ok: false, message: "Title is required." };
+  }
+
+  const user = await requireUser();
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("library_items")
+    .insert({
+      user_id: user.id,
+      type: input.type,
+      title,
+      body: cleanText(input.body),
+      metadata: {
+        arabicText: cleanText(input.arabicText),
+        sanadText: cleanText(input.sanadText),
+        matnText: cleanText(input.matnText),
+        quoteText: cleanText(input.quoteText),
+        translation: cleanText(input.translation),
+        transliteration: cleanText(input.transliteration),
+        source: cleanText(input.source),
+        reference: cleanText(input.reference),
+        category: cleanText(input.category),
+        collection: cleanText(input.collection),
+        narrator: cleanText(input.narrator),
+        grade: cleanText(input.grade),
+        book: cleanText(input.book),
+        chapter: cleanText(input.chapter),
+        provider: cleanText(input.provider),
+        providerHadithId: cleanText(input.providerHadithId),
+        sourceUrl: cleanText(input.sourceUrl),
+        arabicMarkers: input.arabicMarkers ?? [],
+        translationMarkers: input.translationMarkers ?? [],
+        tags: cleanTags(input.tags),
+        pinned: Boolean(input.pinned),
+      },
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    return { ok: false, message: error.message };
+  }
+
+  revalidateLibrary();
+  revalidatePath(`/app/library/${input.type === "dua" ? "duas" : "hadiths"}/${data.id}`);
+
+  return { id: data.id, ok: true, message: "Saved." };
+}
+
+export async function updateCollectionItem(
+  input: CollectionItemInput & { id: string },
+): Promise<LibraryActionResult> {
+  const title = cleanText(input.title);
+
+  if (input.type !== "dua" && input.type !== "hadith") {
+    return { ok: false, message: "Invalid collection type." };
+  }
+
+  if (!title) {
+    return { ok: false, message: "Title is required." };
+  }
+
+  await requireUser();
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("library_items")
+    .update({
+      title,
+      body: cleanText(input.body),
+      metadata: {
+        arabicText: cleanText(input.arabicText),
+        sanadText: cleanText(input.sanadText),
+        matnText: cleanText(input.matnText),
+        quoteText: cleanText(input.quoteText),
+        translation: cleanText(input.translation),
+        transliteration: cleanText(input.transliteration),
+        source: cleanText(input.source),
+        reference: cleanText(input.reference),
+        category: cleanText(input.category),
+        collection: cleanText(input.collection),
+        narrator: cleanText(input.narrator),
+        grade: cleanText(input.grade),
+        book: cleanText(input.book),
+        chapter: cleanText(input.chapter),
+        provider: cleanText(input.provider),
+        providerHadithId: cleanText(input.providerHadithId),
+        sourceUrl: cleanText(input.sourceUrl),
+        arabicMarkers: input.arabicMarkers ?? [],
+        translationMarkers: input.translationMarkers ?? [],
+        tags: cleanTags(input.tags),
+        pinned: Boolean(input.pinned),
+      },
+    })
+    .eq("id", input.id)
+    .eq("type", input.type);
+
+  if (error) {
+    return { ok: false, message: error.message };
+  }
+
+  revalidateLibrary();
+  revalidatePath(`/app/library/${input.type === "dua" ? "duas" : "hadiths"}/${input.id}`);
+
+  return { id: input.id, ok: true, message: "Saved." };
+}
+
 export async function getBookmarkForVerse(verseKey: string) {
   await requireUser();
   const supabase = await createClient();
@@ -259,6 +391,50 @@ export async function getBookmarkMarkersForPage(pageNumber: number): Promise<Boo
     .map((item) => ({ verseKey: item.verse_key }));
 }
 
+export async function getBookmarkMarkersForPages(
+  pageNumbers: number[],
+): Promise<BookmarkMarkersByPage> {
+  const uniquePageNumbers = Array.from(
+    new Set(
+      pageNumbers.filter(
+        (pageNumber) => Number.isInteger(pageNumber) && pageNumber >= 1 && pageNumber <= 604,
+      ),
+    ),
+  );
+
+  if (!uniquePageNumbers.length) {
+    return {};
+  }
+
+  const user = await requireUser();
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("library_items")
+    .select("page_number, verse_key")
+    .eq("user_id", user.id)
+    .eq("type", "bookmark")
+    .in("page_number", uniquePageNumbers);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const groupedMarkers = Object.fromEntries(
+    uniquePageNumbers.map((pageNumber) => [pageNumber, [] as BookmarkPageMarker[]]),
+  ) as BookmarkMarkersByPage;
+
+  for (const item of (data ?? []) as Array<{ page_number: number | null; verse_key: string | null }>) {
+    if (item.page_number && item.verse_key) {
+      groupedMarkers[item.page_number] = [
+        ...(groupedMarkers[item.page_number] ?? []),
+        { verseKey: item.verse_key },
+      ];
+    }
+  }
+
+  return groupedMarkers;
+}
+
 export async function deleteLibraryItem(itemId: string): Promise<LibraryActionResult> {
   await requireUser();
   const supabase = await createClient();
@@ -287,4 +463,22 @@ export async function getLibraryItemsByType(type: LibraryItemType) {
   }
 
   return ((data ?? []) as LibraryItemRow[]).map(mapLibraryItem);
+}
+
+export async function getLibraryItemById(itemId: string, type?: LibraryItemType) {
+  await requireUser();
+  const supabase = await createClient();
+  let query = supabase.from("library_items").select("*").eq("id", itemId);
+
+  if (type) {
+    query = query.eq("type", type);
+  }
+
+  const { data, error } = await query.maybeSingle();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data ? mapLibraryItem(data as LibraryItemRow) : null;
 }

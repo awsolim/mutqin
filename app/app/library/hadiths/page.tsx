@@ -1,16 +1,14 @@
-import { ScrollText } from "lucide-react";
-import { LibraryPlaceholderPage } from "@/components/library/library-placeholder-page";
+import { CollectionList } from "@/components/library/collection-list";
 import { PageHeader } from "@/components/page-header";
+import { getLibraryItemsByType } from "@/lib/library/actions";
 
-export default function HadithsPage() {
+export default async function HadithsPage() {
+  const items = await getLibraryItemsByType("hadith");
+
   return (
     <div className="space-y-5">
-      <PageHeader eyebrow="Collections" title="Hadiths" description="Hadith references and personal benefit notes." />
-      <LibraryPlaceholderPage
-        description="Hadith logging will support references, source notes, and benefits later."
-        icon={ScrollText}
-        title="No hadiths saved yet"
-      />
+      <PageHeader eyebrow="Collections" title="Hadiths" />
+      <CollectionList items={items} type="hadith" />
     </div>
   );
 }

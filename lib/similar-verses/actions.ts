@@ -531,3 +531,87 @@ export async function getSimilarVerseLinksForPage(pageNumber: number): Promise<S
     references: (itemsBySetId.get(item.set_id) ?? []).map((recordItem) => recordItem.verse_key),
   }));
 }
+
+export async function getSimilarVerseLinksForPages(
+  pageNumbers: number[],
+): Promise<Record<number, SimilarVersePageLink[]>> {
+  const uniquePageNumbers = Array.from(
+    new Set(
+      pageNumbers.filter(
+        (pageNumber) => Number.isInteger(pageNumber) && pageNumber >= 1 && pageNumber <= 604,
+      ),
+    ),
+  );
+
+  if (!uniquePageNumbers.length) {
+    return {};
+  }
+
+  const user = await requireUser();
+  const supabase = await createClient();
+  const { data: items, error: itemsError } = await supabase
+    .from("similar_verse_items")
+    .select("*")
+    .eq("user_id", user.id)
+    .in("page_number", uniquePageNumbers);
+
+  if (itemsError) {
+    throw new Error(itemsError.message);
+  }
+
+  const itemRows = (items ?? []) as SimilarVerseItemRow[];
+  const groupedLinks = Object.fromEntries(
+    uniquePageNumbers.map((pageNumber) => [pageNumber, [] as SimilarVersePageLink[]]),
+  ) as Record<number, SimilarVersePageLink[]>;
+  const setIds = Array.from(new Set(itemRows.map((item) => item.set_id)));
+
+  if (!setIds.length) {
+    return groupedLinks;
+  }
+
+  const [{ data: sets, error: setsError }, { data: allItems, error: allItemsError }] =
+    await Promise.all([
+      supabase.from("similar_verse_sets").select("*").in("id", setIds),
+      supabase
+        .from("similar_verse_items")
+        .select("*")
+        .in("set_id", setIds)
+        .order("sort_order", { ascending: true }),
+    ]);
+
+  if (setsError) {
+    throw new Error(setsError.message);
+  }
+
+  if (allItemsError) {
+    throw new Error(allItemsError.message);
+  }
+
+  const setsById = new Map(((sets ?? []) as SimilarVerseSetRow[]).map((set) => [set.id, set]));
+  const itemsBySetId = new Map<string, SimilarVerseItemRow[]>();
+
+  for (const item of (allItems ?? []) as SimilarVerseItemRow[]) {
+    itemsBySetId.set(item.set_id, [...(itemsBySetId.get(item.set_id) ?? []), item]);
+  }
+
+  for (const item of itemRows) {
+    if (!item.page_number) {
+      continue;
+    }
+
+    groupedLinks[item.page_number] = [
+      ...(groupedLinks[item.page_number] ?? []),
+      {
+        note: setsById.get(item.set_id)?.note ?? null,
+        setId: item.set_id,
+        title: setsById.get(item.set_id)?.title ?? null,
+        verseKey: item.verse_key,
+        references: (itemsBySetId.get(item.set_id) ?? []).map(
+          (recordItem) => recordItem.verse_key,
+        ),
+      },
+    ];
+  }
+
+  return groupedLinks;
+}

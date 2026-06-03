@@ -65,7 +65,7 @@ const sections: LibrarySectionConfig[] = [
     ],
   },
   {
-    accent: "from-gold/20 to-gold/5",
+    accent: "from-palm/18 via-sage/10 to-gold/8",
     icon: ScrollText,
     title: "Collections",
     items: [
@@ -87,7 +87,7 @@ const sections: LibrarySectionConfig[] = [
     ],
   },
   {
-    accent: "from-ink/10 to-ink/3",
+    accent: "from-palm/14 via-mist to-ink/3",
     icon: UserRound,
     title: "Biographies",
     items: [
@@ -104,7 +104,7 @@ const sections: LibrarySectionConfig[] = [
     ],
   },
   {
-    accent: "from-sage/15 to-sage/4",
+    accent: "from-palm/16 via-sage/10 to-sage/4",
     icon: GraduationCap,
     title: "Durus",
     items: [
@@ -128,7 +128,9 @@ const sections: LibrarySectionConfig[] = [
 ];
 
 export function LibraryHome() {
-  const [openSections, setOpenSections] = useState(() => new Set(["Qur'an Notes"]));
+  const [openSections, setOpenSections] = useState(
+    () => new Set(sections.map((section) => section.title)),
+  );
 
   function toggleSection(title: string) {
     setOpenSections((current) => {

@@ -1,16 +1,14 @@
-import { Feather } from "lucide-react";
-import { LibraryPlaceholderPage } from "@/components/library/library-placeholder-page";
+import { CollectionList } from "@/components/library/collection-list";
 import { PageHeader } from "@/components/page-header";
+import { getLibraryItemsByType } from "@/lib/library/actions";
 
-export default function DuasPage() {
+export default async function DuasPage() {
+  const items = await getLibraryItemsByType("dua");
+
   return (
     <div className="space-y-5">
-      <PageHeader eyebrow="Collections" title="Duas" description="A personal dua collection for memorization and return." />
-      <LibraryPlaceholderPage
-        description="Dua saving and organization will be added in a later Library phase."
-        icon={Feather}
-        title="No duas saved yet"
-      />
+      <PageHeader eyebrow="Collections" title="Duas" />
+      <CollectionList items={items} type="dua" />
     </div>
   );
 }

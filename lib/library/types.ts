@@ -52,6 +52,8 @@ export type BookmarkPageMarker = {
   verseKey: string;
 };
 
+export type BookmarkMarkersByPage = Record<number, BookmarkPageMarker[]>;
+
 export type CreateAyahInsightInput = {
   surahNumber: number;
   ayahNumber: number;
@@ -65,6 +67,45 @@ export type CreateSurahNoteInput = {
   surahNumber: number;
   title?: string | null;
   bullets: string[];
+};
+
+export type CollectionItemKind = "dua" | "hadith";
+
+export type CollectionItemInput = {
+  id?: string;
+  type: CollectionItemKind;
+  title: string;
+  arabicText?: string | null;
+  sanadText?: string | null;
+  matnText?: string | null;
+  quoteText?: string | null;
+  translation?: string | null;
+  transliteration?: string | null;
+  source?: string | null;
+  reference?: string | null;
+  category?: string | null;
+  collection?: string | null;
+  narrator?: string | null;
+  grade?: string | null;
+  book?: string | null;
+  chapter?: string | null;
+  provider?: string | null;
+  providerHadithId?: string | null;
+  sourceUrl?: string | null;
+  arabicMarkers?: TextMarkerInput[];
+  translationMarkers?: TextMarkerInput[];
+  tags?: string[];
+  body?: string | null;
+  pinned?: boolean;
+};
+
+export type TextMarkerType = "sanad" | "matn" | "quote";
+
+export type TextMarkerInput = {
+  id: string;
+  startWordPosition: number;
+  endWordPosition: number;
+  type: TextMarkerType;
 };
 
 export type ToggleBookmarkInput = {

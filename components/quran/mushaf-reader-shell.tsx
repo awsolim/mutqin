@@ -76,8 +76,18 @@ export function MushafReaderShell({
   const [similarChooserLinks, setSimilarChooserLinks] = useState<
     SimilarVersePageLink[] | null
   >(null);
+  const [similarPreviewLinks, setSimilarPreviewLinks] = useState<
+    SimilarVersePageLink[] | null
+  >(null);
   const [similarPreviewRecords, setSimilarPreviewRecords] = useState<SimilarPreviewRecord[]>([]);
   const [isSimilarPreviewLoading, setIsSimilarPreviewLoading] = useState(false);
+  const pagesRef = useRef<Record<number, MushafPage>>({
+    [initialPage.pageNumber]: initialPage,
+  });
+  const similarLinksByPageRef = useRef<Record<number, SimilarVersePageLink[]>>({});
+  const bookmarksByPageRef = useRef<Record<number, string[]>>({});
+  const loadingPagesRef = useRef(new Set<number>());
+  const loadingMarkerBatchesRef = useRef(new Set<string>());
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
   const touchMoved = useRef(false);
@@ -150,90 +160,121 @@ export function MushafReaderShell({
         return currentPages;
       }
 
-      return { ...currentPages, [page.pageNumber]: page };
+      const nextPages = { ...currentPages, [page.pageNumber]: page };
+      pagesRef.current = nextPages;
+
+      return nextPages;
     });
   }, []);
 
   const loadPage = useCallback(
     async (pageNumber: number) => {
-      if (pageNumber < 1 || pageNumber > 604 || pages[pageNumber]) {
-        return;
+      if (pageNumber < 1 || pageNumber > 604) {
+        return null;
       }
 
-      const response = await fetch(`/api/mushaf/pages/${pageNumber}`, {
-        cache: "force-cache",
+      if (pagesRef.current[pageNumber]) {
+        return pagesRef.current[pageNumber];
+      }
+
+      if (loadingPagesRef.current.has(pageNumber)) {
+        return null;
+      }
+
+      loadingPagesRef.current.add(pageNumber);
+
+      try {
+        const response = await fetch(`/api/mushaf/pages/${pageNumber}`, {
+          cache: "force-cache",
+        });
+
+        if (!response.ok) {
+          return null;
+        }
+
+        const page = (await response.json()) as MushafPage;
+        cachePage(page);
+
+        return page;
+      } catch {
+        return null;
+      } finally {
+        loadingPagesRef.current.delete(pageNumber);
+      }
+    },
+    [cachePage],
+  );
+
+  const loadMarkerBatch = useCallback(async (pageNumbers: number[]) => {
+    const pagesToLoad = Array.from(
+      new Set(
+        pageNumbers.filter(
+          (pageNumber) =>
+            pageNumber >= 1 &&
+            pageNumber <= 604 &&
+            (bookmarksByPageRef.current[pageNumber] === undefined ||
+              similarLinksByPageRef.current[pageNumber] === undefined),
+        ),
+      ),
+    );
+
+    if (!pagesToLoad.length) {
+      return;
+    }
+
+    const batchKey = pagesToLoad.join(",");
+
+    if (loadingMarkerBatchesRef.current.has(batchKey)) {
+      return;
+    }
+
+    loadingMarkerBatchesRef.current.add(batchKey);
+
+    try {
+      const response = await fetch(`/api/library/markers?pages=${batchKey}`, {
+        cache: "no-store",
       });
 
       if (!response.ok) {
         return;
       }
 
-      cachePage((await response.json()) as MushafPage);
-    },
-    [cachePage, pages],
-  );
+      const payload = (await response.json()) as {
+        bookmarksByPage?: Record<string, Array<{ verseKey: string }>>;
+        similarLinksByPage?: Record<string, SimilarVersePageLink[]>;
+      };
+      const nextBookmarkMarkers = { ...bookmarksByPageRef.current };
+      const nextSimilarLinks = { ...similarLinksByPageRef.current };
 
-  const loadSimilarLinks = useCallback(
-    async (pageNumber: number) => {
-      if (pageNumber < 1 || pageNumber > 604 || similarLinksByPage[pageNumber]) {
-        return;
+      for (const pageNumber of pagesToLoad) {
+        const pageKey = String(pageNumber);
+        nextBookmarkMarkers[pageNumber] = (payload.bookmarksByPage?.[pageKey] ?? []).map(
+          (marker) => marker.verseKey,
+        );
+        nextSimilarLinks[pageNumber] = payload.similarLinksByPage?.[pageKey] ?? [];
       }
 
-      try {
-        const response = await fetch(`/api/similar-verses/page/${pageNumber}`, {
-          cache: "no-store",
-        });
+      bookmarksByPageRef.current = nextBookmarkMarkers;
+      similarLinksByPageRef.current = nextSimilarLinks;
+      setBookmarksByPage(nextBookmarkMarkers);
+      setSimilarLinksByPage(nextSimilarLinks);
+    } catch {
+      const nextBookmarkMarkers = { ...bookmarksByPageRef.current };
+      const nextSimilarLinks = { ...similarLinksByPageRef.current };
 
-        if (!response.ok) {
-          return;
-        }
-
-        const payload = (await response.json()) as { links: SimilarVersePageLink[] };
-        setSimilarLinksByPage((currentLinks) => ({
-          ...currentLinks,
-          [pageNumber]: payload.links ?? [],
-        }));
-      } catch {
-        setSimilarLinksByPage((currentLinks) => ({
-          ...currentLinks,
-          [pageNumber]: [],
-        }));
-      }
-    },
-    [similarLinksByPage],
-  );
-
-  const loadBookmarkMarkers = useCallback(
-    async (pageNumber: number) => {
-      if (pageNumber < 1 || pageNumber > 604 || bookmarksByPage[pageNumber]) {
-        return;
+      for (const pageNumber of pagesToLoad) {
+        nextBookmarkMarkers[pageNumber] = [];
+        nextSimilarLinks[pageNumber] = [];
       }
 
-      try {
-        const response = await fetch(`/api/library/bookmarks/page/${pageNumber}`, {
-          cache: "no-store",
-        });
-
-        if (!response.ok) {
-          return;
-        }
-
-        const payload = (await response.json()) as {
-          markers: Array<{ verseKey: string }>;
-        };
-        setBookmarksByPage((currentMarkers) => ({
-          ...currentMarkers,
-          [pageNumber]: (payload.markers ?? []).map((marker) => marker.verseKey),
-        }));
-      } catch {
-        setBookmarksByPage((currentMarkers) => ({
-          ...currentMarkers,
-          [pageNumber]: [],
-        }));
-      }
-    },
-    [bookmarksByPage],
-  );
+      bookmarksByPageRef.current = nextBookmarkMarkers;
+      similarLinksByPageRef.current = nextSimilarLinks;
+      setBookmarksByPage(nextBookmarkMarkers);
+      setSimilarLinksByPage(nextSimilarLinks);
+    } finally {
+      loadingMarkerBatchesRef.current.delete(batchKey);
+    }
+  }, []);
 
   const warmFont = useCallback(async (pageNumber: number) => {
     if (pageNumber < 1 || pageNumber > 604 || !("FontFace" in window)) {
@@ -276,8 +317,7 @@ export function MushafReaderShell({
         setCurrentPageNumber(pageNumber);
         window.history.pushState(null, "", `/app/mushaf/${pageNumber}`);
         void loadPage(pageNumber);
-        void loadSimilarLinks(pageNumber);
-        void loadBookmarkMarkers(pageNumber);
+        void loadMarkerBatch([pageNumber]);
         void warmFont(pageNumber);
         setIsDragging(true);
         setIsSettling(false);
@@ -285,7 +325,7 @@ export function MushafReaderShell({
         window.requestAnimationFrame(() => setIsDragging(false));
       }, 260);
     },
-    [currentPageNumber, loadBookmarkMarkers, loadPage, loadSimilarLinks, warmFont],
+    [currentPageNumber, loadMarkerBatch, loadPage, warmFont],
   );
 
   const getSurahName = useCallback(
@@ -364,11 +404,10 @@ export function MushafReaderShell({
 
     for (const pageNumber of pagesToWarm) {
       void loadPage(pageNumber);
-      void loadSimilarLinks(pageNumber);
-      void loadBookmarkMarkers(pageNumber);
       void warmFont(pageNumber);
     }
-  }, [currentPageNumber, loadBookmarkMarkers, loadPage, loadSimilarLinks, warmFont]);
+    void loadMarkerBatch(pagesToWarm);
+  }, [currentPageNumber, loadMarkerBatch, loadPage, warmFont]);
 
   useEffect(() => {
     function handlePopState() {
@@ -381,15 +420,14 @@ export function MushafReaderShell({
         setIsRangeMode(false);
         setCurrentPageNumber(pageNumber);
         void loadPage(pageNumber);
-        void loadSimilarLinks(pageNumber);
-        void loadBookmarkMarkers(pageNumber);
+        void loadMarkerBatch([pageNumber]);
       }
     }
 
     window.addEventListener("popstate", handlePopState);
 
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [initialPage.pageNumber, loadBookmarkMarkers, loadPage, loadSimilarLinks]);
+  }, [initialPage.pageNumber, loadMarkerBatch, loadPage]);
 
   useEffect(() => {
     setSelectedRange(null);
@@ -514,21 +552,31 @@ export function MushafReaderShell({
   }, [audio, playbackQueue]);
 
   const openSimilarLinks = useCallback((_: string, links: SimilarVersePageLink[]) => {
+    if (links.length === 1) {
+      setSimilarPreviewLinks(links);
+      setSimilarChooserLinks(null);
+      setSimilarPreviewRecords([]);
+      setIsSimilarPreviewLoading(true);
+      setIsChromeVisible(true);
+      return;
+    }
+
     setSimilarChooserLinks(links);
+    setSimilarPreviewLinks(null);
     setSimilarPreviewRecords([]);
-    setIsSimilarPreviewLoading(true);
+    setIsSimilarPreviewLoading(false);
     setIsChromeVisible(true);
   }, []);
 
   useEffect(() => {
-    if (!similarChooserLinks?.length) {
+    if (!similarPreviewLinks?.length) {
       setSimilarPreviewRecords([]);
       setIsSimilarPreviewLoading(false);
       return;
     }
 
     let cancelled = false;
-    const linksToLoad = similarChooserLinks;
+    const linksToLoad = similarPreviewLinks;
 
     async function loadRecords() {
       setIsSimilarPreviewLoading(true);
@@ -566,7 +614,85 @@ export function MushafReaderShell({
     return () => {
       cancelled = true;
     };
-  }, [similarChooserLinks]);
+  }, [similarPreviewLinks]);
+
+  useEffect(() => {
+    const currentVerseKey = audio.currentVerseKey;
+
+    if (!currentVerseKey || !audio.isPlaying) {
+      return;
+    }
+
+    const currentPage = pages[currentPageNumber];
+
+    if (currentPage?.verseKeys.includes(currentVerseKey)) {
+      return;
+    }
+
+    const loadedTargetPage = Object.values(pages).find((page) =>
+      page.verseKeys.includes(currentVerseKey),
+    );
+
+    if (loadedTargetPage) {
+      settleToPage(
+        loadedTargetPage.pageNumber,
+        loadedTargetPage.pageNumber > currentPageNumber ? 1 : -1,
+      );
+      return;
+    }
+
+    let cancelled = false;
+    const parsedVerse = parseVerseKey(currentVerseKey);
+
+    async function followPlayingVerse() {
+      try {
+        const response = await fetch(
+          `/api/quran/verse/${parsedVerse.surahNumber}/${parsedVerse.ayahNumber}`,
+          { cache: "force-cache" },
+        );
+
+        if (!response.ok) {
+          return;
+        }
+
+        const payload = (await response.json()) as {
+          verse?: { pageNumber?: number } | null;
+        };
+        const pageNumber = payload.verse?.pageNumber;
+
+        if (
+          cancelled ||
+          typeof pageNumber !== "number" ||
+          !Number.isInteger(pageNumber) ||
+          pageNumber < 1 ||
+          pageNumber > 604 ||
+          pageNumber === currentPageNumber
+        ) {
+          return;
+        }
+
+        await loadPage(pageNumber);
+        if (!cancelled) {
+          settleToPage(pageNumber, pageNumber > currentPageNumber ? 1 : -1);
+        }
+      } catch {
+        // Page following should never interrupt playback.
+      }
+    }
+
+    void followPlayingVerse();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    audio.currentVerseKey,
+    audio.isPlaying,
+    currentPageNumber,
+    loadPage,
+    pages,
+    settleToPage,
+  ]);
 
   const setRangeEnd = useCallback(
     (verseKey: string) => {
@@ -611,7 +737,7 @@ export function MushafReaderShell({
         surahs={surahs}
       />
       <section
-        className="mx-auto h-[var(--mutqin-viewport-height,100svh)] min-h-[430px] max-h-[1000px] w-full max-w-none overflow-hidden overscroll-none bg-paper pb-[1.6rem] pt-[3.55rem] touch-none"
+        className="mx-auto h-[var(--mutqin-viewport-height,100svh)] min-h-[430px] max-h-[1000px] w-full max-w-none overflow-hidden overscroll-none bg-paper pb-[2.65rem] pt-[2.65rem] touch-none"
         onTouchEnd={(event) => {
           if (touchStartX.current === null) {
             return;
@@ -753,10 +879,13 @@ export function MushafReaderShell({
               pageMarkers.delete(selectedAyah.verseKey);
             }
 
-            return {
+            const nextMarkers = {
               ...currentMarkers,
               [selectedAyah.pageNumber]: Array.from(pageMarkers),
             };
+            bookmarksByPageRef.current = nextMarkers;
+
+            return nextMarkers;
           });
         }}
         onPlayRange={playRange}
@@ -780,10 +909,13 @@ export function MushafReaderShell({
                 pageMarkers.add(selectedAyah.verseKey);
               }
 
-              return {
+              const nextMarkers = {
                 ...currentMarkers,
                 [selectedAyah.pageNumber]: Array.from(pageMarkers),
               };
+              bookmarksByPageRef.current = nextMarkers;
+
+              return nextMarkers;
             });
           }
           setToastMessage(message);
@@ -801,6 +933,55 @@ export function MushafReaderShell({
           onClick={() => setSimilarChooserLinks(null)}
         >
           <div
+            className="mx-auto w-full max-w-xl overflow-hidden rounded-t-[2.2rem] border border-line bg-paper shadow-[0_-18px_60px_rgba(31,39,33,0.18)]"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-3 border-b border-line/70 px-5 pb-3 pt-4">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-palm">
+                  Similar Verses
+                </p>
+                <p className="mt-1 text-lg font-extrabold text-ink">Choose a record</p>
+              </div>
+              <button
+                className="pt-1 text-base font-extrabold text-palm"
+                onClick={() => setSimilarChooserLinks(null)}
+                type="button"
+              >
+                Close
+              </button>
+            </div>
+            <div className="grid gap-2 px-4 py-4">
+              {similarChooserLinks.map((link) => (
+                <button
+                  className="rounded-[1.25rem] border border-line bg-mist/70 px-4 py-3 text-left transition hover:border-palm/30 hover:bg-palm/5"
+                  key={link.setId}
+                  onClick={() => {
+                    setSimilarPreviewLinks([link]);
+                    setSimilarChooserLinks(null);
+                    setSimilarPreviewRecords([]);
+                    setIsSimilarPreviewLoading(true);
+                  }}
+                  type="button"
+                >
+                  <span className="block text-sm font-extrabold text-ink">
+                    {link.title || "Similar verses record"}
+                  </span>
+                  <span className="mt-1 block text-xs font-semibold leading-5 text-ink/55">
+                    {link.references.join(", ")}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
+      {similarPreviewLinks ? (
+        <div
+          className="fixed inset-0 z-50 flex items-end bg-ink/12 px-2"
+          onClick={() => setSimilarPreviewLinks(null)}
+        >
+          <div
             className="mx-auto h-[86svh] w-full max-w-xl overflow-hidden rounded-t-[2.2rem] border border-line bg-paper shadow-[0_-18px_60px_rgba(31,39,33,0.18)]"
             onClick={(event) => event.stopPropagation()}
           >
@@ -810,22 +991,22 @@ export function MushafReaderShell({
                   Similar Verses
                 </p>
                 <p className="mt-1 text-lg font-extrabold text-ink">
-                  Linked record{similarChooserLinks.length === 1 ? "" : "s"}
+                  Linked record
                 </p>
               </div>
               <div className="flex items-center gap-4 pt-1">
-                {similarChooserLinks[0] ? (
+                {similarPreviewLinks[0] ? (
                   <Link
                     aria-label="Open full record"
                     className="text-palm"
-                    href={`/app/library/similar-verses/${similarChooserLinks[0].setId}`}
+                    href={`/app/library/similar-verses/${similarPreviewLinks[0].setId}`}
                   >
                     <ExternalLink aria-hidden className="size-5" />
                   </Link>
                 ) : null}
                 <button
                   className="text-base font-extrabold text-palm"
-                  onClick={() => setSimilarChooserLinks(null)}
+                  onClick={() => setSimilarPreviewLinks(null)}
                   type="button"
                 >
                   Close

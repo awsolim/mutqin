@@ -1,4 +1,5 @@
 import { PageHeader } from "@/components/page-header";
+import { PageBackButton } from "@/components/page-back-button";
 import { SurahList } from "@/components/quran/surah-list";
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -12,6 +13,7 @@ export default function QuranPage() {
   if (surahs.length === 0) {
     return (
       <div className="space-y-5">
+        <PageBackButton href="/app" label="App home" />
         <PageHeader
           eyebrow="Reader"
           title="Qur'an"
@@ -24,7 +26,7 @@ export default function QuranPage() {
             to generate the local page data.
           </p>
           <ButtonLink href="/app" variant="secondary">
-            Back home
+            App home
           </ButtonLink>
         </Card>
       </div>

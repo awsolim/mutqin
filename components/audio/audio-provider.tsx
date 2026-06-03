@@ -46,6 +46,7 @@ const defaultReciter: ReciterId = "alafasy";
 
 export function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const nextAudioPreloadRef = useRef<HTMLAudioElement | null>(null);
   const queueRef = useRef<AudioQueueItem[]>([]);
   const queueIndexRef = useRef(0);
   const verseLoopRef = useRef(1);
@@ -71,6 +72,23 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const preloadUpcomingItem = useCallback(
+    (index: number) => {
+      const upcomingItem = queueRef.current[index + 1];
+
+      if (!upcomingItem) {
+        nextAudioPreloadRef.current = null;
+        return;
+      }
+
+      const nextAudio = new Audio(getAudioUrl(currentReciter, upcomingItem.verseKey));
+      nextAudio.preload = "auto";
+      nextAudio.load();
+      nextAudioPreloadRef.current = nextAudio;
+    },
+    [currentReciter],
+  );
+
   const loadCurrentItem = useCallback(async () => {
     const audio = audioRef.current;
     const item = queueRef.current[queueIndexRef.current];
@@ -86,6 +104,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     setCurrentVerseKey(item.verseKey);
     setCurrentLabel(item.label);
     audio.src = getAudioUrl(currentReciter, item.verseKey);
+    preloadUpcomingItem(queueIndexRef.current);
 
     try {
       await audio.play();
@@ -94,7 +113,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       setIsPlaying(false);
       setError("Audio unavailable for this reciter/ayah.");
     }
-  }, [currentReciter]);
+  }, [currentReciter, preloadUpcomingItem]);
 
   const stop = useCallback(() => {
     const audio = audioRef.current;

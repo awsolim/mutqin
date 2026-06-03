@@ -50,7 +50,7 @@ export function MushafPageReader({
     >
       <div
         className={cn(
-          "mx-[-0.9rem] grid h-full max-w-[calc(100%+1.8rem)] overflow-hidden bg-paper px-0 py-0",
+          "mx-[-1.05rem] grid h-full max-w-[calc(100%+2.1rem)] overflow-hidden bg-paper px-0 py-0",
           isSparsePage
             ? "grid-rows-[1fr_repeat(15,minmax(0,1fr))_1fr]"
             : "grid-rows-[repeat(15,minmax(0,1fr))]",
@@ -155,8 +155,8 @@ function MushafAyahLine({
         cn(
           "relative flex min-w-0 items-center justify-center overflow-visible whitespace-nowrap text-center leading-none text-ink",
           isSparsePage
-            ? "text-[clamp(1.35rem,6.25vw,2.12rem)]"
-            : "text-[clamp(1.08rem,5.2vw,1.78rem)]",
+            ? "text-[clamp(1.42rem,6.45vw,2.2rem)]"
+            : "text-[clamp(1.12rem,5.35vw,1.84rem)]",
         ),
         line.isCentered && "text-center",
       )}
@@ -298,7 +298,7 @@ function MushafWordSpan({
         "relative z-10 cursor-pointer select-none rounded px-[0.03em] transition",
         useGlyph ? "mx-0" : "mx-[0.08em]",
         isInRange && "bg-sage/10 text-palm",
-        isActive && "bg-[#f3e7bd]/45 text-[#8a6514]",
+        isActive && "bg-palm/20 text-[#245d45] shadow-[0_0_0_0.08em_rgba(64,112,84,0.08)]",
         isSelected && "bg-[#dbeadf]/50 text-palm",
         isEndMarker &&
           "text-[#8b6228] drop-shadow-[0_0_0.16rem_rgba(139,98,40,0.22)]",

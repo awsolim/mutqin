@@ -1,5 +1,6 @@
 import { ButtonLink } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { PageBackButton } from "@/components/page-back-button";
 import { MushafReaderShell } from "@/components/quran/mushaf-reader-shell";
 import { getQcfV2FontName, getQcfV2FontUrl } from "@/lib/quran/font";
 import { getAllSurahs, getMushafPage } from "@/lib/quran/utils";
@@ -41,6 +42,7 @@ export default async function MushafPage({ params, searchParams }: MushafPagePro
   if (!mushafPage) {
     return (
       <div className="space-y-5">
+        <PageBackButton href="/app/quran" label="Surah list" />
         <Card className="space-y-3">
           <h1 className="text-xl font-bold text-ink">Mushaf page data missing</h1>
           <p className="text-sm leading-6 text-ink/70">
@@ -48,7 +50,7 @@ export default async function MushafPage({ params, searchParams }: MushafPagePro
             local JSON for all 604 pages.
           </p>
           <ButtonLink href="/app/quran" variant="secondary">
-            Back to surah list
+            Surah list
           </ButtonLink>
         </Card>
       </div>

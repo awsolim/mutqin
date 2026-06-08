@@ -46,6 +46,7 @@ function metadataFromInput(input: CollectionItemInput) {
     sourceUrl: cleanText(input.sourceUrl),
     arabicMarkers: input.arabicMarkers ?? [],
     translationMarkers: input.translationMarkers ?? [],
+    duaEntries: input.duaEntries ?? [],
     tags: cleanTags(input.tags),
     pinned: Boolean(input.pinned),
   };
@@ -94,4 +95,25 @@ export async function PATCH(
   revalidateCollection(input.type, id);
 
   return NextResponse.json({ id, message: "Saved.", ok: true });
+}
+
+export async function DELETE(
+  _request: Request,
+  context: { params: Promise<{ id: string }> },
+) {
+  const { id } = await context.params;
+
+  await requireUser();
+  const supabase = await createClient();
+  const { error } = await supabase.from("library_items").delete().eq("id", id);
+
+  if (error) {
+    return NextResponse.json({ message: error.message, ok: false }, { status: 500 });
+  }
+
+  revalidatePath("/app/library");
+  revalidatePath("/app/library/duas");
+  revalidatePath("/app/library/hadiths");
+
+  return NextResponse.json({ message: "Library item removed.", ok: true });
 }

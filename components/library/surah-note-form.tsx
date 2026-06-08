@@ -3,7 +3,6 @@
 import { Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { createSurahNote } from "@/lib/library/actions";
 import { type Surah } from "@/lib/quran/types";
 
 type SurahNoteFormProps = {
@@ -35,14 +34,15 @@ export function SurahNoteForm({ initialSurahNumber, surahs }: SurahNoteFormProps
   function save() {
     setMessage(null);
     startTransition(async () => {
-      const result = await createSurahNote({
-        bullets,
-        surahNumber,
-        title,
+      const response = await fetch("/api/library/surah-notes", {
+        body: JSON.stringify({ bullets, surahNumber, title }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
       });
+      const result = (await response.json()) as { ok?: boolean; message?: string };
 
       if (!result.ok) {
-        setMessage(result.message);
+        setMessage(result.message ?? "Could not save surah notes.");
         return;
       }
 

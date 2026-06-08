@@ -49,6 +49,33 @@ function getSelectionForVerseKey(page: MushafPage, verseKey?: string) {
   return word ? getWordSelection(word, page) : null;
 }
 
+function getLastVerseKeyOnPage(page: MushafPage | undefined) {
+  return page?.verseKeys[page.verseKeys.length - 1] ?? null;
+}
+
+function buildVerseKeysBetween(from: SelectedAyah, to: SelectedAyah, surahs: Surah[]) {
+  const [start, end] =
+    compareVerseKeys(from.verseKey, to.verseKey) <= 0 ? [from, to] : [to, from];
+  const keys: string[] = [];
+
+  for (let surahNumber = start.surahNumber; surahNumber <= end.surahNumber; surahNumber += 1) {
+    const surah = surahs.find((currentSurah) => currentSurah.number === surahNumber);
+
+    if (!surah) {
+      continue;
+    }
+
+    const firstAyah = surahNumber === start.surahNumber ? start.ayahNumber : 1;
+    const lastAyah = surahNumber === end.surahNumber ? end.ayahNumber : surah.ayahCount;
+
+    for (let ayahNumber = firstAyah; ayahNumber <= lastAyah; ayahNumber += 1) {
+      keys.push(`${surahNumber}:${ayahNumber}`);
+    }
+  }
+
+  return keys;
+}
+
 export function MushafReaderShell({
   initialPage,
   initialVerseKey,
@@ -500,7 +527,30 @@ export function MushafReaderShell({
       return [];
     }
 
-    return Array.from(
+    const currentPageEndVerseKey = getLastVerseKeyOnPage(currentPage);
+    const specialOptions = [
+      currentPageEndVerseKey && currentPageEndVerseKey !== selectedAyah.verseKey
+        ? {
+            verseKey: currentPageEndVerseKey,
+            label: `End of page ${currentPageNumber}`,
+          }
+        : null,
+      {
+        disabled: true,
+        verseKey: "__quarter_hizb_unavailable",
+        label: "End of quarter hizb - marker data needed",
+      },
+      {
+        disabled: true,
+        verseKey: "__half_hizb_unavailable",
+        label: "End of half hizb - marker data needed",
+      },
+    ].filter(
+      (option): option is { disabled?: boolean; verseKey: string; label: string } =>
+        Boolean(option),
+    );
+
+    const ayahOptions = Array.from(
       { length: surah.ayahCount - selectedAyah.ayahNumber + 1 },
       (_, index) => {
         const ayahNumber = selectedAyah.ayahNumber + index;
@@ -512,27 +562,17 @@ export function MushafReaderShell({
         };
       },
     );
-  }, [getSurahName, selectedAyah, surahs]);
+
+    return [...specialOptions, ...ayahOptions];
+  }, [currentPage, currentPageNumber, getSurahName, selectedAyah, surahs]);
 
   const playbackRangeVerseKeys = useMemo(() => {
     if (!selectedRange?.end) {
       return [];
     }
 
-    const [from, to] =
-      compareVerseKeys(selectedRange.start.verseKey, selectedRange.end.verseKey) <= 0
-        ? [selectedRange.start, selectedRange.end]
-        : [selectedRange.end, selectedRange.start];
-
-    if (from.surahNumber !== to.surahNumber) {
-      return [];
-    }
-
-    return Array.from(
-      { length: to.ayahNumber - from.ayahNumber + 1 },
-      (_, index) => `${from.surahNumber}:${from.ayahNumber + index}`,
-    );
-  }, [selectedRange]);
+    return buildVerseKeysBetween(selectedRange.start, selectedRange.end, surahs);
+  }, [selectedRange, surahs]);
 
   const playbackQueue = useMemo(
     () =>
@@ -696,6 +736,10 @@ export function MushafReaderShell({
 
   const setRangeEnd = useCallback(
     (verseKey: string) => {
+      if (verseKey.startsWith("__")) {
+        return;
+      }
+
       if (!selectedAyah || !currentPage) {
         return;
       }

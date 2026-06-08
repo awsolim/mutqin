@@ -94,9 +94,18 @@ export type CollectionItemInput = {
   sourceUrl?: string | null;
   arabicMarkers?: TextMarkerInput[];
   translationMarkers?: TextMarkerInput[];
+  duaEntries?: DuaEntryInput[];
   tags?: string[];
   body?: string | null;
   pinned?: boolean;
+};
+
+export type DuaEntryInput = {
+  id: string;
+  arabicText: string;
+  translation?: string | null;
+  source?: string | null;
+  reference?: string | null;
 };
 
 export type TextMarkerType = "sanad" | "matn" | "quote";

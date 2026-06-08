@@ -7,6 +7,7 @@ import { useMemo, useState, useTransition } from "react";
 import { type NormalizedHadith } from "@/lib/hadith/types";
 import {
   type CollectionItemKind,
+  type DuaEntryInput,
   type LibraryActionResult,
   type LibraryItem,
   type TextMarkerInput,
@@ -15,6 +16,7 @@ import {
 import {
   getBooleanMeta,
   getCollectionHref,
+  getDuaEntries,
   getStringMeta,
   getTags,
   getTextMarkers,
@@ -56,6 +58,14 @@ function splitTags(value: string) {
     .split(",")
     .map((tag) => tag.trim())
     .filter(Boolean);
+}
+
+function createLocalId() {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
 function ClearableField({
@@ -110,9 +120,7 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
   const [translationMarkers, setTranslationMarkers] = useState<TextMarkerInput[]>(
     item ? getTextMarkers(item, "translationMarkers") : [],
   );
-  const [transliteration, setTransliteration] = useState(
-    item ? getStringMeta(item, "transliteration") : "",
-  );
+  const transliteration = item ? getStringMeta(item, "transliteration") : "";
   const [source, setSource] = useState(item ? getStringMeta(item, "source") : "");
   const [reference, setReference] = useState(item ? getStringMeta(item, "reference") : "");
   const [category, setCategory] = useState(item ? getStringMeta(item, "category") : "");
@@ -127,7 +135,10 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
   const [sourceUrl, setSourceUrl] = useState(item ? getStringMeta(item, "sourceUrl") : "");
   const [tags, setTags] = useState(item ? getTags(item).join(", ") : "");
   const [body, setBody] = useState(item?.body ?? "");
-  const [reflectionOpen, setReflectionOpen] = useState(!isHadith || Boolean(item?.body));
+  const [duaEntries, setDuaEntries] = useState<DuaEntryInput[]>(
+    item ? getDuaEntries(item) : [],
+  );
+  const [reflectionOpen, setReflectionOpen] = useState(Boolean(item?.body));
   const [pinned, setPinned] = useState(item ? getBooleanMeta(item, "pinned") : false);
   const [message, setMessage] = useState<string | null>(null);
   const [lookupReference, setLookupReference] = useState("");
@@ -155,6 +166,51 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
           },
     [isHadith, item],
   );
+  const isWitrDua = !isHadith && splitTags(tags).some((tag) => tag.toLowerCase() === "witr");
+  const showDuaCompiler = !isHadith && (isWitrDua || duaEntries.length > 0);
+
+  function appendCurrentDua() {
+    if (!arabicText.trim()) {
+      setMessage("Add Arabic text before appending to the Witr record.");
+      return;
+    }
+
+    setDuaEntries((current) => [
+      ...current,
+      {
+        id: createLocalId(),
+        arabicText: arabicText.trim(),
+        translation: translation.trim() || null,
+        source: source.trim() || null,
+        reference: reference.trim() || null,
+      },
+    ]);
+    setArabicText("");
+    setTranslation("");
+    setSource("");
+    setReference("");
+    setMessage(null);
+  }
+
+  function moveDuaEntry(index: number, direction: -1 | 1) {
+    setDuaEntries((current) => {
+      const nextIndex = index + direction;
+
+      if (nextIndex < 0 || nextIndex >= current.length) {
+        return current;
+      }
+
+      const next = [...current];
+      const [entry] = next.splice(index, 1);
+      next.splice(nextIndex, 0, entry);
+
+      return next;
+    });
+  }
+
+  function removeDuaEntry(entryId: string) {
+    setDuaEntries((current) => current.filter((entry) => entry.id !== entryId));
+  }
 
   async function lookupHadith() {
     const trimmedReference = lookupReference.trim();
@@ -226,7 +282,8 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
         arabicMarkers,
         translation,
         translationMarkers,
-        transliteration,
+        transliteration: isHadith ? transliteration : "",
+        duaEntries,
         source,
         reference,
         category,
@@ -258,6 +315,10 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
         return;
       }
 
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+      window.scrollTo(0, 0);
       router.push(`${baseHref}/${result.id}`);
       router.refresh();
     });
@@ -406,15 +467,68 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
               </span>
             </button>
           ) : null}
-          {!isHadith ? (
-            <ClearableField
-              className="mt-2 min-h-20 w-full resize-none rounded-2xl border border-line bg-mist px-3 py-3 text-sm leading-6 text-ink outline-none placeholder:text-ink/35 focus:border-palm/40 focus:ring-2 focus:ring-palm/15"
-              label="Transliteration"
-              multiline
-              onChange={setTransliteration}
-              placeholder="Optional"
-              value={transliteration}
-            />
+          {showDuaCompiler ? (
+            <div className="rounded-[1.25rem] border border-palm/15 bg-palm/5 p-3">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-extrabold text-ink">Witr dua sections</p>
+                  <p className="mt-0.5 text-xs font-semibold text-ink/45">
+                    Append, reorder, and remove sections for one long Witr record.
+                  </p>
+                </div>
+                <button
+                  className="shrink-0 rounded-2xl bg-palm px-3 py-2 text-xs font-extrabold text-paper"
+                  onClick={appendCurrentDua}
+                  type="button"
+                >
+                  Append
+                </button>
+              </div>
+              {duaEntries.length ? (
+                <div className="mt-3 grid gap-2">
+                  {duaEntries.map((entry, index) => (
+                    <div className="rounded-2xl border border-line bg-paper p-3" key={entry.id}>
+                      <p className="text-xs font-bold uppercase tracking-wide text-palm">
+                        Section {index + 1}
+                      </p>
+                      <p className="mt-2 text-right text-lg leading-8 text-ink" dir="rtl" lang="ar">
+                        {entry.arabicText}
+                      </p>
+                      {entry.translation ? (
+                        <p className="mt-2 text-sm leading-6 text-ink/60">
+                          {entry.translation}
+                        </p>
+                      ) : null}
+                      <div className="mt-3 flex gap-2">
+                        <button
+                          className="rounded-full bg-mist px-3 py-1.5 text-xs font-bold text-ink/55 disabled:opacity-40"
+                          disabled={index === 0}
+                          onClick={() => moveDuaEntry(index, -1)}
+                          type="button"
+                        >
+                          Up
+                        </button>
+                        <button
+                          className="rounded-full bg-mist px-3 py-1.5 text-xs font-bold text-ink/55 disabled:opacity-40"
+                          disabled={index === duaEntries.length - 1}
+                          onClick={() => moveDuaEntry(index, 1)}
+                          type="button"
+                        >
+                          Down
+                        </button>
+                        <button
+                          className="rounded-full bg-red-50 px-3 py-1.5 text-xs font-bold text-red-600"
+                          onClick={() => removeDuaEntry(entry.id)}
+                          type="button"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
           ) : null}
         </div>
       </section>

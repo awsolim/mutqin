@@ -1,4 +1,9 @@
-import { type LibraryItem, type TextMarkerInput, type TextMarkerType } from "@/lib/library/types";
+import {
+  type DuaEntryInput,
+  type LibraryItem,
+  type TextMarkerInput,
+  type TextMarkerType,
+} from "@/lib/library/types";
 
 export function getStringMeta(item: LibraryItem, key: string) {
   const value = item.metadata?.[key];
@@ -39,5 +44,18 @@ export function getTextMarkers(item: LibraryItem, key: string): TextMarkerInput[
       Number.isInteger(candidate.endWordPosition) &&
       isTextMarkerType(candidate.type)
     );
+  });
+}
+
+export function getDuaEntries(item: LibraryItem): DuaEntryInput[] {
+  const entries = item.metadata?.duaEntries;
+
+  if (!Array.isArray(entries)) return [];
+
+  return entries.filter((entry): entry is DuaEntryInput => {
+    if (!entry || typeof entry !== "object") return false;
+    const candidate = entry as Record<string, unknown>;
+
+    return typeof candidate.id === "string" && typeof candidate.arabicText === "string";
   });
 }

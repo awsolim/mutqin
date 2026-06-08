@@ -1,5 +1,3 @@
-"use client";
-
 import {
   BookHeart,
   BookMarked,
@@ -20,8 +18,6 @@ import {
   UsersRound,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
 
 type LibrarySubsection = {
   href: string;
@@ -128,43 +124,18 @@ const sections: LibrarySectionConfig[] = [
 ];
 
 export function LibraryHome() {
-  const [openSections, setOpenSections] = useState(
-    () => new Set(sections.map((section) => section.title)),
-  );
-
-  function toggleSection(title: string) {
-    setOpenSections((current) => {
-      const next = new Set(current);
-
-      if (next.has(title)) {
-        next.delete(title);
-      } else {
-        next.add(title);
-      }
-
-      return next;
-    });
-  }
-
   return (
     <div className="space-y-4">
       {sections.map((section) => {
         const Icon = section.icon;
-        const isOpen = openSections.has(section.title);
 
         return (
           <section
             className="overflow-hidden rounded-[1.6rem] border border-line bg-paper shadow-soft"
             key={section.title}
           >
-            <button
-              aria-expanded={isOpen}
-              className={cn(
-                "flex w-full items-center gap-3 bg-gradient-to-br px-4 py-4 text-left transition",
-                section.accent,
-              )}
-              onClick={() => toggleSection(section.title)}
-              type="button"
+            <div
+              className={`flex w-full items-center gap-3 bg-gradient-to-br px-4 py-4 text-left ${section.accent}`}
             >
               <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-paper/85 text-palm shadow-soft">
                 <Icon aria-hidden className="size-6" />
@@ -172,20 +143,9 @@ export function LibraryHome() {
               <span className="min-w-0 flex-1">
                 <span className="block text-lg font-extrabold text-ink">{section.title}</span>
               </span>
-              <ChevronDown
-                aria-hidden
-                className={cn(
-                  "size-5 shrink-0 text-ink/45 transition-transform",
-                  isOpen && "rotate-180",
-                )}
-              />
-            </button>
-            <div
-              className={cn(
-                "grid transition-[grid-template-rows] duration-300",
-                isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
-              )}
-            >
+              <ChevronDown aria-hidden className="size-5 shrink-0 rotate-180 text-ink/45" />
+            </div>
+            <div className="grid grid-rows-[1fr]">
               <div className="overflow-hidden">
                 <div className="grid gap-2 p-3">
                   {section.items.map((item) => {

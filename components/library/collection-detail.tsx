@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTransition } from "react";
-import { deleteLibraryItem } from "@/lib/library/actions";
 import { formatLibraryDate } from "@/lib/library/format";
 import {
   type CollectionItemKind,
@@ -18,6 +17,7 @@ import { cn } from "@/lib/utils";
 import {
   getBooleanMeta,
   getCollectionHref,
+  getDuaEntries,
   getStringMeta,
   getTags,
   getTextMarkers,
@@ -224,15 +224,22 @@ export function CollectionDetail({ item, type }: CollectionDetailProps) {
   const sourceUrl = getStringMeta(item, "sourceUrl");
   const arabicMarkers = getTextMarkers(item, "arabicMarkers");
   const translationMarkers = getTextMarkers(item, "translationMarkers");
+  const duaEntries = getDuaEntries(item);
 
   function removeItem() {
     if (!window.confirm("Delete this item?")) return;
 
     startTransition(async () => {
-      const result = await deleteLibraryItem(item.id);
+      const response = await fetch(`/api/library/collections/${item.id}`, {
+        method: "DELETE",
+      });
+      const result = (await response.json()) as { ok?: boolean; message?: string };
+
       if (result.ok) {
         router.push(baseHref);
         router.refresh();
+      } else {
+        window.alert(result.message ?? "Could not delete this item.");
       }
     });
   }
@@ -333,7 +340,32 @@ export function CollectionDetail({ item, type }: CollectionDetailProps) {
         </section>
       ) : null}
 
-      {getStringMeta(item, "arabicText") ? (
+      {type === "dua" && duaEntries.length ? (
+        <section className="grid gap-3 rounded-[1.6rem] border border-line bg-paper p-5 shadow-soft">
+          {duaEntries.map((entry, index) => (
+            <div
+              className="border-b border-line/70 pb-4 last:border-0 last:pb-0"
+              key={entry.id}
+            >
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-palm">
+                Section {index + 1}
+              </p>
+              <p
+                className="text-right text-2xl font-semibold leading-[2.35] text-ink"
+                dir="rtl"
+                lang="ar"
+              >
+                {entry.arabicText}
+              </p>
+              {entry.translation ? (
+                <p className="mt-3 whitespace-pre-wrap text-base leading-8 text-ink/78">
+                  {entry.translation}
+                </p>
+              ) : null}
+            </div>
+          ))}
+        </section>
+      ) : getStringMeta(item, "arabicText") ? (
         type === "hadith" ? (
           <HadithArabicText
             markers={arabicMarkers}
@@ -351,7 +383,7 @@ export function CollectionDetail({ item, type }: CollectionDetailProps) {
         )
       ) : null}
 
-      {getStringMeta(item, "translation") ? (
+      {!duaEntries.length && getStringMeta(item, "translation") ? (
         <section className="rounded-[1.6rem] border border-line bg-paper p-5 shadow-soft">
           <p className="whitespace-pre-wrap text-base leading-8 text-ink/78">
             <MarkedText markers={translationMarkers} text={getStringMeta(item, "translation")} />
@@ -360,7 +392,7 @@ export function CollectionDetail({ item, type }: CollectionDetailProps) {
         </section>
       ) : null}
 
-      {getStringMeta(item, "transliteration") ? (
+      {type === "hadith" && getStringMeta(item, "transliteration") ? (
         <section className="rounded-[1.6rem] border border-line bg-paper p-5 shadow-soft">
           <p className="whitespace-pre-wrap text-sm italic leading-7 text-ink/65">
             {getStringMeta(item, "transliteration")}

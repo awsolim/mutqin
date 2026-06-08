@@ -3,7 +3,6 @@
 import { Search, Trash2 } from "lucide-react";
 import { type ReactNode } from "react";
 import { useMemo, useState, useTransition } from "react";
-import { deleteLibraryItem } from "@/lib/library/actions";
 import { formatLibraryDate, formatLibraryReference } from "@/lib/library/format";
 import { type LibraryItem } from "@/lib/library/types";
 import { type Surah } from "@/lib/quran/types";
@@ -61,10 +60,15 @@ export function SurahNoteList({ emptyState, items, surahs }: SurahNoteListProps)
     }
 
     startTransition(async () => {
-      const result = await deleteLibraryItem(itemId);
+      const response = await fetch(`/api/library/collections/${itemId}`, {
+        method: "DELETE",
+      });
+      const result = (await response.json()) as { ok?: boolean; message?: string };
 
       if (result.ok) {
         setLocalItems((currentItems) => currentItems.filter((item) => item.id !== itemId));
+      } else {
+        window.alert(result.message ?? "Could not remove this surah note.");
       }
     });
   }

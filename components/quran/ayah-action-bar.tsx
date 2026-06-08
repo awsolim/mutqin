@@ -7,7 +7,6 @@ import {
   Headphones,
   Languages,
   Lightbulb,
-  NotebookPen,
   Play,
   Sparkles,
   Square,
@@ -38,7 +37,7 @@ type AyahActionBarProps = {
   onStartPlayback: () => void;
   onNotify: (message: string) => void;
   rangeLabel: string | null;
-  rangeOptions: Array<{ verseKey: string; label: string }>;
+  rangeOptions: Array<{ disabled?: boolean; verseKey: string; label: string }>;
   selectedRangeEndVerseKey: string | null;
 };
 
@@ -767,7 +766,11 @@ export function AyahActionBar({
                       value={selectedRangeEndVerseKey ?? ayah.verseKey}
                     >
                       {rangeOptions.map((option) => (
-                        <option key={option.verseKey} value={option.verseKey}>
+                        <option
+                          disabled={option.disabled}
+                          key={option.verseKey}
+                          value={option.verseKey}
+                        >
                           {option.label}
                         </option>
                       ))}
@@ -1042,9 +1045,6 @@ export function AyahActionBar({
               <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-4 bg-gradient-to-r from-paper/95 to-transparent" />
               <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-paper/85 via-paper/35 to-transparent" />
               <div className="flex gap-1 overflow-x-auto pl-1 pr-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                <ActionIcon icon={Languages} label="Translation" onClick={() => void openMeaning()} />
-                <ActionIcon icon={BookOpenText} label="Tafsir" onClick={() => void openStudy("tafsir")} />
-                <ActionIcon icon={BookMarked} label="Iʿrāb" onClick={() => void openIrab()} />
                 <ActionIcon
                   icon={Headphones}
                   label="Play"
@@ -1056,18 +1056,9 @@ export function AyahActionBar({
                     setIsAudioOpen(true);
                   }}
                 />
-                <ActionIcon
-                  icon={NotebookPen}
-                  label="Note"
-                  onClick={() => {
-                    setIsAudioOpen(false);
-                    setIsIrabOpen(false);
-                    setIsMeaningOpen(false);
-                    setNoteMode("chooser");
-                    setIsNoteOpen(true);
-                    setIsTafsirOpen(false);
-                  }}
-                />
+                <ActionIcon icon={Languages} label="Translation" onClick={() => void openMeaning()} />
+                <ActionIcon icon={BookOpenText} label="Tafsir" onClick={() => void openStudy("tafsir")} />
+                <ActionIcon icon={BookMarked} label="Iʿrāb" onClick={() => void openIrab()} />
                 <ActionIcon
                   icon={isBookmarked ? BookMarked : Bookmark}
                   isActive={isBookmarked}
@@ -1546,7 +1537,7 @@ function parseIbnKathirParagraph(paragraph: string): Array<{
 }
 
 function findGluedIbnKathirHeading(paragraph: string) {
-  const matches = Array.from(paragraph.matchAll(/[a-z'`)”]([A-Z][a-z])/g));
+  const matches = Array.from(paragraph.matchAll(/[a-z)]([A-Z][a-z])/g));
 
   for (const match of matches) {
     if (typeof match.index !== "number" || match.index < 8) {
@@ -1554,6 +1545,11 @@ function findGluedIbnKathirHeading(paragraph: string) {
     }
 
     const bodyStart = match.index + 1;
+
+    if (isApostropheNameBoundary(paragraph, bodyStart)) {
+      continue;
+    }
+
     const headingStart = findIbnKathirHeadingStart(paragraph, bodyStart);
     const heading = paragraph.slice(headingStart, bodyStart).trim();
     const after = paragraph.slice(bodyStart).trim();
@@ -1568,6 +1564,17 @@ function findGluedIbnKathirHeading(paragraph: string) {
   }
 
   return null;
+}
+
+function isApostropheNameBoundary(text: string, bodyStart: number) {
+  const previous = text[bodyStart - 1];
+  const current = text[bodyStart];
+
+  if (!previous || !current || !/[A-Z]/.test(current)) {
+    return false;
+  }
+
+  return previous === "'" || previous === "`" || previous === "’" || previous === "‘";
 }
 
 function findIbnKathirHeadingStart(paragraph: string, bodyStart: number) {

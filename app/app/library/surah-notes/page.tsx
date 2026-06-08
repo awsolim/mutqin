@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BookOpenText, Plus } from "lucide-react";
 import { LibraryEmptyState } from "@/components/library/library-empty-state";
 import { SurahNoteList } from "@/components/library/surah-note-list";
+import { PageBackButton } from "@/components/page-back-button";
 import { PageHeader } from "@/components/page-header";
 import { getLibraryItemsByType } from "@/lib/library/actions";
 import { getAllSurahs } from "@/lib/quran/utils";
@@ -28,6 +29,7 @@ export default async function SurahNotesPage({ searchParams }: SurahNotesPagePro
 
   return (
     <div className="space-y-5">
+      <PageBackButton href="/app/library" label="Library" />
       <div className="flex items-start justify-between gap-3">
         <PageHeader eyebrow="Qur'an Notes" title="Surah Notes" />
         <Link

@@ -1,6 +1,7 @@
 import { BookMarked } from "lucide-react";
 import { LibraryEmptyState } from "@/components/library/library-empty-state";
 import { LibraryItemList } from "@/components/library/library-item-list";
+import { PageBackButton } from "@/components/page-back-button";
 import { PageHeader } from "@/components/page-header";
 import { getLibraryItemsByType } from "@/lib/library/actions";
 import { getAllSurahs, getVerseTextByKey } from "@/lib/quran/utils";
@@ -17,6 +18,7 @@ export default async function BookmarksPage() {
 
   return (
     <div className="space-y-5">
+      <PageBackButton href="/app/library" label="Library" />
       <PageHeader
         eyebrow="Qur'an Notes"
         title="Bookmarks"

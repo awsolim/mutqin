@@ -1,9 +1,19 @@
 "use client";
 
-import { ChevronDown, ExternalLink, Feather, Plus, ScrollText, Search, Star, Trash2 } from "lucide-react";
+import {
+  ChevronDown,
+  Eye,
+  EyeOff,
+  ExternalLink,
+  Feather,
+  Plus,
+  ScrollText,
+  Search,
+  Star,
+  Trash2,
+} from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState, useTransition } from "react";
-import { deleteLibraryItem } from "@/lib/library/actions";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { formatLibraryDate } from "@/lib/library/format";
 import {
   type CollectionItemKind,
@@ -16,6 +26,7 @@ import { LibraryEmptyState } from "./library-empty-state";
 import {
   getBooleanMeta,
   getCollectionHref,
+  getDuaEntries,
   getStringMeta,
   getTags,
   getTextMarkers,
@@ -33,12 +44,15 @@ export function CollectionList({ items, type }: CollectionListProps) {
   const [filter, setFilter] = useState("all");
   const [localItems, setLocalItems] = useState(items);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(() => new Set());
+  const [showDuaEnglish, setShowDuaEnglish] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [isPending, startTransition] = useTransition();
+
   const filters = useMemo(() => {
     const values = new Set<string>();
 
     localItems.forEach((item) => {
-      const primary = type === "dua" ? getStringMeta(item, "category") : getStringMeta(item, "reference");
+      const primary = type === "dua" ? getStringMeta(item, "category") : "";
       if (primary) values.add(primary);
       getTags(item).forEach((tag) => values.add(tag));
     });
@@ -69,7 +83,6 @@ export function CollectionList({ items, type }: CollectionListProps) {
       const matchesFilter =
         filter === "all" ||
         getStringMeta(item, "category") === filter ||
-        getStringMeta(item, "source") === filter ||
         getTags(item).includes(filter);
 
       return matchesQuery && matchesFilter;
@@ -80,9 +93,15 @@ export function CollectionList({ items, type }: CollectionListProps) {
     if (!window.confirm("Delete this item?")) return;
 
     startTransition(async () => {
-      const result = await deleteLibraryItem(itemId);
+      const response = await fetch(`/api/library/collections/${itemId}`, {
+        method: "DELETE",
+      });
+      const result = (await response.json()) as { ok?: boolean; message?: string };
+
       if (result.ok) {
         setLocalItems((current) => current.filter((item) => item.id !== itemId));
+      } else {
+        window.alert(result.message ?? "Could not delete this item.");
       }
     });
   }
@@ -99,6 +118,14 @@ export function CollectionList({ items, type }: CollectionListProps) {
 
       return next;
     });
+  }
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return <div className="space-y-4" suppressHydrationWarning />;
   }
 
   if (!localItems.length) {
@@ -121,8 +148,15 @@ export function CollectionList({ items, type }: CollectionListProps) {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-[1fr_auto] gap-2">
+    <div className="space-y-4" suppressHydrationWarning>
+      <div
+        className={
+          type === "dua"
+            ? "grid grid-cols-[1fr_auto_auto] gap-2"
+            : "grid grid-cols-[1fr_auto] gap-2"
+        }
+        suppressHydrationWarning
+      >
         <label className="relative block min-w-0">
           <span className="sr-only">Search</span>
           <Search
@@ -133,6 +167,7 @@ export function CollectionList({ items, type }: CollectionListProps) {
             className="h-12 w-full rounded-2xl border border-line bg-paper pl-11 pr-4 text-sm font-semibold text-ink outline-none transition placeholder:text-ink/35 focus:border-palm/35 focus:ring-2 focus:ring-palm/15"
             onChange={(event) => setQuery(event.target.value)}
             placeholder={`Search ${type === "dua" ? "duas" : "hadiths"}`}
+            suppressHydrationWarning
             value={query}
           />
         </label>
@@ -143,6 +178,23 @@ export function CollectionList({ items, type }: CollectionListProps) {
           <Plus aria-hidden className="size-5" />
           <span className="sr-only">Add</span>
         </Link>
+        {type === "dua" ? (
+          <button
+            aria-label={showDuaEnglish ? "Hide English" : "Show English"}
+            className={cn(
+              "flex size-12 items-center justify-center rounded-2xl shadow-soft transition",
+              showDuaEnglish ? "bg-palm text-paper" : "bg-paper text-palm ring-1 ring-line",
+            )}
+            onClick={() => setShowDuaEnglish((current) => !current)}
+            type="button"
+          >
+            {showDuaEnglish ? (
+              <Eye aria-hidden className="size-5" />
+            ) : (
+              <EyeOff aria-hidden className="size-5" />
+            )}
+          </button>
+        ) : null}
       </div>
 
       {filters.length > 1 ? (
@@ -154,6 +206,7 @@ export function CollectionList({ items, type }: CollectionListProps) {
               }`}
               key={value}
               onClick={() => setFilter(value)}
+              suppressHydrationWarning
               type="button"
             >
               {value === "all" ? "All" : value}
@@ -206,16 +259,10 @@ export function CollectionList({ items, type }: CollectionListProps) {
                   <Trash2 aria-hidden className="size-4" />
                 </button>
               </div>
-              {type === "dua" && getStringMeta(item, "arabicText") ? (
-                <p
-                  className="mt-3 line-clamp-2 rounded-2xl bg-palm/5 px-3 py-2 text-right text-lg leading-8 text-ink"
-                  dir="rtl"
-                  lang="ar"
-                >
-                  {getStringMeta(item, "arabicText")}
-                </p>
+              {type === "dua" ? (
+                <DuaCardPreview item={item} showEnglish={showDuaEnglish} />
               ) : null}
-              {type === "dua" && getStringMeta(item, "translation") ? (
+              {type === "dua" && showDuaEnglish && getStringMeta(item, "translation") ? (
                 <p className="mt-3 line-clamp-2 text-sm leading-6 text-ink/65">
                   {getStringMeta(item, "translation")}
                 </p>
@@ -254,8 +301,8 @@ function HadithCollectionCard({
 
   return (
     <article className="overflow-hidden rounded-[1.35rem] border border-line bg-paper shadow-soft transition hover:border-palm/25">
-      <div className="flex items-start justify-between gap-3 p-4">
-        <button className="min-w-0 flex-1 text-left" onClick={onToggle} type="button">
+      <div className="grid grid-cols-[1fr_auto_auto] items-stretch">
+        <Link className="min-w-0 px-4 py-4 text-left" href={`${baseHref}/${item.id}`}>
           <div className="flex items-center gap-2">
             {getBooleanMeta(item, "pinned") ? (
               <Star aria-hidden className="size-4 fill-gold text-gold" />
@@ -267,19 +314,8 @@ function HadithCollectionCard({
           <p className="mt-1 text-xs font-bold uppercase tracking-wide text-palm">
             {getStringMeta(item, "reference") || "Hadith"}
           </p>
-        </button>
-        <div className="flex shrink-0 items-center gap-1">
-          <button
-            aria-label={isExpanded ? "Collapse" : "Expand"}
-            className="flex size-9 items-center justify-center rounded-full bg-mist text-ink/45"
-            onClick={onToggle}
-            type="button"
-          >
-            <ChevronDown
-              aria-hidden
-              className={cn("size-4 transition-transform", isExpanded && "rotate-180")}
-            />
-          </button>
+        </Link>
+        <div className="flex items-center px-2 py-4">
           <button
             aria-label="Delete"
             className="flex size-9 items-center justify-center rounded-full bg-mist text-ink/45 transition hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
@@ -290,6 +326,17 @@ function HadithCollectionCard({
             <Trash2 aria-hidden className="size-4" />
           </button>
         </div>
+        <button
+          aria-label={isExpanded ? "Collapse" : "Expand"}
+          className="flex w-12 items-center justify-center border-l border-line bg-mist/55 text-ink/45 transition hover:bg-palm/5 hover:text-palm"
+          onClick={onToggle}
+          type="button"
+        >
+          <ChevronDown
+            aria-hidden
+            className={cn("size-5 transition-transform", isExpanded && "rotate-180")}
+          />
+        </button>
       </div>
       {isExpanded ? (
         <div className="border-t border-line px-4 pb-4 pt-3">
@@ -323,6 +370,48 @@ function HadithCollectionCard({
       ) : null}
     </article>
   );
+}
+
+function DuaCardPreview({ item, showEnglish }: { item: LibraryItem; showEnglish: boolean }) {
+  const entries = getDuaEntries(item);
+
+  if (entries.length) {
+    return (
+      <div className="mt-3 grid gap-2">
+        {entries.slice(0, 2).map((entry) => (
+          <div className="rounded-2xl bg-palm/5 px-3 py-2" key={entry.id}>
+            <p
+              className="line-clamp-2 text-right text-lg leading-8 text-ink"
+              dir="rtl"
+              lang="ar"
+            >
+              {entry.arabicText}
+            </p>
+            {showEnglish && entry.translation ? (
+              <p className="mt-2 line-clamp-2 text-sm leading-6 text-ink/65">
+                {entry.translation}
+              </p>
+            ) : null}
+          </div>
+        ))}
+        {entries.length > 2 ? (
+          <p className="px-1 text-xs font-bold text-ink/40">
+            +{entries.length - 2} more
+          </p>
+        ) : null}
+      </div>
+    );
+  }
+
+  return getStringMeta(item, "arabicText") ? (
+    <p
+      className="mt-3 line-clamp-2 rounded-2xl bg-palm/5 px-3 py-2 text-right text-lg leading-8 text-ink"
+      dir="rtl"
+      lang="ar"
+    >
+      {getStringMeta(item, "arabicText")}
+    </p>
+  ) : null;
 }
 
 const compactMarkerStyles: Record<TextMarkerType, string> = {

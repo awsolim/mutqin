@@ -51,6 +51,7 @@ function mapItem(row: SimilarVerseItemRow): SimilarVerseItem {
 
 function mapHighlight(row: SimilarVerseHighlightRow): SimilarVerseHighlight {
   const preservedType = getPreservedHighlightType(row.note);
+  const preservedLabel = getPreservedHighlightLabel(row.note);
 
   return {
     id: row.id,
@@ -60,21 +61,48 @@ function mapHighlight(row: SimilarVerseHighlightRow): SimilarVerseHighlight {
     verseKey: row.verse_key,
     startWordPosition: row.start_word_position,
     endWordPosition: row.end_word_position,
-    label: row.label,
+    label: row.label ?? preservedLabel,
     type: preservedType ?? normalizeHighlightType(row.type),
-    note: stripPreservedHighlightType(row.note),
+    note: stripPreservedHighlightMetadata(row.note),
     createdAt: row.created_at,
   };
 }
 
 function getPreservedHighlightType(note: string | null) {
-  const match = note?.match(/^__mutqin_highlight_type:(.*?)__\n?/);
+  const match = note?.match(/^__mutqin_highlight_type:(.*?)__\n?/m);
 
   return match?.[1] as SimilarVerseHighlight["type"] | undefined;
 }
 
-function stripPreservedHighlightType(note: string | null) {
-  return note?.replace(/^__mutqin_highlight_type:.*?__\n?/, "") || null;
+function getPreservedHighlightLabel(note: string | null) {
+  const match = note?.match(/^__mutqin_highlight_label:(.*?)__\n?/m);
+
+  return match?.[1] || null;
+}
+
+function stripPreservedHighlightMetadata(note: string | null) {
+  return (
+    note
+      ?.replace(/^__mutqin_highlight_type:.*?__\n?/gm, "")
+      .replace(/^__mutqin_highlight_label:.*?__\n?/gm, "")
+      .trim() || null
+  );
+}
+
+function serializeHighlightNote(highlight: {
+  label?: string | null;
+  note?: string | null;
+  type: SimilarVerseHighlight["type"];
+}) {
+  const metadata = [`__mutqin_highlight_type:${highlight.type}__`];
+  const label = cleanText(highlight.label);
+  const note = cleanText(highlight.note);
+
+  if (label) {
+    metadata.push(`__mutqin_highlight_label:${label}__`);
+  }
+
+  return [...metadata, note].filter(Boolean).join("\n");
 }
 
 function normalizeHighlightType(type: SimilarVerseHighlightRow["type"]): SimilarVerseHighlight["type"] {
@@ -228,9 +256,8 @@ export async function createSimilarVerseSet(
         verse_key: highlight.verseKey,
         start_word_position: highlight.startWordPosition,
         end_word_position: highlight.endWordPosition,
-        label: cleanText(highlight.label),
         type: highlight.type,
-        note: cleanText(highlight.note),
+        note: serializeHighlightNote(highlight),
       };
     })
     .filter((row): row is NonNullable<typeof row> => Boolean(row));
@@ -245,13 +272,8 @@ export async function createSimilarVerseSet(
         .from("similar_verse_highlights")
         .insert(
           highlightRows.map((highlight) => {
-            const { label: _label, ...legacyHighlight } = highlight;
-
             return {
-              ...legacyHighlight,
-              note: `__mutqin_highlight_type:${highlight.type}__${
-                highlight.note ? `\n${highlight.note}` : ""
-              }`,
+              ...highlight,
               type: getLegacyHighlightType(highlight.type),
             };
           }),
@@ -341,8 +363,7 @@ export async function updateSimilarVerseSet(
       return {
         end_word_position: highlight.endWordPosition,
         item_id: item.id,
-        label: cleanText(highlight.label),
-        note: cleanText(highlight.note),
+        note: serializeHighlightNote(highlight),
         set_id: id,
         start_word_position: highlight.startWordPosition,
         type: highlight.type,
@@ -362,13 +383,8 @@ export async function updateSimilarVerseSet(
         .from("similar_verse_highlights")
         .insert(
           highlightRows.map((highlight) => {
-            const { label: _label, ...legacyHighlight } = highlight;
-
             return {
-              ...legacyHighlight,
-              note: `__mutqin_highlight_type:${highlight.type}__${
-                highlight.note ? `\n${highlight.note}` : ""
-              }`,
+              ...highlight,
               type: getLegacyHighlightType(highlight.type),
             };
           }),

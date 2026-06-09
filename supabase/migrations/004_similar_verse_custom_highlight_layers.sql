@@ -1,4 +1,7 @@
 alter table public.similar_verse_highlights
+  add column if not exists label text;
+
+alter table public.similar_verse_highlights
   drop constraint if exists similar_verse_highlights_type_check;
 
 alter table public.similar_verse_highlights

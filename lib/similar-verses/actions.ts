@@ -244,13 +244,17 @@ export async function createSimilarVerseSet(
       const { error: legacyHighlightsError } = await supabase
         .from("similar_verse_highlights")
         .insert(
-          highlightRows.map((highlight) => ({
-            ...highlight,
-            note: `__mutqin_highlight_type:${highlight.type}__${
-              highlight.note ? `\n${highlight.note}` : ""
-            }`,
-            type: getLegacyHighlightType(highlight.type),
-          })),
+          highlightRows.map((highlight) => {
+            const { label: _label, ...legacyHighlight } = highlight;
+
+            return {
+              ...legacyHighlight,
+              note: `__mutqin_highlight_type:${highlight.type}__${
+                highlight.note ? `\n${highlight.note}` : ""
+              }`,
+              type: getLegacyHighlightType(highlight.type),
+            };
+          }),
         );
 
       if (legacyHighlightsError) {
@@ -357,13 +361,17 @@ export async function updateSimilarVerseSet(
       const { error: legacyHighlightsError } = await supabase
         .from("similar_verse_highlights")
         .insert(
-          highlightRows.map((highlight) => ({
-            ...highlight,
-            note: `__mutqin_highlight_type:${highlight.type}__${
-              highlight.note ? `\n${highlight.note}` : ""
-            }`,
-            type: getLegacyHighlightType(highlight.type),
-          })),
+          highlightRows.map((highlight) => {
+            const { label: _label, ...legacyHighlight } = highlight;
+
+            return {
+              ...legacyHighlight,
+              note: `__mutqin_highlight_type:${highlight.type}__${
+                highlight.note ? `\n${highlight.note}` : ""
+              }`,
+              type: getLegacyHighlightType(highlight.type),
+            };
+          }),
         );
 
       if (legacyHighlightsError) {

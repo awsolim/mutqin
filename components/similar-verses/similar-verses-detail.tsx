@@ -3,24 +3,14 @@ import Link from "next/link";
 import { type SimilarVerseDraftItem } from "@/lib/similar-verses/types";
 import { type SimilarVerseRecord } from "@/lib/similar-verses/types";
 import { formatSimilarVerseItemReference } from "@/lib/similar-verses/format";
-import { cn } from "@/lib/utils";
+import {
+  defaultSimilarVerseHighlightLayers,
+  getSimilarVerseHighlightLayer,
+} from "@/lib/similar-verses/highlight-layers";
 
 type SimilarVersesDetailProps = {
   record: SimilarVerseRecord;
   verses: SimilarVerseDraftItem[];
-};
-
-const highlightStyles = {
-  same: "bg-[#cfe8d3]",
-  difference: "bg-[#f3d7b2]",
-  memory: "bg-[#f4e7bd]",
-  universal_shared: "bg-[#cfe8d3]",
-  partial_shared: "bg-[#cfe4f7]",
-  identity_marker: "bg-[#f3d7b2]",
-  outlier: "bg-[#f3cfc9]",
-  ending_family: "bg-[#cfe4f7]",
-  ending_outlier: "bg-[#f3d7b2]",
-  memory_clue: "bg-[#f4e7bd]",
 };
 
 export function SimilarVersesDetail({ record, verses }: SimilarVersesDetailProps) {
@@ -184,10 +174,17 @@ function DetailWordBlocks({
     <div className="flex max-w-full flex-wrap justify-end gap-x-1 gap-y-2 overflow-hidden">
       {chunks.map((chunk, index) => (
         <span
-          className={cn(
-            "inline-flex max-w-full flex-wrap justify-end rounded-xl px-1.5 py-1",
-            chunk.highlight && highlightStyles[chunk.highlight.type],
-          )}
+          className="inline-flex max-w-full flex-wrap justify-end rounded-xl px-1.5 py-1"
+          style={
+            chunk.highlight
+              ? {
+                  backgroundColor: getSimilarVerseHighlightLayer(
+                    defaultSimilarVerseHighlightLayers,
+                    chunk.highlight.type,
+                  ).color,
+                }
+              : undefined
+          }
           key={`${verseKey}-${index}-${chunk.words[0]?.wordPosition}`}
         >
           {chunk.words.map((word) => (

@@ -68,13 +68,13 @@ function mapHighlight(row: SimilarVerseHighlightRow): SimilarVerseHighlight {
 }
 
 function getPreservedHighlightType(note: string | null) {
-  const match = note?.match(/^__mutqin_highlight_type:([a-z_]+)__\n?/);
+  const match = note?.match(/^__mutqin_highlight_type:(.*?)__\n?/);
 
   return match?.[1] as SimilarVerseHighlight["type"] | undefined;
 }
 
 function stripPreservedHighlightType(note: string | null) {
-  return note?.replace(/^__mutqin_highlight_type:[a-z_]+__\n?/, "") || null;
+  return note?.replace(/^__mutqin_highlight_type:.*?__\n?/, "") || null;
 }
 
 function normalizeHighlightType(type: SimilarVerseHighlightRow["type"]): SimilarVerseHighlight["type"] {
@@ -107,7 +107,7 @@ function getLegacyHighlightType(type: CreateSimilarVerseSetInput["highlights"][n
     return "difference";
   }
 
-  return "memory";
+  return "memory_clue";
 }
 
 function revalidateSimilarVerses() {
@@ -228,6 +228,7 @@ export async function createSimilarVerseSet(
         verse_key: highlight.verseKey,
         start_word_position: highlight.startWordPosition,
         end_word_position: highlight.endWordPosition,
+        label: cleanText(highlight.label),
         type: highlight.type,
         note: cleanText(highlight.note),
       };
@@ -336,6 +337,7 @@ export async function updateSimilarVerseSet(
       return {
         end_word_position: highlight.endWordPosition,
         item_id: item.id,
+        label: cleanText(highlight.label),
         note: cleanText(highlight.note),
         set_id: id,
         start_word_position: highlight.startWordPosition,

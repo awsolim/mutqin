@@ -1058,7 +1058,6 @@ export function AyahActionBar({
                 />
                 <ActionIcon icon={Languages} label="Translation" onClick={() => void openMeaning()} />
                 <ActionIcon icon={BookOpenText} label="Tafsir" onClick={() => void openStudy("tafsir")} />
-                <ActionIcon icon={BookMarked} label="Iʿrāb" onClick={() => void openIrab()} />
                 <ActionIcon
                   icon={isBookmarked ? BookMarked : Bookmark}
                   isActive={isBookmarked}
@@ -1067,6 +1066,20 @@ export function AyahActionBar({
                     void toggleCurrentBookmark();
                   }}
                 />
+                <ActionIcon
+                  icon={Lightbulb}
+                  label="Note"
+                  onClick={() => {
+                    setMessage("");
+                    setIsAudioOpen(false);
+                    setIsIrabOpen(false);
+                    setIsMeaningOpen(false);
+                    setIsTafsirOpen(false);
+                    setNoteMode("chooser");
+                    setIsNoteOpen(true);
+                  }}
+                />
+                <ActionIcon icon={BookMarked} label="Iʿrāb" onClick={() => void openIrab()} />
               </div>
             </div>
           </div>

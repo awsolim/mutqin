@@ -1,9 +1,16 @@
 "use client";
 
-import { ArrowLeft, Check, Minus, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Check, Plus, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { createSimilarVerseSet, updateSimilarVerseSet } from "@/lib/similar-verses/actions";
+import {
+  defaultSimilarVerseHighlightLayers,
+  getSimilarVerseHighlightLayer,
+  normalizeSimilarVerseHighlightLayers,
+  similarVerseHighlightLayerStorageKey,
+  type SimilarVerseHighlightLayer,
+} from "@/lib/similar-verses/highlight-layers";
 import {
   type SimilarVerseDraftItem,
   type SimilarVerseHighlightType,
@@ -32,29 +39,6 @@ type SimilarVersesEditorProps = {
   surahs: Surah[];
 };
 
-const highlightOptions: Array<{
-  label: string;
-  type: SimilarVerseHighlightType;
-}> = [
-  { label: "Shared by all", type: "universal_shared" },
-  { label: "Shared by most", type: "partial_shared" },
-  { label: "Outlier", type: "outlier" },
-  { label: "Key difference", type: "identity_marker" },
-];
-
-const highlightStyles: Record<SimilarVerseHighlightType, string> = {
-  same: "bg-[#cfe8d3] ring-[#74a37d]/35",
-  difference: "bg-[#f3d7b2] ring-[#c7812d]/35",
-  memory: "bg-[#f4e7bd] ring-[#b99a3c]/35",
-  universal_shared: "bg-[#cfe8d3] ring-[#74a37d]/35",
-  partial_shared: "bg-[#cfe4f7] ring-[#6fa4cf]/35",
-  identity_marker: "bg-[#f3d7b2] ring-[#c7812d]/35",
-  outlier: "bg-[#f3cfc9] ring-[#ca7568]/35",
-  ending_family: "bg-[#cfe4f7] ring-[#6fa4cf]/35",
-  ending_outlier: "bg-[#f3d7b2] ring-[#c7812d]/35",
-  memory_clue: "bg-[#f4e7bd] ring-[#b99a3c]/35",
-};
-
 export function SimilarVersesEditor({
   editRecordId,
   initialFamilyTitle = "",
@@ -80,6 +64,7 @@ export function SimilarVersesEditor({
   );
   const [preview, setPreview] = useState<SimilarVerseDraftItem | null>(initialVerse ?? null);
   const [message, setMessage] = useState("");
+  const [highlightLayers, setHighlightLayers] = useState(defaultSimilarVerseHighlightLayers);
   const [selectedWord, setSelectedWord] = useState<{
     verseKey: string;
     wordPosition: number;
@@ -92,6 +77,20 @@ export function SimilarVersesEditor({
   const [highlights, setHighlights] = useState<LocalHighlight[]>(initialHighlights);
   const [isPending, startTransition] = useTransition();
   const selectedSurah = surahs.find((surah) => surah.number === selectedSurahNumber);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem(similarVerseHighlightLayerStorageKey);
+
+    if (!saved) {
+      return;
+    }
+
+    try {
+      setHighlightLayers(normalizeSimilarVerseHighlightLayers(JSON.parse(saved)));
+    } catch {
+      setHighlightLayers(defaultSimilarVerseHighlightLayers);
+    }
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -172,7 +171,7 @@ export function SimilarVersesEditor({
     setPendingRange(null);
   }
 
-  function applyHighlight(type: SimilarVerseHighlightType) {
+  function applyHighlight(layer: SimilarVerseHighlightLayer) {
     if (!pendingRange) {
       setMessage("Tap a start word and an end word first.");
       return;
@@ -183,7 +182,8 @@ export function SimilarVersesEditor({
       {
         ...pendingRange,
         id: createLocalId(),
-        type,
+        label: layer.name,
+        type: layer.id,
       },
     ]);
     setPendingRange(null);
@@ -364,6 +364,7 @@ export function SimilarVersesEditor({
                   lang="ar"
                 >
                   <WordBlockRenderer
+                    highlightLayers={highlightLayers}
                     highlights={highlights}
                     onSelectWord={selectWord}
                     pendingRange={pendingRange}
@@ -376,17 +377,15 @@ export function SimilarVersesEditor({
                   <div className="mt-3 rounded-3xl border border-line bg-mist/60 p-3">
                     <p className="text-xs font-bold uppercase tracking-wide text-palm">Apply highlight</p>
                     <div className="mt-3 grid grid-cols-2 gap-2">
-                      {highlightOptions.map((option) => (
+                      {highlightLayers.map((layer) => (
                         <button
-                          className={cn(
-                            "min-h-11 rounded-2xl px-2 text-xs font-extrabold text-ink ring-1",
-                            highlightStyles[option.type],
-                          )}
-                          key={option.type}
-                          onClick={() => applyHighlight(option.type)}
+                          className="min-h-11 rounded-2xl px-2 text-xs font-extrabold text-ink ring-1 ring-ink/10"
+                          key={layer.id}
+                          onClick={() => applyHighlight(layer)}
+                          style={{ backgroundColor: layer.color }}
                           type="button"
                         >
-                          {option.label}
+                          {layer.name}
                         </button>
                       ))}
                     </div>
@@ -398,20 +397,23 @@ export function SimilarVersesEditor({
                       .filter((highlight) => highlight.verseKey === item.verseKey)
                       .map((highlight) => (
                         <button
-                          className={cn(
-                            "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold ring-1",
-                            highlightStyles[highlight.type],
-                          )}
+                          className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-bold text-ink ring-1 ring-ink/10"
                           key={highlight.id}
                           onClick={() =>
                             setHighlights((currentHighlights) =>
                               currentHighlights.filter((current) => current.id !== highlight.id),
                             )
                           }
+                          style={{
+                            backgroundColor: getSimilarVerseHighlightLayer(
+                              highlightLayers,
+                              highlight.type,
+                            ).color,
+                          }}
                           type="button"
                         >
-                          {getHighlightLabel(highlight.type)}
-                          <Minus aria-hidden className="size-3.5" />
+                          {getHighlightLabel(highlightLayers, highlight)}
+                          <X aria-hidden className="size-3.5" />
                         </button>
                       ))}
                   </div>
@@ -522,8 +524,11 @@ function serializeComments(comments: string[]) {
     : "";
 }
 
-function getHighlightLabel(type: SimilarVerseHighlightType) {
-  return highlightOptions.find((option) => option.type === type)?.label ?? type;
+function getHighlightLabel(
+  layers: SimilarVerseHighlightLayer[],
+  highlight: Pick<LocalHighlight, "label" | "type">,
+) {
+  return highlight.label ?? getSimilarVerseHighlightLayer(layers, highlight.type).name;
 }
 
 function WordBlockRenderer({
@@ -533,8 +538,10 @@ function WordBlockRenderer({
   selectedWord,
   verseKey,
   words,
+  highlightLayers,
 }: {
   highlights: LocalHighlight[];
+  highlightLayers: SimilarVerseHighlightLayer[];
   onSelectWord: (verseKey: string, wordPosition: number) => void;
   pendingRange: { endWordPosition: number; startWordPosition: number; verseKey: string } | null;
   selectedWord: { verseKey: string; wordPosition: number } | null;
@@ -550,8 +557,18 @@ function WordBlockRenderer({
           className={cn(
             "mx-0.5 rounded-xl px-1.5 py-1 ring-1 ring-transparent",
             chunk.kind === "temporary" && "bg-ink text-white",
-            chunk.kind === "highlight" && chunk.highlight && highlightStyles[chunk.highlight.type],
+            chunk.kind === "highlight" && "ring-ink/10",
           )}
+          style={
+            chunk.kind === "highlight" && chunk.highlight
+              ? {
+                  backgroundColor: getSimilarVerseHighlightLayer(
+                    highlightLayers,
+                    chunk.highlight.type,
+                  ).color,
+                }
+              : undefined
+          }
           key={`${chunk.kind}-${index}-${chunk.words[0]?.wordPosition}`}
         >
           {chunk.words.map((word) => (

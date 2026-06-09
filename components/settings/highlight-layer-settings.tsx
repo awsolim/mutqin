@@ -2,47 +2,35 @@
 
 import { Plus, RotateCcw, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-
-type HighlightLayer = {
-  color: string;
-  id: string;
-  name: string;
-};
-
-const storageKey = "mutqin:similar-highlight-layers";
-
-const defaultLayers: HighlightLayer[] = [
-  { id: "universal_shared", name: "Shared by all", color: "#dcecdf" },
-  { id: "partial_shared", name: "Shared by most", color: "#dbeaf7" },
-  { id: "outlier", name: "Outlier", color: "#f5d6d0" },
-  { id: "identity_marker", name: "Key difference", color: "#f3d7b2" },
-];
+import {
+  defaultSimilarVerseHighlightLayers,
+  normalizeSimilarVerseHighlightLayers,
+  similarVerseHighlightLayerStorageKey,
+  type SimilarVerseHighlightLayer,
+} from "@/lib/similar-verses/highlight-layers";
 
 export function HighlightLayerSettings() {
-  const [layers, setLayers] = useState(defaultLayers);
+  const [layers, setLayers] = useState(defaultSimilarVerseHighlightLayers);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem(storageKey);
+    const saved = window.localStorage.getItem(similarVerseHighlightLayerStorageKey);
 
     if (!saved) {
       return;
     }
 
     try {
-      const parsed = JSON.parse(saved) as HighlightLayer[];
-      if (Array.isArray(parsed) && parsed.length) {
-        setLayers(parsed);
-      }
+      setLayers(normalizeSimilarVerseHighlightLayers(JSON.parse(saved)));
     } catch {
-      setLayers(defaultLayers);
+      setLayers(defaultSimilarVerseHighlightLayers);
     }
   }, []);
 
   useEffect(() => {
-    window.localStorage.setItem(storageKey, JSON.stringify(layers));
+    window.localStorage.setItem(similarVerseHighlightLayerStorageKey, JSON.stringify(layers));
   }, [layers]);
 
-  function updateLayer(id: string, patch: Partial<HighlightLayer>) {
+  function updateLayer(id: string, patch: Partial<SimilarVerseHighlightLayer>) {
     setLayers((currentLayers) =>
       currentLayers.map((layer) => (layer.id === id ? { ...layer, ...patch } : layer)),
     );
@@ -59,7 +47,7 @@ export function HighlightLayerSettings() {
         </div>
         <button
           className="flex size-10 shrink-0 items-center justify-center rounded-full bg-mist text-ink/55"
-          onClick={() => setLayers(defaultLayers)}
+          onClick={() => setLayers(defaultSimilarVerseHighlightLayers)}
           type="button"
         >
           <RotateCcw aria-hidden className="size-4" />

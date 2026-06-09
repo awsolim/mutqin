@@ -8,7 +8,8 @@ export type SimilarVerseHighlightType =
   | "outlier"
   | "ending_family"
   | "ending_outlier"
-  | "memory_clue";
+  | "memory_clue"
+  | (string & {});
 
 export type SimilarVerseSetRow = {
   id: string;

@@ -52,8 +52,10 @@ function mapItem(row: SimilarVerseItemRow): SimilarVerseItem {
 function mapHighlight(row: SimilarVerseHighlightRow): SimilarVerseHighlight {
   const preservedType = getPreservedHighlightType(row.note);
   const preservedLabel = getPreservedHighlightLabel(row.note);
+  const preservedColor = getPreservedHighlightColor(row.note);
 
   return {
+    color: preservedColor,
     id: row.id,
     setId: row.set_id,
     itemId: row.item_id,
@@ -80,26 +82,39 @@ function getPreservedHighlightLabel(note: string | null) {
   return match?.[1] || null;
 }
 
+function getPreservedHighlightColor(note: string | null) {
+  const match = note?.match(/^__mutqin_highlight_color:(#[0-9a-f]{6})__\n?/im);
+
+  return match?.[1] || null;
+}
+
 function stripPreservedHighlightMetadata(note: string | null) {
   return (
     note
       ?.replace(/^__mutqin_highlight_type:.*?__\n?/gm, "")
       .replace(/^__mutqin_highlight_label:.*?__\n?/gm, "")
+      .replace(/^__mutqin_highlight_color:#[0-9a-f]{6}__\n?/gim, "")
       .trim() || null
   );
 }
 
 function serializeHighlightNote(highlight: {
   label?: string | null;
+  color?: string | null;
   note?: string | null;
   type: SimilarVerseHighlight["type"];
 }) {
   const metadata = [`__mutqin_highlight_type:${highlight.type}__`];
   const label = cleanText(highlight.label);
+  const color = cleanText(highlight.color);
   const note = cleanText(highlight.note);
 
   if (label) {
     metadata.push(`__mutqin_highlight_label:${label}__`);
+  }
+
+  if (color && /^#[0-9a-f]{6}$/i.test(color)) {
+    metadata.push(`__mutqin_highlight_color:${color}__`);
   }
 
   return [...metadata, note].filter(Boolean).join("\n");
@@ -136,6 +151,69 @@ function getLegacyHighlightType(type: CreateSimilarVerseSetInput["highlights"][n
   }
 
   return "memory_clue";
+}
+
+function getOldLegacyHighlightType(type: CreateSimilarVerseSetInput["highlights"][number]["type"]) {
+  if (type === "universal_shared" || type === "partial_shared") {
+    return "same";
+  }
+
+  if (
+    type === "identity_marker" ||
+    type === "outlier" ||
+    type === "ending_family" ||
+    type === "ending_outlier"
+  ) {
+    return "difference";
+  }
+
+  return "memory";
+}
+
+async function insertHighlightRows(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  highlightRows: Array<{
+    end_word_position: number;
+    item_id: string;
+    note: string | null;
+    set_id: string;
+    start_word_position: number;
+    type: CreateSimilarVerseSetInput["highlights"][number]["type"];
+    user_id: string;
+    verse_key: string;
+  }>,
+) {
+  const { error: directError } = await supabase
+    .from("similar_verse_highlights")
+    .insert(highlightRows);
+
+  if (!directError) {
+    return null;
+  }
+
+  const { error: modernLegacyError } = await supabase
+    .from("similar_verse_highlights")
+    .insert(
+      highlightRows.map((highlight) => ({
+        ...highlight,
+        type: getLegacyHighlightType(highlight.type),
+      })),
+    );
+
+  if (!modernLegacyError) {
+    return null;
+  }
+
+  const { error: oldLegacyError } = await supabase
+    .from("similar_verse_highlights")
+    .insert(
+      highlightRows.map((highlight) => ({
+        ...highlight,
+        type: getOldLegacyHighlightType(highlight.type),
+      })),
+    );
+
+  return oldLegacyError ?? modernLegacyError ?? directError;
 }
 
 function revalidateSimilarVerses() {
@@ -263,26 +341,11 @@ export async function createSimilarVerseSet(
     .filter((row): row is NonNullable<typeof row> => Boolean(row));
 
   if (highlightRows.length) {
-    const { error: highlightsError } = await supabase
-      .from("similar_verse_highlights")
-      .insert(highlightRows);
+    const highlightsError = await insertHighlightRows(supabase, highlightRows);
 
     if (highlightsError) {
-      const { error: legacyHighlightsError } = await supabase
-        .from("similar_verse_highlights")
-        .insert(
-          highlightRows.map((highlight) => {
-            return {
-              ...highlight,
-              type: getLegacyHighlightType(highlight.type),
-            };
-          }),
-        );
-
-      if (legacyHighlightsError) {
-        await supabase.from("similar_verse_sets").delete().eq("id", setRow.id);
-        return { ok: false, message: legacyHighlightsError.message };
-      }
+      await supabase.from("similar_verse_sets").delete().eq("id", setRow.id);
+      return { ok: false, message: highlightsError.message };
     }
   }
 
@@ -374,25 +437,10 @@ export async function updateSimilarVerseSet(
     .filter((row): row is NonNullable<typeof row> => Boolean(row));
 
   if (highlightRows.length) {
-    const { error: highlightsError } = await supabase
-      .from("similar_verse_highlights")
-      .insert(highlightRows);
+    const highlightsError = await insertHighlightRows(supabase, highlightRows);
 
     if (highlightsError) {
-      const { error: legacyHighlightsError } = await supabase
-        .from("similar_verse_highlights")
-        .insert(
-          highlightRows.map((highlight) => {
-            return {
-              ...highlight,
-              type: getLegacyHighlightType(highlight.type),
-            };
-          }),
-        );
-
-      if (legacyHighlightsError) {
-        return { ok: false, message: legacyHighlightsError.message };
-      }
+      return { ok: false, message: highlightsError.message };
     }
   }
 

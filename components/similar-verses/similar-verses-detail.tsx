@@ -178,10 +178,12 @@ function DetailWordBlocks({
           style={
             chunk.highlight
               ? {
-                  backgroundColor: getSimilarVerseHighlightLayer(
-                    defaultSimilarVerseHighlightLayers,
-                    chunk.highlight.type,
-                  ).color,
+                  backgroundColor:
+                    chunk.highlight.color ??
+                    getSimilarVerseHighlightLayer(
+                      defaultSimilarVerseHighlightLayers,
+                      chunk.highlight.type,
+                    ).color,
                 }
               : undefined
           }

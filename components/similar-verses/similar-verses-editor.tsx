@@ -7,8 +7,6 @@ import { createSimilarVerseSet, updateSimilarVerseSet } from "@/lib/similar-vers
 import {
   defaultSimilarVerseHighlightLayers,
   getSimilarVerseHighlightLayer,
-  normalizeSimilarVerseHighlightLayers,
-  similarVerseHighlightLayerStorageKey,
   type SimilarVerseHighlightLayer,
 } from "@/lib/similar-verses/highlight-layers";
 import {
@@ -19,6 +17,7 @@ import { type Surah } from "@/lib/quran/types";
 import { cn } from "@/lib/utils";
 
 type LocalHighlight = {
+  color?: string | null;
   id: string;
   verseKey: string;
   startWordPosition: number;
@@ -64,7 +63,6 @@ export function SimilarVersesEditor({
   );
   const [preview, setPreview] = useState<SimilarVerseDraftItem | null>(initialVerse ?? null);
   const [message, setMessage] = useState("");
-  const [highlightLayers, setHighlightLayers] = useState(defaultSimilarVerseHighlightLayers);
   const [selectedWord, setSelectedWord] = useState<{
     verseKey: string;
     wordPosition: number;
@@ -78,19 +76,7 @@ export function SimilarVersesEditor({
   const [isPending, startTransition] = useTransition();
   const selectedSurah = surahs.find((surah) => surah.number === selectedSurahNumber);
 
-  useEffect(() => {
-    const saved = window.localStorage.getItem(similarVerseHighlightLayerStorageKey);
-
-    if (!saved) {
-      return;
-    }
-
-    try {
-      setHighlightLayers(normalizeSimilarVerseHighlightLayers(JSON.parse(saved)));
-    } catch {
-      setHighlightLayers(defaultSimilarVerseHighlightLayers);
-    }
-  }, []);
+  const highlightLayers = defaultSimilarVerseHighlightLayers;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -182,6 +168,7 @@ export function SimilarVersesEditor({
       {
         ...pendingRange,
         id: createLocalId(),
+        color: layer.color,
         label: layer.name,
         type: layer.id,
       },
@@ -202,7 +189,15 @@ export function SimilarVersesEditor({
           surahNumber: item.surahNumber,
           verseKey: item.verseKey,
         })),
-        highlights,
+        highlights: highlights.map((highlight) => {
+          const layer = getSimilarVerseHighlightLayer(highlightLayers, highlight.type);
+
+          return {
+            ...highlight,
+            color: highlight.color ?? layer.color,
+            label: highlight.label ?? layer.name,
+          };
+        }),
       };
       const result = editRecordId
         ? await updateSimilarVerseSet(editRecordId, payload)
@@ -405,10 +400,9 @@ export function SimilarVersesEditor({
                             )
                           }
                           style={{
-                            backgroundColor: getSimilarVerseHighlightLayer(
-                              highlightLayers,
-                              highlight.type,
-                            ).color,
+                            backgroundColor:
+                              highlight.color ??
+                              getSimilarVerseHighlightLayer(highlightLayers, highlight.type).color,
                           }}
                           type="button"
                         >
@@ -562,10 +556,9 @@ function WordBlockRenderer({
           style={
             chunk.kind === "highlight" && chunk.highlight
               ? {
-                  backgroundColor: getSimilarVerseHighlightLayer(
-                    highlightLayers,
-                    chunk.highlight.type,
-                  ).color,
+                  backgroundColor:
+                    chunk.highlight.color ??
+                    getSimilarVerseHighlightLayer(highlightLayers, chunk.highlight.type).color,
                 }
               : undefined
           }

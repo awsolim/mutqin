@@ -72,6 +72,7 @@ export type SimilarVerseItem = {
 };
 
 export type SimilarVerseHighlight = {
+  color: string | null;
   id: string;
   setId: string;
   itemId: string;
@@ -118,6 +119,7 @@ export type CreateSimilarVerseSetInput = {
     startWordPosition: number;
     endWordPosition: number;
     type: SimilarVerseHighlightType;
+    color?: string | null;
     label?: string | null;
     note?: string | null;
   }>;

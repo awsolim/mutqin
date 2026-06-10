@@ -1,4 +1,4 @@
-const CACHE_NAME = "mutqin-static-v2";
+const CACHE_NAME = "mutqin-static-v3";
 const STATIC_ASSETS = [
   "/manifest.webmanifest",
   "/icons/icon-192.png",
@@ -54,7 +54,6 @@ self.addEventListener("fetch", (event) => {
   }
 
   const isStaticAsset =
-    url.pathname.startsWith("/_next/static/") ||
     url.pathname.startsWith("/icons/") ||
     url.pathname === "/manifest.webmanifest";
 

@@ -11,6 +11,7 @@ import {
 import {
   defaultSimilarVerseHighlightLayers,
   getSimilarVerseHighlightLayer,
+  type SimilarVerseHighlightLayer,
 } from "@/lib/similar-verses/highlight-layers";
 import {
   type SimilarVerseDraftItem,
@@ -25,6 +26,7 @@ type SimilarVersesCatalogProps = {
 
 export function SimilarVersesCatalog({ records, versesByKey }: SimilarVersesCatalogProps) {
   const [expandedRecords, setExpandedRecords] = useState<Set<string>>(() => new Set());
+  const highlightLayers = defaultSimilarVerseHighlightLayers;
 
   function toggleRecord(recordId: string) {
     setExpandedRecords((current) => {
@@ -93,7 +95,7 @@ export function SimilarVersesCatalog({ records, versesByKey }: SimilarVersesCata
             </div>
             {isExpanded ? (
               <div className="border-t border-line px-4 pb-4 pt-3">
-                <CatalogHighlightLegend record={record} />
+                <CatalogHighlightLegend highlightLayers={highlightLayers} record={record} />
                 <div className="mt-3 grid gap-3">
                   {record.items.map((item) => {
                     const verse = versesByKey[item.verseKey];
@@ -116,6 +118,7 @@ export function SimilarVersesCatalog({ records, versesByKey }: SimilarVersesCata
                             lang="ar"
                           >
                             <CatalogWordBlocks
+                              highlightLayers={highlightLayers}
                               highlights={highlights}
                               verseKey={verse.verseKey}
                               words={verse.words}
@@ -135,7 +138,13 @@ export function SimilarVersesCatalog({ records, versesByKey }: SimilarVersesCata
   );
 }
 
-function CatalogHighlightLegend({ record }: { record: SimilarVerseRecord }) {
+function CatalogHighlightLegend({
+  highlightLayers,
+  record,
+}: {
+  highlightLayers: SimilarVerseHighlightLayer[];
+  record: SimilarVerseRecord;
+}) {
   const usedHighlights = Array.from(
     new Map(record.highlights.map((highlight) => [highlight.type, highlight])).values(),
   );
@@ -147,17 +156,17 @@ function CatalogHighlightLegend({ record }: { record: SimilarVerseRecord }) {
   return (
     <div className="flex flex-wrap gap-2">
       {usedHighlights.map((highlight) => {
-        const layer = getSimilarVerseHighlightLayer(
-          defaultSimilarVerseHighlightLayers,
-          highlight.type,
-        );
+        const layer = getSimilarVerseHighlightLayer(highlightLayers, highlight.type);
 
         return (
         <span
           className="inline-flex items-center gap-1.5 rounded-full bg-mist px-2.5 py-1 text-xs font-bold text-ink/60"
           key={highlight.type}
         >
-          <span className="size-2.5 rounded-full" style={{ backgroundColor: layer.color }} />
+          <span
+            className="size-2.5 rounded-full"
+            style={{ backgroundColor: highlight.color ?? layer.color }}
+          />
           {highlight.label ?? layer.name}
         </span>
         );
@@ -167,10 +176,12 @@ function CatalogHighlightLegend({ record }: { record: SimilarVerseRecord }) {
 }
 
 function CatalogWordBlocks({
+  highlightLayers,
   highlights,
   verseKey,
   words,
 }: {
+  highlightLayers: SimilarVerseHighlightLayer[];
   highlights: SimilarVerseRecord["highlights"];
   verseKey: string;
   words: SimilarVerseDraftItem["words"];
@@ -209,10 +220,9 @@ function CatalogWordBlocks({
           style={
             chunk.highlight
               ? {
-                  backgroundColor: getSimilarVerseHighlightLayer(
-                    defaultSimilarVerseHighlightLayers,
-                    chunk.highlight.type,
-                  ).color,
+                  backgroundColor:
+                    chunk.highlight.color ??
+                    getSimilarVerseHighlightLayer(highlightLayers, chunk.highlight.type).color,
                 }
               : undefined
           }

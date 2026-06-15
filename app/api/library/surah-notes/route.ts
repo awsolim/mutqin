@@ -16,14 +16,15 @@ export async function POST(request: Request) {
     title?: string | null;
   };
   const surahNumber = Number(input.surahNumber);
+  const title = cleanText(input.title);
   const bullets = (input.bullets ?? []).map((bullet) => bullet.trim()).filter(Boolean);
 
   if (!Number.isInteger(surahNumber) || surahNumber < 1 || surahNumber > 114) {
     return NextResponse.json({ message: "Invalid surah number.", ok: false }, { status: 400 });
   }
 
-  if (!bullets.length) {
-    return NextResponse.json({ message: "Add at least one note.", ok: false }, { status: 400 });
+  if (!title) {
+    return NextResponse.json({ message: "Tag title is required.", ok: false }, { status: 400 });
   }
 
   const user = await requireUser();
@@ -31,11 +32,11 @@ export async function POST(request: Request) {
   const { error } = await supabase.from("library_items").insert({
     ayah_end: null,
     ayah_start: null,
-    body: bullets.map((bullet) => `- ${bullet}`).join("\n"),
-    metadata: { bullets },
+    body: bullets.length ? bullets.map((bullet) => `- ${bullet}`).join("\n") : null,
+    metadata: { bullets, kind: "surah_tag" },
     page_number: null,
     surah_number: surahNumber,
-    title: cleanText(input.title),
+    title,
     type: "surah_note",
     user_id: user.id,
     verse_key: null,
@@ -48,5 +49,5 @@ export async function POST(request: Request) {
   revalidatePath("/app/library");
   revalidatePath("/app/library/surah-notes");
 
-  return NextResponse.json({ message: "Surah notes saved.", ok: true });
+  return NextResponse.json({ message: "Surah tag saved.", ok: true });
 }

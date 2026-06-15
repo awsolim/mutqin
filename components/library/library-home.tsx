@@ -4,18 +4,12 @@ import {
   BookOpenText,
   ChevronDown,
   Feather,
-  GraduationCap,
   HandHeart,
-  Landmark,
   Library,
   Link2,
   Mic2,
-  NotebookTabs,
   ScrollText,
   Scroll,
-  Sigma,
-  UserRound,
-  UsersRound,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -79,45 +73,6 @@ const sections: LibrarySectionConfig[] = [
         href: "/app/library/khutbahs",
         icon: Mic2,
         title: "Khutbahs",
-      },
-    ],
-  },
-  {
-    accent: "from-palm/14 via-mist to-ink/3",
-    icon: UserRound,
-    title: "Biographies",
-    items: [
-      {
-        href: "/app/library/seerah",
-        icon: Landmark,
-        title: "Prophetic Seerah",
-      },
-      {
-        href: "/app/library/companions",
-        icon: UsersRound,
-        title: "Companions Biographies",
-      },
-    ],
-  },
-  {
-    accent: "from-palm/16 via-sage/10 to-sage/4",
-    icon: GraduationCap,
-    title: "Durus",
-    items: [
-      {
-        href: "/app/library/khutabaa-halaqah",
-        icon: Mic2,
-        title: "Khutabaa Halaqah",
-      },
-      {
-        href: "/app/library/fiqh-halaqah",
-        icon: NotebookTabs,
-        title: "Fiqh Halaqah",
-      },
-      {
-        href: "/app/library/nahw-halaqah",
-        icon: Sigma,
-        title: "Nahw Halaqah",
       },
     ],
   },

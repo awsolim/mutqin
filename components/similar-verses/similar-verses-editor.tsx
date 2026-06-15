@@ -3,6 +3,12 @@
 import { ArrowLeft, Check, Plus, Trash2, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState, useTransition } from "react";
+import { getSurahNoteTagsForSurahs } from "@/lib/library/actions";
+import {
+  parseSimilarVerseNote,
+  serializeSimilarVerseNote,
+  type SurahNoteTag,
+} from "@/lib/library/surah-note-tags";
 import { createSimilarVerseSet, updateSimilarVerseSet } from "@/lib/similar-verses/actions";
 import {
   defaultSimilarVerseHighlightLayers,
@@ -53,7 +59,12 @@ export function SimilarVersesEditor({
   );
   const [title, setTitle] = useState(initialTitle);
   const familyTitle = initialFamilyTitle;
-  const [comments, setComments] = useState<string[]>(() => parseComments(initialNote));
+  const parsedInitialNote = parseSimilarVerseNote(initialNote);
+  const [comments, setComments] = useState<string[]>(() => parsedInitialNote.comments);
+  const [tagOptions, setTagOptions] = useState<SurahNoteTag[]>([]);
+  const [selectedTagIds, setSelectedTagIds] = useState<string[]>(
+    () => parsedInitialNote.surahNoteTagIds,
+  );
   const [commentDraft, setCommentDraft] = useState("");
   const [selectedSurahNumber, setSelectedSurahNumber] = useState(
     initialVerse?.surahNumber ?? 1,
@@ -77,6 +88,36 @@ export function SimilarVersesEditor({
   const selectedSurah = surahs.find((surah) => surah.number === selectedSurahNumber);
 
   const highlightLayers = defaultSimilarVerseHighlightLayers;
+
+  useEffect(() => {
+    let isActive = true;
+    const surahNumbers = Array.from(new Set(items.map((item) => item.surahNumber)));
+
+    if (!surahNumbers.length) {
+      setTagOptions([]);
+      setSelectedTagIds([]);
+      return;
+    }
+
+    getSurahNoteTagsForSurahs(surahNumbers)
+      .then((tags) => {
+        if (!isActive) return;
+
+        setTagOptions(tags);
+        setSelectedTagIds((current) =>
+          current.filter((tagId) => tags.some((tag) => tag.id === tagId)),
+        );
+      })
+      .catch(() => {
+        if (isActive) {
+          setTagOptions([]);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [items]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -182,7 +223,10 @@ export function SimilarVersesEditor({
       const payload = {
         familyTitle,
         title,
-        note: serializeComments(comments),
+        note: serializeSimilarVerseNote({
+          comments,
+          surahNoteTagIds: selectedTagIds,
+        }),
         items: items.map((item) => ({
           ayahNumber: item.ayahNumber,
           pageNumber: item.pageNumber,
@@ -215,6 +259,14 @@ export function SimilarVersesEditor({
   const isPreviewAdded = Boolean(
     preview && items.some((item) => item.verseKey === preview.verseKey),
   );
+
+  function toggleTag(tagId: string) {
+    setSelectedTagIds((current) =>
+      current.includes(tagId)
+        ? current.filter((id) => id !== tagId)
+        : [...current, tagId],
+    );
+  }
 
   return (
     <div className="space-y-5 pb-24">
@@ -430,6 +482,39 @@ export function SimilarVersesEditor({
 
       <section className="space-y-3 rounded-[1.6rem] border border-line bg-paper p-4 shadow-soft">
         <h2 className="text-base font-extrabold text-ink">Record comments</h2>
+        {tagOptions.length ? (
+          <div className="rounded-3xl border border-line bg-mist/60 p-3">
+            <p className="text-xs font-bold uppercase tracking-wide text-palm">
+              Attach surah tags
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {tagOptions.map((tag) => {
+                const selected = selectedTagIds.includes(tag.id);
+                const surahName = surahs.find((surah) => surah.number === tag.surahNumber)
+                  ?.transliteratedName;
+
+                return (
+                  <button
+                    className={cn(
+                      "rounded-full px-3 py-2 text-xs font-extrabold transition",
+                      selected
+                        ? "bg-palm text-white"
+                        : "bg-paper text-ink/60 ring-1 ring-line",
+                    )}
+                    key={tag.id}
+                    onClick={() => toggleTag(tag.id)}
+                    type="button"
+                  >
+                    {tag.title}
+                    {surahName ? (
+                      <span className="ml-1 font-semibold opacity-70">· {surahName}</span>
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
         {comments.length ? (
           <div className="grid gap-2">
             {comments.map((comment, index) => (
@@ -490,32 +575,6 @@ export function SimilarVersesEditor({
       </div>
     </div>
   );
-}
-
-function parseComments(value: string) {
-  if (!value.trim()) {
-    return [];
-  }
-
-  try {
-    const parsed = JSON.parse(value) as { comments?: string[]; kind?: string };
-
-    if (parsed.kind === "mutqin-comments-v1" && Array.isArray(parsed.comments)) {
-      return parsed.comments.filter((comment) => comment.trim());
-    }
-  } catch {
-    // Older records used a plain text note.
-  }
-
-  return [value];
-}
-
-function serializeComments(comments: string[]) {
-  const cleaned = comments.map((comment) => comment.trim()).filter(Boolean);
-
-  return cleaned.length
-    ? JSON.stringify({ comments: cleaned, kind: "mutqin-comments-v1" })
-    : "";
 }
 
 function getHighlightLabel(

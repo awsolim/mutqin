@@ -19,7 +19,7 @@ export default async function NewSurahNotePage({ searchParams }: NewSurahNotePag
 
   return (
     <div className="space-y-5">
-      <PageHeader eyebrow="Qur'an Notes" title="New Surah Notes" />
+      <PageHeader eyebrow="Qur'an Notes" title="New Surah Tag" />
       <SurahNoteForm initialSurahNumber={initialSurahNumber} surahs={surahs} />
     </div>
   );

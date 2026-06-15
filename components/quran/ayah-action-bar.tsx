@@ -16,8 +16,10 @@ import { type ReactNode, type TouchEvent, useEffect, useMemo, useRef, useState }
 import {
   createAyahInsight,
   getBookmarkForVerse,
+  getSurahNoteTagsForSurahs,
   toggleBookmark,
 } from "@/lib/library/actions";
+import { type SurahNoteTag } from "@/lib/library/surah-note-tags";
 import { useAudioPlayer } from "@/lib/audio/use-audio-player";
 import { type IrabEntry } from "@/lib/irab/types";
 import { type ReciterId } from "@/lib/audio/reciters";
@@ -97,6 +99,8 @@ export function AyahActionBar({
   const [isStudyLoading, setIsStudyLoading] = useState(false);
   const [noteTitle, setNoteTitle] = useState("");
   const [noteBody, setNoteBody] = useState("");
+  const [noteTagOptions, setNoteTagOptions] = useState<SurahNoteTag[]>([]);
+  const [selectedNoteTagIds, setSelectedNoteTagIds] = useState<string[]>([]);
   const [noteMode, setNoteMode] = useState<"ayah-insight" | "chooser" | "similar">("chooser");
   const [isSavingNote, setIsSavingNote] = useState(false);
   const [, setIsBookmarkLoading] = useState(false);
@@ -153,11 +157,36 @@ export function AyahActionBar({
     setActiveStudySourceId(null);
     setMessage("");
     setNoteMode("chooser");
+    setSelectedNoteTagIds([]);
     setContentAyahNumber(selectedAyah?.ayahNumber ?? 1);
     setContentDragPercent(0);
     setIsContentDragging(false);
     setIsContentSettling(false);
   }, [selectedAyah?.ayahNumber, verseKey]);
+
+  useEffect(() => {
+    let isActive = true;
+
+    if (!selectedAyah?.surahNumber || noteMode !== "ayah-insight") {
+      return;
+    }
+
+    getSurahNoteTagsForSurahs([selectedAyah.surahNumber])
+      .then((tags) => {
+        if (isActive) {
+          setNoteTagOptions(tags);
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          setNoteTagOptions([]);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [noteMode, selectedAyah?.surahNumber]);
 
   useEffect(() => {
     let isActive = true;
@@ -245,6 +274,7 @@ export function AyahActionBar({
       pageNumber: ayah.pageNumber,
       title: noteTitle,
       body: noteBody,
+      surahNoteTagIds: selectedNoteTagIds,
     });
     setIsSavingNote(false);
 
@@ -254,6 +284,7 @@ export function AyahActionBar({
       }
       setNoteTitle("");
       setNoteBody("");
+      setSelectedNoteTagIds([]);
       setNoteMode("chooser");
       setIsNoteOpen(false);
       onNotify(result.message);
@@ -289,6 +320,14 @@ export function AyahActionBar({
     setIsBookmarked(previousBookmarkState);
     onBookmarkOptimistic?.(previousBookmarkState);
     setMessage(result.message);
+  }
+
+  function toggleNoteTag(tagId: string) {
+    setSelectedNoteTagIds((current) =>
+      current.includes(tagId)
+        ? current.filter((id) => id !== tagId)
+        : [...current, tagId],
+    );
   }
 
   async function openIrab() {
@@ -875,6 +914,33 @@ export function AyahActionBar({
                       placeholder="Write your ayah insight"
                       value={noteBody}
                     />
+                    {noteTagOptions.length ? (
+                      <div className="rounded-3xl border border-line bg-mist/60 p-3">
+                        <p className="text-xs font-bold uppercase tracking-wide text-palm">
+                          Attach surah tags
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {noteTagOptions.map((tag) => {
+                            const selected = selectedNoteTagIds.includes(tag.id);
+
+                            return (
+                              <button
+                                className={`rounded-full px-3 py-2 text-xs font-extrabold transition ${
+                                  selected
+                                    ? "bg-palm text-white"
+                                    : "bg-paper text-ink/60 ring-1 ring-line"
+                                }`}
+                                key={tag.id}
+                                onClick={() => toggleNoteTag(tag.id)}
+                                type="button"
+                              >
+                                {tag.title}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : null}
                     <button
                       className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-palm px-4 text-sm font-bold text-white transition hover:bg-[#244b3d] focus:outline-none focus:ring-2 focus:ring-palm/25 disabled:opacity-60"
                       disabled={isSavingNote || !noteBody.trim()}

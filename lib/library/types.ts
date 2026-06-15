@@ -61,15 +61,16 @@ export type CreateAyahInsightInput = {
   pageNumber: number;
   title?: string | null;
   body: string;
+  surahNoteTagIds?: string[];
 };
 
 export type CreateSurahNoteInput = {
   surahNumber: number;
   title?: string | null;
-  bullets: string[];
+  bullets?: string[];
 };
 
-export type CollectionItemKind = "dua" | "hadith";
+export type CollectionItemKind = "dua" | "hadith" | "khutbah";
 
 export type CollectionItemInput = {
   id?: string;
@@ -95,9 +96,18 @@ export type CollectionItemInput = {
   arabicMarkers?: TextMarkerInput[];
   translationMarkers?: TextMarkerInput[];
   duaEntries?: DuaEntryInput[];
+  khutbahKind?: "draft" | "template" | "piece" | string | null;
+  khutbahReferences?: KhutbahReferenceInput[];
   tags?: string[];
   body?: string | null;
   pinned?: boolean;
+};
+
+export type KhutbahReferenceInput = {
+  id: string;
+  kind: "ayah" | "hadith" | "preset";
+  label: string;
+  reference?: string | null;
 };
 
 export type DuaEntryInput = {

@@ -26,7 +26,14 @@ function cleanTags(tags?: string[]) {
 }
 
 function collectionPath(type: CollectionItemInput["type"]) {
-  return type === "dua" ? "duas" : "hadiths";
+  if (type === "dua") return "duas";
+  if (type === "hadith") return "hadiths";
+
+  return "khutbahs";
+}
+
+function isCollectionType(type: unknown): type is CollectionItemInput["type"] {
+  return type === "dua" || type === "hadith" || type === "khutbah";
 }
 
 function metadataFromInput(input: CollectionItemInput) {
@@ -51,6 +58,8 @@ function metadataFromInput(input: CollectionItemInput) {
     arabicMarkers: input.arabicMarkers ?? [],
     translationMarkers: input.translationMarkers ?? [],
     duaEntries: input.duaEntries ?? [],
+    khutbahKind: cleanText(input.khutbahKind),
+    khutbahReferences: input.khutbahReferences ?? [],
     tags: cleanTags(input.tags),
     pinned: Boolean(input.pinned),
   };
@@ -83,7 +92,7 @@ function mapLibraryItem(row: LibraryItemRow) {
 export async function GET(request: Request) {
   const type = new URL(request.url).searchParams.get("type") as LibraryItemType | null;
 
-  if (type !== "dua" && type !== "hadith") {
+  if (!isCollectionType(type)) {
     return NextResponse.json({ items: [], message: "Invalid collection type.", ok: false }, { status: 400 });
   }
 
@@ -109,7 +118,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const input = (await request.json()) as CollectionItemInput;
 
-  if (input.type !== "dua" && input.type !== "hadith") {
+  if (!isCollectionType(input.type)) {
     return NextResponse.json({ message: "Invalid collection type.", ok: false }, { status: 400 });
   }
 

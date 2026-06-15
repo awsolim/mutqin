@@ -24,6 +24,7 @@ import {
 import { cn } from "@/lib/utils";
 
 type CollectionFormProps = {
+  existingTags?: string[];
   item?: LibraryItem | null;
   type: CollectionItemKind;
 };
@@ -52,13 +53,6 @@ const markerStyles: Record<TextMarkerType, string> = {
   matn: "bg-sky-100 ring-sky-200/80",
   quote: "bg-palm/18 ring-palm/25 text-palm",
 };
-
-function splitTags(value: string) {
-  return value
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter(Boolean);
-}
 
 function createLocalId() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -107,7 +101,106 @@ function ClearableField({
   );
 }
 
-export function CollectionForm({ item, type }: CollectionFormProps) {
+function TagSelector({
+  existingTags = [],
+  onChange,
+  value,
+}: {
+  existingTags?: string[];
+  onChange(tags: string[]): void;
+  value: string[];
+}) {
+  const [isAdding, setIsAdding] = useState(false);
+  const [draftTag, setDraftTag] = useState("");
+  const options = useMemo(
+    () =>
+      Array.from(new Set([...existingTags, ...value].map((tag) => tag.trim()).filter(Boolean)))
+        .sort((a, b) => a.localeCompare(b)),
+    [existingTags, value],
+  );
+
+  function toggleTag(tag: string) {
+    if (value.includes(tag)) {
+      onChange(value.filter((current) => current !== tag));
+    } else {
+      onChange([...value, tag]);
+    }
+  }
+
+  function addTag() {
+    const cleaned = draftTag.trim();
+
+    if (!cleaned) return;
+
+    onChange(Array.from(new Set([...value, cleaned])));
+    setDraftTag("");
+    setIsAdding(false);
+  }
+
+  return (
+    <div>
+      <span className="text-xs font-bold uppercase tracking-wide text-palm">Tags</span>
+      <div className="mt-2 rounded-2xl border border-line bg-mist p-2">
+        {options.length ? (
+          <div className="flex flex-wrap gap-2">
+            {options.map((tag) => {
+              const isSelected = value.includes(tag);
+
+              return (
+                <button
+                  className={cn(
+                    "rounded-full px-3 py-2 text-xs font-extrabold transition",
+                    isSelected ? "bg-palm text-paper" : "bg-paper text-ink/60 ring-1 ring-line",
+                  )}
+                  key={tag}
+                  onClick={() => toggleTag(tag)}
+                  type="button"
+                >
+                  {tag}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="px-1 py-1 text-xs font-semibold text-ink/45">No tags yet.</p>
+        )}
+        {isAdding ? (
+          <div className="mt-2 grid grid-cols-[1fr_auto] gap-2">
+            <input
+              className="h-10 rounded-xl border border-line bg-paper px-3 text-sm font-semibold text-ink outline-none focus:border-palm/40 focus:ring-2 focus:ring-palm/15"
+              onChange={(event) => setDraftTag(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  addTag();
+                }
+              }}
+              placeholder="New tag"
+              value={draftTag}
+            />
+            <button
+              className="h-10 rounded-xl bg-palm px-3 text-xs font-extrabold text-paper"
+              onClick={addTag}
+              type="button"
+            >
+              Add
+            </button>
+          </div>
+        ) : (
+          <button
+            className="mt-2 h-10 w-full rounded-xl border border-dashed border-palm/25 bg-paper text-xs font-extrabold text-palm"
+            onClick={() => setIsAdding(true)}
+            type="button"
+          >
+            Add new tag
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function CollectionForm({ existingTags = [], item, type }: CollectionFormProps) {
   const router = useRouter();
   const baseHref = getCollectionHref(type);
   const isHadith = type === "hadith";
@@ -133,7 +226,7 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
     item ? getStringMeta(item, "providerHadithId") : "",
   );
   const [sourceUrl, setSourceUrl] = useState(item ? getStringMeta(item, "sourceUrl") : "");
-  const [tags, setTags] = useState(item ? getTags(item).join(", ") : "");
+  const [tags, setTags] = useState<string[]>(item ? getTags(item) : []);
   const [body, setBody] = useState(item?.body ?? "");
   const [duaEntries, setDuaEntries] = useState<DuaEntryInput[]>(
     item ? getDuaEntries(item) : [],
@@ -166,7 +259,7 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
           },
     [isHadith, item],
   );
-  const isWitrDua = !isHadith && splitTags(tags).some((tag) => tag.toLowerCase() === "witr");
+  const isWitrDua = !isHadith && tags.some((tag) => tag.toLowerCase() === "witr");
   const showDuaCompiler = !isHadith && (isWitrDua || duaEntries.length > 0);
 
   function appendCurrentDua() {
@@ -295,7 +388,7 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
         provider,
         providerHadithId,
         sourceUrl,
-        tags: splitTags(tags),
+        tags,
         body,
         pinned,
       };
@@ -593,13 +686,7 @@ export function CollectionForm({ item, type }: CollectionFormProps) {
               value={category}
             />
           )}
-          <ClearableField
-            className="mt-2 h-12 w-full rounded-2xl border border-line bg-mist px-3 text-sm font-semibold text-ink outline-none placeholder:text-ink/35 focus:border-palm/40 focus:ring-2 focus:ring-palm/15"
-            label="Tags"
-            onChange={setTags}
-            placeholder="Comma separated"
-            value={tags}
-          />
+          <TagSelector existingTags={existingTags} onChange={setTags} value={tags} />
           <label className="flex items-center justify-between rounded-2xl bg-mist px-3 py-3">
             <span className="text-sm font-bold text-ink">Favorite</span>
             <input

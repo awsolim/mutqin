@@ -15,6 +15,7 @@ import {
   type LibraryItemType,
   type ToggleBookmarkInput,
 } from "./types";
+import { cleanSurahNoteTagIds, type SurahNoteTag } from "./surah-note-tags";
 
 function mapLibraryItem(row: LibraryItemRow): LibraryItem {
   return {
@@ -47,6 +48,7 @@ function revalidateLibrary() {
   revalidatePath("/app/library/surah-notes");
   revalidatePath("/app/library/duas");
   revalidatePath("/app/library/hadiths");
+  revalidatePath("/app/library/khutbahs");
 }
 
 function cleanTags(tags?: string[]) {
@@ -111,7 +113,9 @@ export async function createAyahInsight(
     ayah_end: input.ayahNumber,
     verse_key: input.verseKey,
     page_number: input.pageNumber,
-    metadata: {},
+    metadata: {
+      surahNoteTagIds: cleanSurahNoteTagIds(input.surahNoteTagIds),
+    },
   });
 
   if (error) {
@@ -130,10 +134,11 @@ export async function createSurahNote(
     return { ok: false, message: "Invalid surah number." };
   }
 
-  const bullets = input.bullets.map((bullet) => bullet.trim()).filter(Boolean);
+  const title = cleanText(input.title);
+  const bullets = (input.bullets ?? []).map((bullet) => bullet.trim()).filter(Boolean);
 
-  if (!bullets.length) {
-    return { ok: false, message: "Add at least one note." };
+  if (!title) {
+    return { ok: false, message: "Tag title is required." };
   }
 
   const user = await requireUser();
@@ -141,14 +146,14 @@ export async function createSurahNote(
   const { error } = await supabase.from("library_items").insert({
     user_id: user.id,
     type: "surah_note",
-    title: cleanText(input.title),
-    body: bullets.map((bullet) => `- ${bullet}`).join("\n"),
+    title,
+    body: bullets.length ? bullets.map((bullet) => `- ${bullet}`).join("\n") : null,
     surah_number: input.surahNumber,
     ayah_start: null,
     ayah_end: null,
     verse_key: null,
     page_number: null,
-    metadata: { bullets },
+    metadata: { bullets, kind: "surah_tag" },
   });
 
   if (error) {
@@ -157,7 +162,49 @@ export async function createSurahNote(
 
   revalidateLibrary();
 
-  return { ok: true, message: "Surah notes saved." };
+  return { ok: true, message: "Surah tag saved." };
+}
+
+export async function getSurahNoteTagsForSurahs(
+  surahNumbers: number[],
+): Promise<SurahNoteTag[]> {
+  const cleanSurahNumbers = Array.from(
+    new Set(
+      surahNumbers.filter(
+        (surahNumber) =>
+          Number.isInteger(surahNumber) && surahNumber >= 1 && surahNumber <= 114,
+      ),
+    ),
+  );
+
+  if (!cleanSurahNumbers.length) {
+    return [];
+  }
+
+  const user = await requireUser();
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("library_items")
+    .select("id, title, surah_number")
+    .eq("user_id", user.id)
+    .eq("type", "surah_note")
+    .in("surah_number", cleanSurahNumbers)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return ((data ?? []) as Array<{ id: string; title: string | null; surah_number: number | null }>)
+    .filter(
+      (item): item is { id: string; title: string; surah_number: number } =>
+        Boolean(item.title) && Number.isInteger(item.surah_number),
+    )
+    .map((item) => ({
+      id: item.id,
+      surahNumber: item.surah_number,
+      title: item.title,
+    }));
 }
 
 export async function toggleBookmark(
@@ -240,7 +287,7 @@ export async function createCollectionItem(
   // Future verified-source imports should normalize into this metadata shape, not bypass user-owned Library storage.
   const title = cleanText(input.title);
 
-  if (input.type !== "dua" && input.type !== "hadith") {
+  if (input.type !== "dua" && input.type !== "hadith" && input.type !== "khutbah") {
     return { ok: false, message: "Invalid collection type." };
   }
 
@@ -278,6 +325,8 @@ export async function createCollectionItem(
         arabicMarkers: input.arabicMarkers ?? [],
         translationMarkers: input.translationMarkers ?? [],
         duaEntries: input.duaEntries ?? [],
+        khutbahKind: cleanText(input.khutbahKind),
+        khutbahReferences: input.khutbahReferences ?? [],
         tags: cleanTags(input.tags),
         pinned: Boolean(input.pinned),
       },
@@ -290,7 +339,7 @@ export async function createCollectionItem(
   }
 
   revalidateLibrary();
-  revalidatePath(`/app/library/${input.type === "dua" ? "duas" : "hadiths"}/${data.id}`);
+  revalidatePath(`/app/library/${input.type === "dua" ? "duas" : input.type === "hadith" ? "hadiths" : "khutbahs"}/${data.id}`);
 
   return { id: data.id, ok: true, message: "Saved." };
 }
@@ -300,7 +349,7 @@ export async function updateCollectionItem(
 ): Promise<LibraryActionResult> {
   const title = cleanText(input.title);
 
-  if (input.type !== "dua" && input.type !== "hadith") {
+  if (input.type !== "dua" && input.type !== "hadith" && input.type !== "khutbah") {
     return { ok: false, message: "Invalid collection type." };
   }
 
@@ -336,6 +385,8 @@ export async function updateCollectionItem(
         arabicMarkers: input.arabicMarkers ?? [],
         translationMarkers: input.translationMarkers ?? [],
         duaEntries: input.duaEntries ?? [],
+        khutbahKind: cleanText(input.khutbahKind),
+        khutbahReferences: input.khutbahReferences ?? [],
         tags: cleanTags(input.tags),
         pinned: Boolean(input.pinned),
       },
@@ -348,7 +399,7 @@ export async function updateCollectionItem(
   }
 
   revalidateLibrary();
-  revalidatePath(`/app/library/${input.type === "dua" ? "duas" : "hadiths"}/${input.id}`);
+  revalidatePath(`/app/library/${input.type === "dua" ? "duas" : input.type === "hadith" ? "hadiths" : "khutbahs"}/${input.id}`);
 
   return { id: input.id, ok: true, message: "Saved." };
 }

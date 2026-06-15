@@ -22,7 +22,14 @@ function cleanTags(tags?: string[]) {
 }
 
 function collectionPath(type: CollectionItemInput["type"]) {
-  return type === "dua" ? "duas" : "hadiths";
+  if (type === "dua") return "duas";
+  if (type === "hadith") return "hadiths";
+
+  return "khutbahs";
+}
+
+function isCollectionType(type: unknown): type is CollectionItemInput["type"] {
+  return type === "dua" || type === "hadith" || type === "khutbah";
 }
 
 function metadataFromInput(input: CollectionItemInput) {
@@ -47,6 +54,8 @@ function metadataFromInput(input: CollectionItemInput) {
     arabicMarkers: input.arabicMarkers ?? [],
     translationMarkers: input.translationMarkers ?? [],
     duaEntries: input.duaEntries ?? [],
+    khutbahKind: cleanText(input.khutbahKind),
+    khutbahReferences: input.khutbahReferences ?? [],
     tags: cleanTags(input.tags),
     pinned: Boolean(input.pinned),
   };
@@ -66,7 +75,7 @@ export async function PATCH(
   const { id } = await context.params;
   const input = (await request.json()) as CollectionItemInput;
 
-  if (input.type !== "dua" && input.type !== "hadith") {
+  if (!isCollectionType(input.type)) {
     return NextResponse.json({ message: "Invalid collection type.", ok: false }, { status: 400 });
   }
 
@@ -114,6 +123,7 @@ export async function DELETE(
   revalidatePath("/app/library");
   revalidatePath("/app/library/duas");
   revalidatePath("/app/library/hadiths");
+  revalidatePath("/app/library/khutbahs");
 
   return NextResponse.json({ message: "Library item removed.", ok: true });
 }

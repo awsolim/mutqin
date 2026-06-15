@@ -1,16 +1,16 @@
-import { NotebookPen } from "lucide-react";
-import { LibraryPlaceholderPage } from "@/components/library/library-placeholder-page";
+import { KhutbahList } from "@/components/library/khutbah-list";
+import { PageBackButton } from "@/components/page-back-button";
 import { PageHeader } from "@/components/page-header";
+import { getLibraryItemsByType } from "@/lib/library/actions";
 
-export default function KhutbahsPage() {
+export default async function KhutbahsPage() {
+  const items = await getLibraryItemsByType("khutbah");
+
   return (
     <div className="space-y-5">
-      <PageHeader eyebrow="Collections" title="Khutbahs" description="Drafts, outlines, and source notes for talks." />
-      <LibraryPlaceholderPage
-        description="Khutbah drafting will become a dedicated writing shelf."
-        icon={NotebookPen}
-        title="No khutbah drafts yet"
-      />
+      <PageBackButton href="/app/library" label="Library" />
+      <PageHeader eyebrow="Collections" title="Khutbahs" />
+      <KhutbahList items={items} />
     </div>
   );
 }

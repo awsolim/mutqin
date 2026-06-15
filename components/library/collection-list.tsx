@@ -314,6 +314,11 @@ function HadithCollectionCard({
           <p className="mt-1 text-xs font-bold uppercase tracking-wide text-palm">
             {getStringMeta(item, "reference") || "Hadith"}
           </p>
+          {getStringMeta(item, "narrator") ? (
+            <p className="mt-1 line-clamp-2 text-xs font-semibold leading-5 text-ink/55">
+              {getStringMeta(item, "narrator")}
+            </p>
+          ) : null}
         </Link>
         <div className="flex items-center px-2 py-4">
           <button

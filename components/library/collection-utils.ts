@@ -1,6 +1,8 @@
 import {
   type DuaEntryInput,
+  type KhutbahReferenceInput,
   type LibraryItem,
+  type CollectionItemKind,
   type TextMarkerInput,
   type TextMarkerType,
 } from "@/lib/library/types";
@@ -21,8 +23,11 @@ export function getTags(item: LibraryItem) {
   return Array.isArray(tags) ? tags.filter((tag): tag is string => typeof tag === "string") : [];
 }
 
-export function getCollectionHref(type: "dua" | "hadith") {
-  return type === "dua" ? "/app/library/duas" : "/app/library/hadiths";
+export function getCollectionHref(type: CollectionItemKind) {
+  if (type === "dua") return "/app/library/duas";
+  if (type === "hadith") return "/app/library/hadiths";
+
+  return "/app/library/khutbahs";
 }
 
 function isTextMarkerType(value: unknown): value is TextMarkerType {
@@ -57,5 +62,24 @@ export function getDuaEntries(item: LibraryItem): DuaEntryInput[] {
     const candidate = entry as Record<string, unknown>;
 
     return typeof candidate.id === "string" && typeof candidate.arabicText === "string";
+  });
+}
+
+export function getKhutbahReferences(item: LibraryItem): KhutbahReferenceInput[] {
+  const references = item.metadata?.khutbahReferences;
+
+  if (!Array.isArray(references)) return [];
+
+  return references.filter((reference): reference is KhutbahReferenceInput => {
+    if (!reference || typeof reference !== "object") return false;
+    const candidate = reference as Record<string, unknown>;
+
+    return (
+      typeof candidate.id === "string" &&
+      typeof candidate.label === "string" &&
+      (candidate.kind === "ayah" ||
+        candidate.kind === "hadith" ||
+        candidate.kind === "preset")
+    );
   });
 }
